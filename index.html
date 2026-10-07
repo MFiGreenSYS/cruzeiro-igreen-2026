@@ -648,6 +648,10 @@ a{color:inherit}
 .canhoto .icone-cz{ width:clamp(84px,9cqw,112px); height:auto; filter:drop-shadow(0 12px 32px rgba(var(--acc-rgb),.3)) }
 .num-cab{ font-size:clamp(52px,6cqw,76px); font-weight:700; letter-spacing:-.05em; line-height:.9 }
 .num-cab small{ display:block; margin-top:8px; font-size:11px; font-weight:600; letter-spacing:.18em; text-transform:uppercase; color:var(--dim) }
+/* SEM O CÓDIGO DE BARRAS e sem "cartão de embarque" (pedido do dono,
+   07/10/2026): o resumo parecia o voucher de verdade. O canhoto diz
+   com todas as letras que é só informação. */
+.so-info{ font-size:10.5px; font-weight:600; letter-spacing:.14em; text-transform:uppercase; color:var(--dim-2); max-width:18ch; line-height:1.5 }
 .barras{
   width:100%; max-width:200px; height:34px; opacity:.55; border-radius:2px;
   background:repeating-linear-gradient(90deg,
@@ -689,6 +693,7 @@ a{color:inherit}
 .fora .etq{ display:inline-flex; align-items:center; gap:8px; color:var(--aviso) }
 .fora .etq svg{ width:15px; height:15px }
 .fora .lista{ grid-template-columns:1fr 1fr; column-gap:28px }
+.fora .sub-item{ display:block; margin-top:3px; font-size:13px; line-height:1.5; color:var(--dim) }
 @container (width < 600px){ .fora .lista{ grid-template-columns:1fr } }
 
 /* OBJETO NEON — agora com transparência de verdade (assets/objetos/*-alfa).
@@ -1148,7 +1153,7 @@ a{color:inherit}
       <div class="bilhete" data-reveal style="--i:1">
         <div class="bilhete-corpo">
           <div class="bilhete-topo">
-            <span class="etq">Cartão de embarque · Cruzeiro iGreen 2026</span>
+            <span class="etq">Resumo da viagem · Cruzeiro iGreen 2026</span>
             <span class="pilula-estado">Qualificado(a) + 1</span>
           </div>
           <div class="trecho" id="trecho"></div>
@@ -1157,7 +1162,7 @@ a{color:inherit}
         <div class="canhoto">
           <img class="icone-cz" src="assets/icone-cruzeiro.svg" width="128" height="128" alt="Ícone do Cruzeiro iGreen 2026">
           <div class="num-cab num">01<small>cabine dupla</small></div>
-          <div class="barras" aria-hidden="true"></div>
+          <p class="so-info">Só informativo · não é o seu voucher</p>
         </div>
       </div>
       <div class="inclui" id="inclui"></div>
@@ -1464,7 +1469,7 @@ const DADOS = {
     fora:[
       'Transporte e logística até o porto e retorno à cidade de origem',
       'Seguro para o deslocamento até o porto e a volta',
-      'Consumo de bebidas a bordo',
+      'Consumo de bebidas alcoólicas, refrigerantes e outros a bordo|(Incluso: água, café, chá e sucos básicos, geralmente disponíveis nas estações self-service do buffet)',
       'Acompanhantes extras e cabine adicional'
     ]
   },
@@ -1535,7 +1540,7 @@ const DADOS = {
     ['Menores de idade podem ficar sozinhos em uma cabine?','Não. Uma cabine não pode ser ocupada somente por menores de idade. É necessária a presença de pelo menos um adulto responsável legal na cabine.'],
     ['Menores de idade podem viajar sem os pais ou sem um dos pais/responsável legal?','Menores de 18 anos desacompanhados de ambos os pais ou responsável legal precisam apresentar autorização por escrito do pai e da mãe, com firma reconhecida em cartório, em duas vias, conforme as orientações da Polícia Federal.'],
     ['Até quantos meses de gravidez uma grávida pode embarcar no cruzeiro?','Gestantes podem viajar se tiverem até 23 semanas e 6 dias de gravidez em qualquer momento durante o cruzeiro (cerca de 5 meses e meio), mediante autorização médica. A MSC não permite o embarque de hóspede que estará com 24 semanas ou mais de gestação até o final do cruzeiro — neste caso, até 02/12/2026.|Antes de viajar, é preciso procurar orientação médica e levar atestado de um médico obstetra/ginecologista confirmando a gravidez intrauterina, a aptidão para viajar a bordo do navio no itinerário específico e a data prevista para o parto, confirmada por ultrassom.|Os navios não têm instalações médicas adequadas para partos. Sem o atestado com essas informações, ou acima de 24 semanas, a MSC pode recusar o embarque.'],
-    ['As bebidas consumidas durante o cruzeiro estão incluídas?','Não. O consumo de bebidas não faz parte da premiação e deverá ser custeado pelo participante, conforme as regras do navio.|Os pacotes de bebidas poderão ser incluídos posteriormente: a aquisição será feita diretamente com a MSC.'],
+    ['As bebidas consumidas durante o cruzeiro estão incluídas?','Não. O consumo de bebidas alcoólicas, refrigerantes e outros não faz parte da premiação e deverá ser custeado pelo participante, conforme as regras do navio.|Estão inclusos água, café, chá e sucos básicos, geralmente disponíveis nas estações self-service do buffet.|Os pacotes de bebidas poderão ser incluídos posteriormente: a aquisição será feita diretamente com a MSC.'],
     ['Quais são os valores dos pacotes de bebidas?','Pacote Easy: R$ 942,00 por pessoa.|Pacote Premium Extra: R$ 1.593,00 por pessoa.|Pacote Não Alcoólico: R$ 702,00 por pessoa.|Taxa de serviço incluída. Nos pacotes com álcool, até 15 bebidas alcoólicas por dia. Veja os detalhes de cada pacote na seção Bebidas.|A aquisição do pacote de bebidas será feita posteriormente, diretamente com a MSC.'],
     ['Acompanhantes extras ou cabine adicional são garantidos?','Não. A inclusão de acompanhantes adicionais e a aquisição de cabine extra estão sujeitas à disponibilidade do navio.'],
     ['Por que minha solicitação de 3º ou 4º hóspede pode ser recusada?','A solicitação pode ser recusada por indisponibilidade do navio.'],
@@ -1930,7 +1935,7 @@ const DADOS = {
     '<img class="objeto" src="assets/objetos/' + esc(it.img) + '-alfa.webp" width="480" height="480" alt="" loading="lazy" decoding="async">' +
     '<h3>' + esc(it.titulo) + '</h3><p>' + esc(it.txt) + '</p></article>').join('');
   $('fora').innerHTML = '<span class="etq">' + ICONES.alerta + 'Fica por sua conta</span><ul class="lista nao">' +
-    P.fora.map((t) => '<li>' + esc(t) + '</li>').join('') + '</ul>';
+    P.fora.map((t) => { const [a, b] = t.split('|'); return '<li><span>' + esc(a) + (b ? '<small class="sub-item">' + esc(b) + '</small>' : '') + '</span></li>'; }).join('') + '</ul>';
 
   /* ============================================================
      QUALIFICAÇÃO
