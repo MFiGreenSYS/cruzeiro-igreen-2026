@@ -717,15 +717,21 @@ a{color:inherit}
    vem junto, com o rótulo deixando claro que é OUTRA cabine.
    ============================================================ */
 .encerrado{
+  /* VERDE com a borda viva correndo em volta (pedido do dono, 07/10/2026):
+     era âmbar, e o destaque passa a vir do facho que contorna o cartão,
+     o mesmo do cartão de embarque e da carta de bebidas */
   position:relative; border-radius:26px; padding:clamp(26px,3.6cqw,52px);
-  border:1.5px solid rgba(var(--aviso-rgb),.6);
-  background:radial-gradient(70% 120% at 0% 0%, rgba(var(--aviso-rgb),.14), transparent 62%), var(--cartao);
+  border:1.5px solid rgba(var(--acc-rgb),.4);
+  background:radial-gradient(70% 120% at 0% 0%, rgba(var(--acc-rgb),.16), transparent 62%), var(--cartao);
   -webkit-backdrop-filter:blur(14px); backdrop-filter:blur(14px);
-  box-shadow:0 0 60px rgba(var(--aviso-rgb),.08);
+  box-shadow:0 0 70px rgba(var(--acc-rgb),.12);
 }
+.encerrado.borda-viva::before{ padding:2px }
+/* o selo "Prazo encerrado" em PRETO, com o texto e o filete no acento */
 .encerrado-selo{
   display:inline-flex; align-items:center; gap:10px; padding:10px 18px; border-radius:999px;
-  background:var(--aviso); color:var(--campo);
+  background:var(--campo); color:var(--acc); border:1.5px solid rgba(var(--acc-rgb),.7);
+  box-shadow:0 0 22px rgba(var(--acc-rgb),.25);
   font-size:clamp(12px,1.1cqw,14px); font-weight:800; letter-spacing:.16em; text-transform:uppercase;
 }
 .encerrado-selo svg{ width:18px; height:18px }
@@ -1065,7 +1071,7 @@ a{color:inherit}
     <span class="tubo" aria-hidden="true"></span>
   </nav>
   <div class="dir">
-    <a class="chamada vidro" href="https://wa.me/5534920016128?text=Ol%C3%A1!%20Tenho%20uma%20d%C3%BAvida%20sobre%20o%20Cruzeiro%20iGreen%202026." target="_blank" rel="noopener noreferrer"><span>Atendimento</span><i aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg></i></a>
+    <a class="chamada vidro" href="https://wa.me/5534920016128" target="_blank" rel="noopener noreferrer"><span>Atendimento</span><i aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg></i></a>
     <button class="abre-menu vidro" type="button" aria-expanded="false" aria-controls="menu" aria-label="Abrir menu">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
     </button>
@@ -1178,7 +1184,7 @@ a{color:inherit}
         <h2 class="titulo">Mais gente <em class="destaque">a bordo</em></h2>
       </header>
 
-      <div class="encerrado" data-reveal style="--i:1">
+      <div class="encerrado borda-viva" data-reveal style="--i:1">
         <span class="encerrado-selo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>Prazo encerrado</span>
         <h3 class="encerrado-tit">As solicitações de 3º e 4º hóspede estão encerradas.</h3>
         <p>As solicitações prévias já foram realizadas e estão <b>sob análise e confirmação</b>.
@@ -1186,9 +1192,9 @@ a{color:inherit}
         <div class="encerrado-contato">
           <div>
             <span class="etq">Mais detalhes · Atendimento Viagens e Eventos</span>
-            <a class="fone-at num" href="https://wa.me/5534920016128?text=Ol%C3%A1!%20Tenho%20uma%20d%C3%BAvida%20sobre%20o%20Cruzeiro%20iGreen%202026." target="_blank" rel="noopener noreferrer">(34) 92001-6128</a>
+            <a class="fone-at num" href="https://wa.me/5534920016128" target="_blank" rel="noopener noreferrer">(34) 92001-6128</a>
           </div>
-          <a class="botao-principal whats" href="https://wa.me/5534920016128?text=Ol%C3%A1!%20Tenho%20uma%20d%C3%BAvida%20sobre%20o%20Cruzeiro%20iGreen%202026." target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20l1.4-4.2A8 8 0 1 1 8.6 19z"/><path d="M9 10h6M9 13.5h4"/></svg>Falar no WhatsApp</a>
+          <a class="botao-principal whats" href="https://wa.me/5534920016128" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20l1.4-4.2A8 8 0 1 1 8.6 19z"/><path d="M9 10h6M9 13.5h4"/></svg>Falar no WhatsApp</a>
         </div>
       </div>
 
@@ -1510,6 +1516,7 @@ const DADOS = {
     ['Como funciona a compra de uma cabine extra?','A cabine extra é outra cabine, separada da cabine dupla do prêmio. Ela pode ser adquirida junto ao parceiro representante da CVC pelo telefone (31) 7170-2261 ou pelos canais oficiais da MSC Cruzeiros.'],
     ['Menores de idade podem ficar sozinhos em uma cabine?','Não. Uma cabine não pode ser ocupada somente por menores de idade. É necessária a presença de pelo menos um adulto responsável legal na cabine.'],
     ['Menores de idade podem viajar sem os pais ou sem um dos pais/responsável legal?','Menores de 18 anos desacompanhados de ambos os pais ou responsável legal precisam apresentar autorização por escrito do pai e da mãe, com firma reconhecida em cartório, em duas vias, conforme as orientações da Polícia Federal.'],
+    ['Até quantos meses de gravidez uma grávida pode embarcar no cruzeiro?','Gestantes podem viajar se tiverem até 23 semanas e 6 dias de gravidez em qualquer momento durante o cruzeiro (cerca de 5 meses e meio), mediante autorização médica. A MSC não permite o embarque de hóspede que estará com 24 semanas ou mais de gestação até o final do cruzeiro — neste caso, até 02/12/2026.|Antes de viajar, é preciso procurar orientação médica e levar atestado de um médico obstetra/ginecologista confirmando a gravidez intrauterina, a aptidão para viajar a bordo do navio no itinerário específico e a data prevista para o parto, confirmada por ultrassom.|Os navios não têm instalações médicas adequadas para partos. Sem o atestado com essas informações, ou acima de 24 semanas, a MSC pode recusar o embarque.'],
     ['As bebidas consumidas durante o cruzeiro estão incluídas?','Não. O consumo de bebidas não faz parte da premiação e deverá ser custeado pelo participante, conforme as regras do navio.|Os pacotes de bebidas poderão ser incluídos posteriormente: a aquisição será feita diretamente com a MSC.'],
     ['Quais são os valores dos pacotes de bebidas?','Pacote Easy: R$ 942,00 por pessoa.|Pacote Premium Extra: R$ 1.593,00 por pessoa.|Pacote Não Alcoólico: R$ 702,00 por pessoa.|Taxa de serviço incluída. Nos pacotes com álcool, até 15 bebidas alcoólicas por dia. Veja os detalhes de cada pacote na seção Bebidas.|A aquisição do pacote de bebidas será feita posteriormente, diretamente com a MSC.'],
     ['Acompanhantes extras ou cabine adicional são garantidos?','Não. A inclusão de acompanhantes adicionais e a aquisição de cabine extra estão sujeitas à disponibilidade do navio.'],
