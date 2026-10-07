@@ -138,6 +138,24 @@ a{color:inherit}
   display:flex; align-items:center; justify-content:space-between; gap:16px;
   padding:0 24px;
 }
+/* O VÉU DA BARRA — degradê de opacidade com desfoque atrás da barra
+   (pedido do dono, 07/10/2026): ao rolar, o conteúdo passava nítido por
+   trás da pílula e da marca. Escuro e desfocado no alto, some em
+   degradê 40px abaixo da barra — sem linha reta (Lei 6). No topo da
+   página ele fica mais leve, porque o véu do herói já escurece ali.
+   padrao-serjao: excecao blend-tela-cheia — o inset:0 lê como camada de
+   tela cheia, mas a camada tem a altura da barra mais 40px (136px no
+   largo, 116px no estreito). O desfoque roda sobre essa faixa, não sobre
+   a cena. */
+.topo::before{
+  content:""; position:absolute; inset:0 0 -40px 0; z-index:-1; pointer-events:none;
+  background:linear-gradient(180deg, rgba(var(--campo-rgb),.88) 0%, rgba(var(--campo-rgb),.6) 55%, transparent 100%);
+  -webkit-backdrop-filter:blur(16px); backdrop-filter:blur(16px);
+  -webkit-mask-image:linear-gradient(180deg, #000 0%, #000 55%, transparent 100%);
+          mask-image:linear-gradient(180deg, #000 0%, #000 55%, transparent 100%);
+  opacity:.55; transition:opacity .4s;
+}
+.rolou-hero .topo::before{ opacity:1 }
 .topo .marca{ display:flex; align-items:center; min-height:44px; flex:none }
 .topo .marca img{ width:52px; height:auto }
 .vidro{
