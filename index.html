@@ -66,6 +66,7 @@
   /* o papel da autorização — objeto claro sobre o painel escuro */
   --papel:#EEF1EC; --papel-2:#D9DED7; --tinta:#16211A; --tinta-rgb:22,33,26; --carimbo:#0A6A12;
   --aviso:#FFC857;      --aviso-rgb:255,200,87;
+  --nao:#FF6B6B;        --nao-rgb:255,107,107;   /* "não aceito" da tabela de documentos */
   --mola:cubic-bezier(.16,1.1,.3,1);
   --font:'Geist',system-ui,-apple-system,'Segoe UI',sans-serif;
   --larg:1200px;
@@ -961,7 +962,37 @@ a{color:inherit}
 .faq .fa{ padding:0 22px 20px 62px; display:grid; gap:8px }
 .faq .fa p{ font-size:14.5px; line-height:1.65; color:var(--dim) }
 .faq-vazio{ text-align:center; padding:26px; color:var(--dim) }
-@container (width < 560px){ .faq .fa{ padding-left:18px } }
+/* A TABELA DE DOCUMENTOS — a mesma da MSC (Documentos e vistos), com
+   as duas linhas e a coluna de cruzeiros no Brasil. <table> de verdade:
+   o leitor de tela anuncia linha e coluna. No celular ela empilha,
+   rótulo em cima da lista, porque duas colunas em 300px espremem a lista. */
+.doc-tab{ width:100%; border-collapse:separate; border-spacing:0; margin-top:4px;
+  border:1px solid var(--linha); border-radius:14px; overflow:hidden; font-size:14px; line-height:1.55 }
+.doc-tab thead th{ padding:12px 16px; background:rgba(var(--luz-rgb),.06); font-size:11px; font-weight:700;
+  letter-spacing:.14em; text-transform:uppercase; color:var(--ink); text-align:left }
+.doc-tab th, .doc-tab td{ vertical-align:top; border-top:1px solid var(--linha) }
+.doc-tab thead th{ border-top:0 }
+.doc-tab tbody th{ width:34%; padding:16px; text-align:left; font-size:14.5px; font-weight:700 }
+.doc-tab tbody td{ padding:16px 16px 16px 0; color:var(--dim) }
+.doc-tab .sim{ color:var(--acc) }
+.doc-tab .nao{ color:var(--nao) }
+.doc-tab tbody th span{ display:inline-grid; place-items:center; width:22px; height:22px; margin-right:8px;
+  border-radius:7px; font-size:12px; vertical-align:-3px }
+.doc-tab .sim span{ background:rgba(var(--acc-rgb),.14) }
+.doc-tab .nao span{ background:rgba(var(--nao-rgb),.16) }
+.doc-tab ul{ list-style:none; display:grid; gap:4px }
+.doc-tab li{ padding-left:14px; position:relative }
+.doc-tab li::before{ content:""; position:absolute; left:0; top:.7em; width:5px; height:1.5px; background:currentColor; opacity:.7 }
+.doc-tab small{ display:block; margin-top:8px; font-size:12.5px; color:var(--dim-2) }
+.fa .fonte{ font-size:12.5px }
+.fa .fonte a{ color:var(--acc); text-underline-offset:3px }
+@container (width < 560px){
+  .faq .fa{ padding-left:18px }
+  .doc-tab thead{ display:none }
+  .doc-tab, .doc-tab tbody, .doc-tab tr, .doc-tab th, .doc-tab td{ display:block; width:auto }
+  .doc-tab tbody th{ width:auto; padding:14px 14px 6px }
+  .doc-tab tbody td{ border-top:0; padding:0 14px 14px }
+}
 
 /* ============================================================
    CABINE ADICIONAL (dentro de "Mais hóspedes") — o navio navegando atrás.
@@ -1523,7 +1554,9 @@ const DADOS = {
   autorizacao: ['Assinatura do pai e da mãe, por escrito', 'Firma reconhecida em cartório', 'Em duas vias'],
   linkAutorizacao: 'https://www2.anac.gov.br/anac/formulario/index2.asp',
 
-  /* "|" separa parágrafos dentro da mesma resposta */
+  /* "|" separa parágrafos dentro da mesma resposta. Um terceiro campo
+     opcional traz uma tabela ({ tabela:{coluna, linhas}, fonte:[texto, url] }),
+     desenhada depois dos parágrafos. */
   faq: [
     ['Quando será o Cruzeiro iGreen 2026?','A viagem acontecerá de 29 de novembro a 2 de dezembro de 2026.'],
     ['Qual é a premiação?','A premiação contempla 01 cabine dupla no Cruzeiro Marítimo iGreen 2026.'],
@@ -1539,6 +1572,17 @@ const DADOS = {
     ['Como funciona a compra de uma cabine extra?','A cabine extra é outra cabine, separada da cabine dupla do prêmio. Ela pode ser adquirida junto ao parceiro representante da CVC pelo telefone (31) 7170-2261 ou pelos canais oficiais da MSC Cruzeiros.'],
     ['Menores de idade podem ficar sozinhos em uma cabine?','Não. Uma cabine não pode ser ocupada somente por menores de idade. É necessária a presença de pelo menos um adulto responsável legal na cabine.'],
     ['Menores de idade podem viajar sem os pais ou sem um dos pais/responsável legal?','Menores de 18 anos desacompanhados de ambos os pais ou responsável legal precisam apresentar autorização por escrito do pai e da mãe, com firma reconhecida em cartório, em duas vias, conforme as orientações da Polícia Federal.'],
+    ['Quais documentos são obrigatórios para embarcar?','O Cruzeiro iGreen 2026 é um cruzeiro dentro do território brasileiro. Estes são os documentos que a MSC Cruzeiros aceita e os que ela recusa no embarque:', {
+      tabela: {
+        coluna: 'Cruzeiros dentro do território brasileiro',
+        linhas: [
+          ['sim', 'Documentos obrigatórios', ['Passaporte válido (até o término da viagem)', 'RG (Carteira de Identidade Civil)', 'CREA, CRM, OAB, CNH, entre outros documentos válidos no Brasil', 'DNI (Documento de Identidade Digital) *', 'CNH Digital *'],
+            '* Válidos desde que apresentados na plataforma oficial (Gov.br / Detran).'],
+          ['nao', 'Documentos não aceitos', ['Documentos com foto desatualizados ou irreconhecíveis', 'Documentos em mal estado de conservação', 'DNI ou CNH digitais fora da plataforma oficial, como prints de tela, foto do documento etc.']]
+        ]
+      },
+      fonte: ['MSC Cruzeiros · Documentos e vistos', 'https://www.msccruzeiros.com.br/gerenciar-reserva/antes-de-viajar/documentos-e-vistos']
+    }],
     ['Até quantos meses de gravidez uma grávida pode embarcar no cruzeiro?','Gestantes podem viajar se tiverem até 23 semanas e 6 dias de gravidez em qualquer momento durante o cruzeiro (cerca de 5 meses e meio), mediante autorização médica. A MSC não permite o embarque de hóspede que estará com 24 semanas ou mais de gestação até o final do cruzeiro — neste caso, até 02/12/2026.|Antes de viajar, é preciso procurar orientação médica e levar atestado de um médico obstetra/ginecologista confirmando a gravidez intrauterina, a aptidão para viajar a bordo do navio no itinerário específico e a data prevista para o parto, confirmada por ultrassom.|Os navios não têm instalações médicas adequadas para partos. Sem o atestado com essas informações, ou acima de 24 semanas, a MSC pode recusar o embarque.'],
     ['As bebidas consumidas durante o cruzeiro estão incluídas?','Não. O consumo de bebidas alcoólicas, refrigerantes e outros não faz parte da premiação e deverá ser custeado pelo participante, conforme as regras do navio.|Estão inclusos água, café, chá e sucos básicos, geralmente disponíveis nas estações self-service do buffet.|Os pacotes de bebidas poderão ser incluídos posteriormente: a aquisição será feita diretamente com a MSC.'],
     ['Quais são os valores dos pacotes de bebidas?','Pacote Easy: R$ 942,00 por pessoa.|Pacote Premium Extra: R$ 1.593,00 por pessoa.|Pacote Não Alcoólico: R$ 702,00 por pessoa.|Taxa de serviço incluída. Nos pacotes com álcool, até 15 bebidas alcoólicas por dia. Veja os detalhes de cada pacote na seção Bebidas.|A aquisição do pacote de bebidas será feita posteriormente, diretamente com a MSC.'],
@@ -1980,10 +2024,18 @@ const DADOS = {
      ============================================================ */
   const nrm = (s) => s.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase();
   const faq = $('faq');
+  const tabela = (x) => !x || !x.tabela ? '' :
+    '<table class="doc-tab"><thead><tr><td></td><th scope="col">' + esc(x.tabela.coluna) + '</th></tr></thead><tbody>' +
+    x.tabela.linhas.map((l) => '<tr><th scope="row" class="' + l[0] + '"><span aria-hidden="true">' + (l[0] === 'sim' ? '✓' : '✕') + '</span>' + esc(l[1]) + '</th>' +
+      '<td><ul>' + l[2].map((t) => '<li>' + esc(t) + '</li>').join('') + '</ul>' + (l[3] ? '<small>' + esc(l[3]) + '</small>' : '') + '</td></tr>').join('') +
+    '</tbody></table>' +
+    (x.fonte ? '<p class="fonte">Fonte: <a href="' + esc(x.fonte[1]) + '" target="_blank" rel="noopener noreferrer">' + esc(x.fonte[0]) + '</a></p>' : '');
+  /* o texto da tabela entra na busca: quem procura "CNH" ou "passaporte" acha a pergunta */
+  const textoTabela = (x) => !x || !x.tabela ? '' : x.tabela.linhas.map((l) => l[1] + ' ' + l[2].join(' ') + ' ' + (l[3] || '')).join(' ');
   faq.innerHTML = DADOS.faq.map((p, i) =>
-    '<details data-t="' + esc(nrm(p[0] + ' ' + p[1])) + '"><summary><span class="fn num">' + dd(i + 1) + '</span>' +
+    '<details data-t="' + esc(nrm(p[0] + ' ' + p[1] + ' ' + textoTabela(p[2]))) + '"><summary><span class="fn num">' + dd(i + 1) + '</span>' +
     '<span class="fq">' + esc(p[0]) + '</span></summary><div class="fa">' +
-    p[1].split('|').map((t) => '<p>' + esc(t) + '</p>').join('') + '</div></details>').join('') +
+    p[1].split('|').map((t) => '<p>' + esc(t) + '</p>').join('') + tabela(p[2]) + '</div></details>').join('') +
     '<p class="faq-vazio" id="faqVazio" hidden>Nenhuma pergunta encontrada. Tente outra palavra.</p>';
   const itens = [].slice.call(faq.querySelectorAll('details')), total = itens.length;
   const contar = (n, f) => { $('faqConta').textContent = f ? (n === 1 ? '1 pergunta' : n + ' perguntas') + ' de ' + total : total + ' perguntas'; };
