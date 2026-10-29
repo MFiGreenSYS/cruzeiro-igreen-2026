@@ -777,6 +777,34 @@ a{color:inherit}
 .botao-principal.whats svg{ width:20px; height:20px }
 .botao-principal.whats:hover svg{ transform:none }
 #hospedes .proa{ margin-top:14px }
+
+/* ============================================================
+   CONTATOS CONFIÁVEIS — a empresa e os números oficiais, cada um
+   com o link direto para o WhatsApp. O cartão usa a borda viva:
+   é o lugar da página que a pessoa precisa achar quando receber
+   uma mensagem estranha em nome do cruzeiro.
+   ============================================================ */
+.contatos{
+  position:relative; max-width:880px; margin-inline:auto; border-radius:26px;
+  padding:clamp(24px,3.4cqw,46px);
+  border:1.5px solid rgba(var(--acc-rgb),.3);
+  background:radial-gradient(70% 120% at 0% 0%, rgba(var(--acc-rgb),.12), transparent 62%), var(--cartao);
+  -webkit-backdrop-filter:blur(14px); backdrop-filter:blur(14px);
+}
+.contatos.borda-viva::before{ padding:2px }
+.contatos .etq{ display:flex; align-items:center; gap:8px; color:var(--acc) }
+.contatos .etq svg{ width:16px; height:16px; flex:none }
+.contatos-empresa{
+  margin-top:10px; font-size:clamp(22px,2.6cqw,32px); font-weight:700; letter-spacing:-.02em; line-height:1.15;
+}
+.contatos-lista{ list-style:none; margin-top:clamp(18px,2.4cqw,28px); border-top:1px solid var(--linha) }
+.contatos-lista li{
+  display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:10px 20px;
+  padding:16px 0; border-bottom:1px solid var(--linha);
+}
+.contatos-lista .fone-at{ margin-top:0; font-size:clamp(22px,2.4cqw,30px) }
+.botao-vazio.whats{ padding:12px 22px; color:var(--acc); border-color:rgba(var(--acc-rgb),.45) }
+.botao-vazio.whats svg{ width:18px; height:18px; flex:none }
 .titulo.menor{ font-size:clamp(26px,3.4cqw,40px) }
 
 /* o aviso no topo das bebidas — a compra é depois, direto com a MSC */
@@ -1379,6 +1407,24 @@ a{color:inherit}
     </div>
   </section>
 
+  <!-- ====================== CONTATOS CONFIÁVEIS ====================== -->
+  <section class="secao escura" id="contatos">
+    <div class="aura direita" aria-hidden="true"></div>
+    <div class="dentro">
+      <header class="cab" data-reveal style="--i:0">
+        <p class="rotulo">Contatos confiáveis</p>
+        <h2 class="titulo">Fale com quem é <em class="destaque">de confiança</em></h2>
+        <p class="apoio">Para tratar da viagem, use os contatos abaixo. Se alguém procurar você por outro número
+          em nome do Cruzeiro iGreen pedindo dados ou pagamento, desconfie e confirme antes por aqui.</p>
+      </header>
+      <div class="contatos borda-viva" data-reveal style="--i:1">
+        <span class="etq"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l7 3v5c0 4.5-3 8.4-7 10-4-1.6-7-5.5-7-10V6z"/><path d="m9 12 2 2 4-4"/></svg>Empresa oficial</span>
+        <h3 class="contatos-empresa" id="contatosEmpresa"></h3>
+        <ul class="contatos-lista" id="contatosLista"></ul>
+      </div>
+    </div>
+  </section>
+
 </main>
 
 <footer class="rodape">
@@ -1431,8 +1477,16 @@ const DADOS = {
     { id:'menores',      rot:'Menores' },
     { id:'bebidas',      rot:'Bebidas' },
     { id:'qualificacao', rot:'Qualificação' },
-    { id:'duvidas',      rot:'Dúvidas' }
+    { id:'duvidas',      rot:'Dúvidas' },
+    { id:'contatos',     rot:'Contatos' }
   ],
+
+  /* CONTATOS CONFIÁVEIS — o link do WhatsApp sai do próprio número
+     (55 + só os dígitos), então basta trocar o número aqui */
+  contatos: {
+    empresa: 'VR Eventos, Turismo & Experiências',
+    fones: ['(34) 99767-9999', '(34) 99990-3936', '(34) 99773-3936']
+  },
 
   /* A CARTA. Coordenadas em [longitude, latitude], graus decimais.
      A costa vai de sudoeste para nordeste e é simplificada: Guanabara
@@ -2046,6 +2100,15 @@ const DADOS = {
     itens.forEach((d) => { const ok = toks.every((t) => d.dataset.t.indexOf(t) >= 0); d.hidden = !ok; if (ok) n++; d.open = ok && toks.length > 0; });
     $('faqVazio').hidden = n > 0; contar(n, toks.length > 0);
   });
+
+  /* ---------------- contatos confiáveis ---------------- */
+  const ZAP = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20l1.4-4.2A8 8 0 1 1 8.6 19z"/><path d="M9 10h6M9 13.5h4"/></svg>';
+  $('contatosEmpresa').textContent = DADOS.contatos.empresa;
+  $('contatosLista').innerHTML = DADOS.contatos.fones.map((f) => {
+    const zap = 'https://wa.me/55' + f.replace(/\D/g, '');
+    return '<li><a class="fone-at num" href="' + zap + '" target="_blank" rel="noopener noreferrer">' + esc(f) + '</a>' +
+      '<a class="botao-vazio whats" href="' + zap + '" target="_blank" rel="noopener noreferrer" aria-label="Falar no WhatsApp com ' + esc(f) + '">' + ZAP + 'Falar no WhatsApp</a></li>';
+  }).join('');
 
   /* ---------------- telefone ---------------- */
   $('copiar').addEventListener('click', (e) => {
