@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Portal do Cruzeiro iGreen 2026 · 29/11 a 02/12 · MSC Seaview</title>
-<meta name="description" content="Portal do Cruzeiro iGreen 2026: roteiro a bordo do MSC Seaview, o que o prêmio cobre, regras de qualificação, valores para acompanhantes, pacotes de bebidas, viagem com menores e perguntas frequentes.">
+<meta name="description" content="Portal do Cruzeiro iGreen 2026: passo a passo do check-in no MSC for Me, roteiro a bordo do MSC Seaview, o seu Kit iGreen, viagem com menores, perguntas frequentes e contatos confiáveis.">
 <meta name="theme-color" content="#010101">
 <link rel="icon" type="image/svg+xml" href="assets/icone-cruzeiro.svg">
 <link rel="apple-touch-icon" href="assets/icone-cruzeiro.svg">
@@ -66,6 +66,7 @@
   /* o papel da autorização — objeto claro sobre o painel escuro */
   --papel:#EEF1EC; --papel-2:#D9DED7; --tinta:#16211A; --tinta-rgb:22,33,26; --carimbo:#0A6A12;
   --aviso:#FFC857;      --aviso-rgb:255,200,87;
+  --aco:#1B201C;        --aco-2:#090B0A;        /* a moldura do celular do check-in */
   --nao:#FF6B6B;        --nao-rgb:255,107,107;   /* "não aceito" da tabela de documentos */
   --mola:cubic-bezier(.16,1.1,.3,1);
   --font:'Geist',system-ui,-apple-system,'Segoe UI',sans-serif;
@@ -1045,6 +1046,116 @@ a{color:inherit}
 .proa .acoes{ margin-top:26px; display:flex; flex-wrap:wrap; justify-content:center; gap:12px }
 
 /* ============================================================
+   CHECK-IN — o passo a passo à esquerda e o celular à direita, com o
+   vídeo do MSC for Me tocando na tela (a dinâmica do celular da APN
+   Digital: moldura escura, ilha, brilho verde). O celular nasce
+   deitado e afastado e se endireita com a rolagem; no desktop ele
+   fica preso ao lado dos passos enquanto a pessoa lê.
+   ============================================================ */
+.checkin-grade{
+  display:grid; grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr);
+  gap:clamp(28px,5cqw,80px); align-items:start;
+}
+.ck-passos{ list-style:none; display:grid; gap:14px }
+.ck-passo{ position:relative; padding:clamp(22px,2.6cqw,32px) clamp(20px,2.6cqw,32px) clamp(22px,2.6cqw,30px) clamp(72px,7cqw,90px) }
+.ck-n{
+  position:absolute; left:clamp(20px,2.4cqw,28px); top:clamp(20px,2.4cqw,28px);
+  width:38px; height:38px; display:grid; place-items:center; border-radius:12px;
+  background:var(--acc); color:var(--on-acc); font-weight:800; font-size:16px;
+  box-shadow:0 0 22px rgba(var(--acc-rgb),.35);
+}
+.ck-passo h3{ font-size:clamp(18px,1.8cqw,23px) }
+.ck-lista{ list-style:none; margin-top:14px; display:grid; gap:10px; counter-reset:item }
+.ck-lista li{
+  position:relative; padding-left:26px; font-size:14.5px; line-height:1.6; color:var(--dim); counter-increment:item;
+}
+.ck-lista li::before{
+  content:counter(item); position:absolute; left:0; top:.15em; width:18px; height:18px; border-radius:6px;
+  display:grid; place-items:center; font-size:10.5px; font-weight:700; color:var(--acc);
+  border:1px solid rgba(var(--acc-rgb),.4);
+}
+.ck-lista small{ display:block; margin-top:4px; font-size:13px; color:var(--dim-2) }
+.ck-fim{ margin-top:14px; font-size:14.5px; font-weight:600; color:var(--acc) }
+.checkin-fecho{
+  margin-top:14px; padding:18px 22px; border-radius:18px; text-align:center;
+  border:1px solid rgba(var(--acc-rgb),.35); background:rgba(var(--acc-rgb),.08);
+  font-size:clamp(15px,1.4cqw,17px); font-weight:600;
+}
+.checkin-palco{
+  position:sticky; top:calc(var(--barra) + 24px);
+  display:flex; flex-direction:column; align-items:center; gap:18px;
+  perspective:1400px; padding-block:12px;
+}
+.checkin-palco::before{
+  content:""; position:absolute; left:50%; top:46%; width:120%; aspect-ratio:1; z-index:-1; pointer-events:none;
+  transform:translate(-50%,-50%);
+  background:radial-gradient(closest-side, rgba(var(--acc-rgb),.22), rgba(var(--acc-rgb),.06) 55%, transparent 75%);
+}
+.celular{
+  position:relative; width:min(320px,100%); aspect-ratio:540/1170; padding:10px; border-radius:50px;
+  background:linear-gradient(165deg, var(--aco), var(--aco-2));
+  border:1px solid rgba(var(--ink-rgb),.18);
+  box-shadow:0 0 0 1px rgba(var(--acc-rgb),.14), 0 60px 140px rgba(var(--sombra-rgb),.8), 0 0 110px rgba(var(--acc-rgb),.18);
+  transform-style:preserve-3d; will-change:transform;
+}
+/* os botões laterais: dois filetes na borda, como na APN */
+.celular::before, .celular::after{
+  content:""; position:absolute; width:3px; border-radius:2px; background:var(--aco);
+  border:1px solid rgba(var(--ink-rgb),.14);
+}
+.celular::before{ left:-4px; top:22%; height:12% }
+.celular::after{ right:-4px; top:28%; height:16% }
+.celular-tela{ position:relative; width:100%; height:100%; border-radius:41px; overflow:hidden; background:var(--campo) }
+.celular-tela video, .celular-tela img{ width:100%; height:100%; object-fit:cover }
+.celular-ilha{
+  position:absolute; top:19px; left:50%; transform:translateX(-50%); z-index:2;
+  width:31%; height:24px; border-radius:99px; background:rgba(var(--sombra-rgb),1);
+}
+.celular-reflexo{
+  position:absolute; inset:10px; border-radius:41px; z-index:2; pointer-events:none;
+  background:linear-gradient(115deg, rgba(var(--luz-rgb),.1), transparent 34%);
+}
+.celular-legenda{ font-size:12.5px; color:var(--dim-2); text-align:center }
+@container (width < 860px){
+  .checkin-grade{ grid-template-columns:1fr }
+  .checkin-palco{ position:relative; top:auto; order:-1 }
+  .celular{ width:min(250px,72%) }
+}
+@container (width < 560px){
+  .ck-passo{ padding:20px 18px 22px }
+  .ck-n{ position:static; margin-bottom:12px }
+}
+
+/* ============================================================
+   SEU KIT iGREEN — o objeto do kit, o rastreio e o que levar.
+   ============================================================ */
+.kit{
+  max-width:980px; margin-inline:auto;
+  display:grid; grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr); gap:clamp(20px,3cqw,44px); align-items:center;
+}
+.kit .objeto{ width:clamp(170px,22cqw,280px); margin:0 auto }
+.kit-texto > p{ font-size:clamp(15px,1.4cqw,17px); line-height:1.65; color:var(--dim) }
+.kit-texto > p b{ color:var(--ink) }
+.kit-rastreio{ margin-top:10px; font-size:13.5px!important }
+.kit-levar{ margin-top:22px }
+.kit-levar .chips{ margin-top:10px }
+.kit-levar .chip{ color:var(--ink); font-size:14px; padding:10px 16px }
+.kit-alerta{
+  margin-top:22px; display:flex; align-items:flex-start; gap:12px; padding:16px 18px; border-radius:16px;
+  border:1px solid rgba(var(--aviso-rgb),.45); background:rgba(var(--aviso-rgb),.08);
+  font-size:14.5px; line-height:1.55;
+}
+.kit-alerta svg{ flex:none; width:20px; height:20px; color:var(--aviso); margin-top:1px }
+.kit-alerta b{ color:var(--aviso) }
+@container (width < 760px){ .kit{ grid-template-columns:1fr; text-align:center } .kit-levar .chips{ justify-content:center } .kit-alerta{ text-align:left } }
+
+/* contatos em grupos: um cartão por empresa */
+.contatos + .contatos{ margin-top:14px }
+.contato-num{ display:flex; flex-direction:column }
+.contato-quem{ font-size:13px; color:var(--dim) }
+.contato-acoes{ display:flex; flex-wrap:wrap; gap:10px }
+
+/* ============================================================
    RODAPÉ — marca e atalhos em cima, o globo como horizonte embaixo.
    Antes era tudo empilhado no centro e o globo verde vivo ocupava a
    metade de baixo, com o orbe da página brilhando atrás dele. Agora o
@@ -1136,7 +1247,7 @@ a{color:inherit}
 </head>
 <body>
 
-<a class="pular" href="#premio">Ir para o conteúdo</a>
+<a class="pular" href="#checkin">Ir para o conteúdo</a>
 
 <!-- o orbe do institucional, preso atrás da página inteira -->
 <div class="fundo-orbe" aria-hidden="true">
@@ -1188,7 +1299,7 @@ a{color:inherit}
             <div class="contagem num" id="conta" aria-hidden="true"></div>
             <p class="contagem-pe">Embarque em 29/11, no Porto de Santos · MSC Seaview</p>
           </div>
-          <a class="botao-principal" href="#premio">Ver o que você ganhou
+          <a class="botao-principal" href="#checkin">Ver o passo a passo do check-in
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
         </div>
       </div>
@@ -1200,32 +1311,34 @@ a{color:inherit}
     </div>
   </section>
 
-  <!-- ============================ O PRÊMIO ============================ -->
-  <section class="secao" id="premio">
+  <!-- ============================ CHECK-IN ============================ -->
+  <section class="secao" id="checkin">
     <div class="aura" aria-hidden="true"></div>
     <div class="dentro">
       <header class="cab" data-reveal style="--i:0">
-        <p class="rotulo">Informações essenciais</p>
-        <h2 class="titulo">O que você <em class="destaque">ganhou</em></h2>
-        <p class="apoio">Logística, transporte e pacote de bebidas não estão inclusos na premiação.</p>
+        <p class="rotulo">Passo a passo para o check-in</p>
+        <h2 class="titulo">Faça o seu <em class="destaque">check-in</em></h2>
+        <p class="apoio" id="checkinIntro"></p>
       </header>
-      <div class="bilhete" data-reveal style="--i:1">
-        <div class="bilhete-corpo">
-          <div class="bilhete-topo">
-            <span class="etq">Resumo da viagem · Cruzeiro iGreen 2026</span>
-            <span class="pilula-estado">Qualificado(a) + 1</span>
-          </div>
-          <div class="trecho" id="trecho"></div>
-          <dl class="campos" id="campos"></dl>
+      <div class="checkin-grade">
+        <div>
+          <ol class="ck-passos" id="passos"></ol>
+          <p class="checkin-fecho" id="checkinFecho" data-reveal style="--i:4"></p>
         </div>
-        <div class="canhoto">
-          <img class="icone-cz" src="assets/icone-cruzeiro.svg" width="128" height="128" alt="Ícone do Cruzeiro iGreen 2026">
-          <div class="num-cab num">01<small>cabine dupla</small></div>
-          <p class="so-info">Só informativo · não é o seu voucher</p>
+        <div class="checkin-palco">
+          <div class="celular" id="celular">
+            <div class="celular-tela">
+              <video muted loop playsinline preload="none" poster="assets/video/msc-for-me-poster.webp" width="540" height="1170"
+                     aria-label="Exemplo de check-in no aplicativo MSC for Me" data-na-tela>
+                <source src="assets/video/msc-for-me.mp4" type="video/mp4">
+              </video>
+            </div>
+            <span class="celular-ilha" aria-hidden="true"></span>
+            <span class="celular-reflexo" aria-hidden="true"></span>
+          </div>
+          <p class="celular-legenda">Exemplo ilustrativo do aplicativo MSC for Me</p>
         </div>
       </div>
-      <div class="inclui" id="inclui"></div>
-      <div class="cartao fora" id="fora" data-reveal style="--i:5"></div>
     </div>
   </section>
 
@@ -1257,44 +1370,30 @@ a{color:inherit}
     </div>
   </section>
 
-  <!-- ============================ MAIS HÓSPEDES ============================ -->
-  <section class="secao" id="hospedes">
-    <div class="aura" aria-hidden="true"></div>
+  <!-- ============================ SEU KIT iGREEN ============================ -->
+  <section class="secao" id="kit">
+    <div class="aura direita" aria-hidden="true"></div>
     <div class="dentro">
       <header class="cab" data-reveal style="--i:0">
-        <p class="rotulo">3º e 4º hóspede · cabine adicional</p>
-        <h2 class="titulo">Mais gente <em class="destaque">a bordo</em></h2>
+        <p class="rotulo">Seu Kit iGreen</p>
+        <h2 class="titulo">O seu kit vai até <em class="destaque">você</em></h2>
       </header>
-
-      <div class="encerrado borda-viva" data-reveal style="--i:1">
-        <span class="encerrado-selo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>Prazo encerrado</span>
-        <h3 class="encerrado-tit">As solicitações de 3º e 4º hóspede estão encerradas.</h3>
-        <p>As solicitações prévias já foram realizadas e estão <b>sob análise e confirmação</b>.
-          Em breve, quem solicitou será sinalizado e terá a devolutiva sobre a confirmação ou não da inclusão dos hóspedes.</p>
-        <div class="encerrado-contato">
-          <div>
-            <span class="etq">Mais detalhes · Atendimento Viagens e Eventos</span>
-            <a class="fone-at num" href="https://wa.me/5534920016128" target="_blank" rel="noopener noreferrer">(34) 92001-6128</a>
+      <div class="kit cartao" data-reveal style="--i:1">
+        <img class="objeto" src="assets/objetos/antes-do-embarque-alfa.webp" width="480" height="480" alt="" loading="lazy" decoding="async">
+        <div class="kit-texto">
+          <p>Seu kit será enviado para o <b>endereço cadastrado no formulário</b>. Assim que estiver a caminho,
+            você receberá o <b>código de rastreio pelo WhatsApp</b> para acompanhar a entrega.</p>
+          <p class="kit-rastreio">O rastreio enviado será da empresa <b>ONLOG</b>. Fique atento ao seu WhatsApp.</p>
+          <div class="kit-levar">
+            <span class="etq">Lembre-se de levar para o cruzeiro</span>
+            <div class="chips">
+              <span class="chip"><i aria-hidden="true"></i>Camiseta oficial</span>
+              <span class="chip"><i aria-hidden="true"></i>Copo</span>
+              <span class="chip"><i aria-hidden="true"></i>Sacola do kit</span>
+            </div>
           </div>
-          <a class="botao-principal whats" href="https://wa.me/5534920016128" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20l1.4-4.2A8 8 0 1 1 8.6 19z"/><path d="M9 10h6M9 13.5h4"/></svg>Falar no WhatsApp</a>
-        </div>
-      </div>
-
-      <div class="proa" data-reveal style="--i:2">
-        <video muted loop playsinline preload="none" poster="assets/video/navio-poster.webp" width="960" height="540" aria-hidden="true" data-na-tela>
-          <source src="assets/video/navio.mp4" type="video/mp4">
-        </video>
-        <div class="conteudo">
-          <p class="rotulo">Cabine adicional</p>
-          <h3 class="titulo menor">Quer uma <em class="destaque">segunda cabine?</em></h3>
-          <p class="apoio">A cabine adicional é <b>outra cabine</b>, separada da cabine dupla do prêmio e comprada à parte,
-            com o parceiro representante da CVC ou pelos canais oficiais da MSC Cruzeiros. A compra está sujeita à disponibilidade do navio.</p>
-          <a class="fone num" id="fone" href="tel:+5531971702261">(31) 97170-2261</a>
-          <div class="acoes">
-            <a class="botao-principal whats" href="https://wa.me/5531971702261" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20l1.4-4.2A8 8 0 1 1 8.6 19z"/><path d="M9 10h6M9 13.5h4"/></svg>Falar no WhatsApp</a>
-            <button class="botao-vazio" type="button" id="copiar">Copiar telefone</button>
-            <a class="botao-vazio" href="tel:+5531971702261">Ligar agora</a>
-          </div>
+          <p class="kit-alerta"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3 2 20h20z"/><path d="M12 10v4M12 17h.01"/></svg>
+            <span><b>Atenção:</b> o uso da camiseta oficial será obrigatório na Reunião Oficial, no dia 01/12.</span></p>
         </div>
       </div>
     </div>
@@ -1351,45 +1450,6 @@ a{color:inherit}
     </div>
   </section>
 
-  <!-- ============================ BEBIDAS ============================ -->
-  <section class="secao" id="bebidas">
-    <div class="aura" aria-hidden="true"></div>
-    <div class="dentro">
-      <header class="cab" data-reveal style="--i:0">
-        <p class="rotulo">Opcional · por pessoa</p>
-        <h2 class="titulo">A carta de <em class="destaque">bebidas</em></h2>
-        <p class="apoio">As bebidas não fazem parte da premiação.</p>
-        <div class="selos" id="bebidaSelos"></div>
-      </header>
-      <div class="aviso-msc" data-reveal style="--i:1">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 11v6"/><path d="M12 7.5h.01"/></svg>
-        <p><b>A contratação é feita depois, direto com a MSC.</b>
-          Os pacotes de bebidas poderão ser incluídos posteriormente: a aquisição será feita diretamente com a MSC.</p>
-      </div>
-      <div class="bar" id="bar"></div>
-      <div class="rodape-bar" id="bebidaNotas" data-reveal style="--i:4"></div>
-    </div>
-  </section>
-
-  <!-- ========================= QUALIFICAÇÃO ========================= -->
-  <section class="secao escura" id="qualificacao">
-    <div class="aura direita" aria-hidden="true"></div>
-    <div class="dentro">
-      <header class="cab" data-reveal style="--i:0">
-        <p class="rotulo">Regras de qualificação</p>
-        <h2 class="titulo">Quem <em class="destaque">embarca</em></h2>
-      </header>
-      <div class="duas" id="regras"></div>
-      <div class="periodo" data-reveal style="--i:3">
-        <b>Período de apuração</b>
-        <span class="num" id="apIni"></span>
-        <span class="pista" aria-hidden="true"><i id="apPista"></i></span>
-        <span class="num" id="apFim"></span>
-        <span class="pilula-estado" id="apSelo"></span>
-      </div>
-    </div>
-  </section>
-
   <!-- ============================ DÚVIDAS ============================ -->
   <section class="secao" id="duvidas">
     <div class="aura" aria-hidden="true"></div>
@@ -1417,11 +1477,7 @@ a{color:inherit}
         <p class="apoio">Para tratar da viagem, use os contatos abaixo. Se alguém procurar você por outro número
           em nome do Cruzeiro iGreen pedindo dados ou pagamento, desconfie e confirme antes por aqui.</p>
       </header>
-      <div class="contatos borda-viva" data-reveal style="--i:1">
-        <span class="etq"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l7 3v5c0 4.5-3 8.4-7 10-4-1.6-7-5.5-7-10V6z"/><path d="m9 12 2 2 4-4"/></svg>Empresa oficial</span>
-        <h3 class="contatos-empresa" id="contatosEmpresa"></h3>
-        <ul class="contatos-lista" id="contatosLista"></ul>
-      </div>
+      <div id="contatosGrupos"></div>
     </div>
   </section>
 
@@ -1465,28 +1521,53 @@ const DADOS = {
   embarque: '2026-11-29T00:00:00-03:00',   /* horário ainda não divulgado: conta até a 00h00 */
 
   nav: [
-    /* A ORDEM DA PÁGINA segue as perguntas de quem acabou de se qualificar:
-       o que eu ganhei, quando e por onde é, quem pode ir comigo (e as
-       regras para menores), o que posso contratar a bordo, a regra que me
-       trouxe até aqui, o que ainda não entendi — e, por último, a cabine
-       extra, que é a única chamada para fora da página. */
+    /* A ORDEM DA PÁGINA é a da reta final da viagem (06/11/2026): o
+       check-in que precisa ser feito antes, quando e por onde é, o kit
+       que chega em casa, as regras para menores, o que ainda não
+       entendi — e, por último, com quem falar. Prêmio, mais hóspedes,
+       bebidas e qualificação saíram a pedido do dono. */
     { id:'inicio',       rot:'Início' },
-    { id:'premio',       rot:'O prêmio' },
+    { id:'checkin',      rot:'Check-in' },
     { id:'roteiro',      rot:'Roteiro' },
-    { id:'hospedes',     rot:'Mais hóspedes' },
+    { id:'kit',          rot:'Seu kit' },
     { id:'menores',      rot:'Menores' },
-    { id:'bebidas',      rot:'Bebidas' },
-    { id:'qualificacao', rot:'Qualificação' },
     { id:'duvidas',      rot:'Dúvidas' },
     { id:'contatos',     rot:'Contatos' }
   ],
 
-  /* CONTATOS CONFIÁVEIS — o link do WhatsApp sai do próprio número
-     (55 + só os dígitos), então basta trocar o número aqui */
-  contatos: {
-    empresa: 'VR Eventos, Turismo & Experiências',
-    fones: ['(34) 99767-9999', '(34) 99990-3936', '(34) 99773-3936']
+  /* O CHECK-IN NO MSC FOR ME — "|" separa a linha de apoio, que sai menor */
+  checkin: {
+    intro: 'Realize seu check-in pelo aplicativo “MSC for Me” para acessar o cartão de embarque que deverá ser apresentado no Porto de Santos. Pelo aplicativo, você também poderá consultar as opções de pacotes de bebidas e internet.',
+    passos: [
+      { titulo:'Acesse sua reserva no aplicativo', itens:[
+        'Baixe o aplicativo MSC for Me no seu celular, disponível para Android e iOS.',
+        'Tenha em mãos o número da reserva enviado pelo WhatsApp. Ele também foi enviado ao seu Escritório Virtual ou aplicativo iGreen Connect.',
+        'Abra o aplicativo e, na tela inicial, clique em “Entrar com o número da reserva”.',
+        'Digite o número da reserva no campo indicado.',
+        'Preencha o nome e o sobrenome de um dos passageiros da cabine e aceite os termos e condições.|No campo “Nome”, informe seu primeiro nome ou nome composto, se houver. No campo “Sobrenome”, informe todos os seus sobrenomes, sem abreviações.',
+        'Confira o nome e o e-mail exibidos na tela. Esse e-mail será utilizado para receber as notificações do cruzeiro. Se os dados estiverem corretos, confirme e avance.' ],
+        fim:'Pronto! Sua reserva estará acessível para iniciar o check-in.' },
+      { titulo:'Faça o check-in e acesse seu cartão de embarque', itens:[
+        'No aplicativo, clique em “Check-in”.',
+        'Confira se todos os passageiros da sua cabine estão listados corretamente.',
+        'Selecione a opção “A ser concluído” e preencha as informações solicitadas de cada passageiro.',
+        'Após concluir o preenchimento dos dados de todos os passageiros, acesse os cartões de embarque no aplicativo.',
+        'No dia do embarque, tenha os cartões em mãos para apresentá-los no Porto de Santos.' ] }
+    ],
+    fecho: 'Conclua o check-in com antecedência e deixe tudo pronto para a sua viagem!'
   },
+
+  /* CONTATOS CONFIÁVEIS — um cartão por grupo. O link do WhatsApp sai
+     do próprio número (55 + só os dígitos); `ligar` acrescenta o botão
+     de ligação e `quem` diz com quem se fala. */
+  contatos: [
+    { etq:'Empresa oficial', nome:'VR Eventos, Turismo & Experiências', fones:[
+      { n:'(34) 99767-9999', quem:'Vanessa Rodrigues · ligação ou WhatsApp', ligar:true },
+      { n:'(34) 99990-3936' },
+      { n:'(34) 99773-3936' } ] },
+    { etq:'Atendimento iGreen', nome:'Suporte Viagens e Eventos', fones:[
+      { n:'(34) 92001-6128' } ] }
+  ],
 
   /* A CARTA. Coordenadas em [longitude, latitude], graus decimais.
      A costa vai de sudoeste para nordeste e é simplificada: Guanabara
@@ -1540,67 +1621,6 @@ const DADOS = {
       txt:'Horário ainda não divulgado pela MSC. Retorno à cidade de origem por sua conta.' }
   ],
 
-  /* o cartão de embarque — SSZ é o código do porto de Santos (UN/LOCODE BRSSZ) */
-  bilhete: {
-    de:   { cod:'SSZ', cidade:'Santos (SP)', quando:'29 nov · domingo' },
-    para: { cod:'SSZ', cidade:'Santos (SP)', quando:'02 dez · quarta-feira' },
-    travessia:'4 dias · via Búzios',
-    campos:[['Navio','MSC Seaview'],['Cabine','Dupla'],['Hóspedes','2 pessoas'],['Período','29/11 a 02/12/2026']]
-  },
-  premio: {
-    inclui:[
-      { img:'quem-embarca',      titulo:'Cabine dupla',                txt:'01 cabine dupla, destinada a duas pessoas.' },
-      { img:'o-documento',       titulo:'Seguro-viagem',               txt:'Para os dias do cruzeiro.' },
-      { img:'antes-do-embarque', titulo:'Kit do Cruzeiro iGreen 2026', txt:'Enviado ao endereço informado no formulário de participação.' }
-    ],
-    fora:[
-      'Transporte e logística até o porto e retorno à cidade de origem',
-      'Seguro para o deslocamento até o porto e a volta',
-      'Consumo de bebidas alcoólicas, refrigerantes e outros a bordo|(Incluso: água, café, chá e sucos básicos, geralmente disponíveis nas estações self-service do buffet)',
-      'Acompanhantes extras e cabine adicional'
-    ]
-  },
-
-  regras: [
-    { titulo:'Primeira premiação', valor:'Executivo ou <em>Pré-Executivo</em>',
-      txt:'Alcançar o nível e permanecer nessa qualificação por, no mínimo, <b>90 dias</b> durante o período de apuração.' },
-    { titulo:'Já premiado anteriormente', valor:'<em>12.000</em> Green Points',
-      txt:'Acumular a pontuação durante todo o período determinado para apuração.' }
-  ],
-  apuracao: { ini:'2025-09-01T00:00:00-03:00', fim:'2026-08-31T23:59:59-03:00', iniTxt:'01/09/2025', fimTxt:'31/08/2026' },
-
-  /* o atendimento da viagem — da copy oficial do Portal do Cruzeiro
-     (CruzeiroPublico/src/dados/viagem.ts, SUPORTE) */
-  atendimento: { nome:'Viagens e Eventos', telefone:'(34) 92001-6128', whatsapp:'5534920016128' },
-
-  bebidaSelos: ['Taxa de serviço incluída', 'Até 15 bebidas alcoólicas por dia', 'Valor por pessoa'],
-  pacotes: [
-    { nome:'Não Alcoólico', tag:'Sem álcool', valor:'702', icone:'copo', itens:[
-      'Cafés especiais, chá, refrigerantes, energéticos e sucos',
-      'Coquetéis de frutas frescas, smoothies e shakes de proteína',
-      'AQUA by MSC*',
-      'Cervejas, vinhos e coquetéis não alcoólicos' ],
-      nao:'Não vale em restaurantes de especialidade nem ilhas privativas' },
-    { nome:'Easy', tag:'Essencial', valor:'942', icone:'taca', itens:[
-      'Café, chá e bebidas quentes; refrigerantes e sucos',
-      'Água com e sem gás, AQUA by MSC*',
-      'Cerveja engarrafada e chope selecionados',
-      'Vinho da casa e espumante em taça',
-      'Coquetéis clássicos e drinks com destilados da casa',
-      'Descontos em bebidas premium' ],
-      nao:'Não vale em restaurantes de especialidade nem ilhas privativas' },
-    { nome:'Premium Extra', tag:'Mais completo', valor:'1.593', icone:'brinde', alto:true, itens:[
-      'Tudo do Não Alcoólico, com cafés especiais e AQUA by MSC*',
-      'Ampla seleção de cervejas, vinhos e espumantes premium em taça',
-      'Destilados, licores e coquetéis com marcas premium',
-      'Vale em bares selecionados, buffets, restaurantes principais e de especialidade e ilhas privativas',
-      'Economia na compra de garrafas premium de vinho e Champagne' ] }
-  ],
-  bebidaNotas: [
-    '*AQUA by MSC: água mineral enriquecida servida em copos nos bares e buffets, em garrafas de vidro reutilizáveis de 1L nos restaurantes principais e em estações de recarga, mediante solicitação. Se o sistema não estiver disponível a bordo, água engarrafada será servida nos locais selecionados.',
-    'Os valores podem ser alterados a qualquer momento, sem aviso prévio. Se o pacote for incluído para todo o grupo, pode haver possibilidade de desconto.'
-  ],
-
   avisos: [
     { etq:'Na cabine', titulo:'Cabine só com menores: não pode',
       txt:'Uma cabine não pode ser ocupada somente por menores de idade. É necessária a presença de pelo menos um adulto responsável legal na cabine.' },
@@ -1641,13 +1661,12 @@ const DADOS = {
     }],
     ['Até quantos meses de gravidez uma grávida pode embarcar no cruzeiro?','Gestantes podem viajar se tiverem até 23 semanas e 6 dias de gravidez em qualquer momento durante o cruzeiro (cerca de 5 meses e meio), mediante autorização médica. A MSC não permite o embarque de hóspede que estará com 24 semanas ou mais de gestação até o final do cruzeiro — neste caso, até 02/12/2026.|Antes de viajar, é preciso procurar orientação médica e levar atestado de um médico obstetra/ginecologista confirmando a gravidez intrauterina, a aptidão para viajar a bordo do navio no itinerário específico e a data prevista para o parto, confirmada por ultrassom.|Os navios não têm instalações médicas adequadas para partos. Sem o atestado com essas informações, ou acima de 24 semanas, a MSC pode recusar o embarque.'],
     ['As bebidas consumidas durante o cruzeiro estão incluídas?','Não. O consumo de bebidas alcoólicas, refrigerantes e outros não faz parte da premiação e deverá ser custeado pelo participante, conforme as regras do navio.|Estão inclusos água, café, chá e sucos básicos, geralmente disponíveis nas estações self-service do buffet.|Os pacotes de bebidas poderão ser incluídos posteriormente: a aquisição será feita diretamente com a MSC.'],
-    ['Quais são os valores dos pacotes de bebidas?','Pacote Easy: R$ 942,00 por pessoa.|Pacote Premium Extra: R$ 1.593,00 por pessoa.|Pacote Não Alcoólico: R$ 702,00 por pessoa.|Taxa de serviço incluída. Nos pacotes com álcool, até 15 bebidas alcoólicas por dia. Veja os detalhes de cada pacote na seção Bebidas.|A aquisição do pacote de bebidas será feita posteriormente, diretamente com a MSC.'],
+    ['Quais são os valores dos pacotes de bebidas?','Pacote Easy: R$ 942,00 por pessoa.|Pacote Premium Extra: R$ 1.593,00 por pessoa.|Pacote Não Alcoólico: R$ 702,00 por pessoa.|Taxa de serviço incluída. Nos pacotes com álcool, até 15 bebidas alcoólicas por dia.|A aquisição do pacote de bebidas será feita posteriormente, diretamente com a MSC.'],
     ['Acompanhantes extras ou cabine adicional são garantidos?','Não. A inclusão de acompanhantes adicionais e a aquisição de cabine extra estão sujeitas à disponibilidade do navio.'],
     ['Por que minha solicitação de 3º ou 4º hóspede pode ser recusada?','A solicitação pode ser recusada por indisponibilidade do navio.'],
     ['É necessário fazer um depósito caução no ato do check-in no cruzeiro?','Não. O depósito caução no ato do check-in não é mais obrigatório.']
   ],
 
-  telefone: '(31) 97170-2261',
   /* o globo do rodapé: os dois portos e a sede, em [lat, lon] */
   globo: [ [-23.96,-46.33], [-22.75,-41.88], [-18.92,-48.28] ]
 };
@@ -2021,49 +2040,26 @@ const DADOS = {
   }
 
   /* ============================================================
-     O PRÊMIO — cartão de embarque, o que vem junto e o que não vem
+     CHECK-IN — os passos saem de DADOS.checkin; o celular se
+     endireita com a rolagem (o vídeo toca pelo data-na-tela).
      ============================================================ */
-  const B = DADOS.bilhete, P = DADOS.premio;
-  const porto = (p, cls, rot) => '<div class="porto ' + cls + '"><span class="etq">' + rot + '</span><span class="cod">' + esc(p.cod) + '</span>' +
-    '<span class="cidade">' + esc(p.cidade) + '</span><span class="quando">' + esc(p.quando) + '</span></div>';
-  $('trecho').innerHTML = porto(B.de, 'saida', 'Embarque') +
-    '<div class="travessia" aria-hidden="true"><span class="nav-b">' + ICONES.navio + '</span><small>' + esc(B.travessia) + '</small></div>' +
-    porto(B.para, 'chegada', 'Desembarque');
-  $('campos').innerHTML = B.campos.map((c) => '<div><dt>' + esc(c[0]) + '</dt><dd>' + esc(c[1]) + '</dd></div>').join('');
-  $('inclui').innerHTML = P.inclui.map((it, i) =>
-    '<article class="cartao" data-reveal style="--i:' + (i + 2) + '"><span class="selo-incl">Incluso</span>' +
-    '<img class="objeto" src="assets/objetos/' + esc(it.img) + '-alfa.webp" width="480" height="480" alt="" loading="lazy" decoding="async">' +
-    '<h3>' + esc(it.titulo) + '</h3><p>' + esc(it.txt) + '</p></article>').join('');
-  $('fora').innerHTML = '<span class="etq">' + ICONES.alerta + 'Fica por sua conta</span><ul class="lista nao">' +
-    P.fora.map((t) => { const [a, b] = t.split('|'); return '<li><span>' + esc(a) + (b ? '<small class="sub-item">' + esc(b) + '</small>' : '') + '</span></li>'; }).join('') + '</ul>';
-
-  /* ============================================================
-     QUALIFICAÇÃO
-     ============================================================ */
-  $('regras').innerHTML = DADOS.regras.map((r, i) =>
-    '<div class="cartao regra" data-reveal style="--i:' + (i + 1) + '"><span class="etq">' + esc(r.titulo) + '</span>' +
-    '<span class="valor">' + rico(r.valor) + '</span><p>' + rico(r.txt) + '</p></div>').join('');
-  (function(){
-    const a = DADOS.apuracao, ini = new Date(a.ini).getTime(), fim = new Date(a.fim).getTime(), agora = Date.now();
-    $('apIni').textContent = a.iniTxt; $('apFim').textContent = a.fimTxt;
-    $('apPista').style.setProperty('--quanto', Math.min(1, Math.max(0, (agora - ini) / (fim - ini))).toFixed(4));
-    const selo = $('apSelo'), fechou = agora > fim;
-    selo.textContent = fechou ? 'Encerrado' : agora < ini ? 'Não começou' : 'Em andamento';
-    selo.className = 'pilula-estado ' + (fechou ? 'fechado' : 'aberto');
-  })();
-
-  /* ============================================================
-     BEBIDAS
-     ============================================================ */
-  $('bebidaSelos').innerHTML = DADOS.bebidaSelos.map((s) => '<span class="chip"><i aria-hidden="true"></i>' + esc(s) + '</span>').join('');
-  $('bar').innerHTML = DADOS.pacotes.map((k, i) =>
-    '<article class="cartao taca' + (k.alto ? ' alto borda-viva' : '') + '" data-reveal style="--i:' + (i + 1) + '">' +
-      '<div class="topo-taca"><span class="icone">' + ICONES[k.icone] + '</span><span class="tag">' + esc(k.tag) + '</span></div>' +
-      '<h3>' + esc(k.nome) + '</h3>' +
-      '<div class="preco-bar num"><sup>R$</sup><b>' + esc(k.valor) + '</b><span>,00 por pessoa</span></div>' +
-      '<hr><ul>' + k.itens.map((t) => '<li>' + esc(t) + '</li>').join('') +
-      (k.nao ? '<li class="nao-vale">' + esc(k.nao) + '</li>' : '') + '</ul></article>').join('');
-  $('bebidaNotas').innerHTML = DADOS.bebidaNotas.map((t) => '<p>' + esc(t) + '</p>').join('');
+  const C = DADOS.checkin;
+  $('checkinIntro').textContent = C.intro;
+  $('checkinFecho').textContent = C.fecho;
+  $('passos').innerHTML = C.passos.map((p, i) =>
+    '<li class="cartao ck-passo" data-reveal style="--i:' + (i + 1) + '"><span class="ck-n num" aria-hidden="true">' + (i + 1) + '</span>' +
+    '<h3><span class="sr">Passo ' + (i + 1) + ': </span>' + esc(p.titulo) + '</h3><ol class="ck-lista">' +
+    p.itens.map((t) => { const [a, b] = t.split('|'); return '<li>' + esc(a) + (b ? '<small>' + esc(b) + '</small>' : '') + '</li>'; }).join('') +
+    '</ol>' + (p.fim ? '<p class="ck-fim">' + esc(p.fim) + '</p>' : '') + '</li>').join('');
+  /* com movimento reduzido o vídeo não toca sozinho: os controles
+     deixam a pessoa dar o play */
+  if (calmo) $('celular').querySelector('video').controls = true;
+  if (temGsap && !calmo){
+    gsap.fromTo('#celular',
+      { yPercent:16, rotateX:26, rotateY:-18, rotateZ:4, scale:.84, opacity:.2 },
+      { yPercent:0, rotateX:0, rotateY:0, rotateZ:0, scale:1, opacity:1, ease:'none',
+        scrollTrigger:{ trigger:'.checkin-palco', start:'top 92%', end:'center 58%', scrub:.6 } });
+  }
 
   /* ============================================================
      MENORES — o texto das regras sai do array; as cenas estão no HTML
@@ -2104,26 +2100,23 @@ const DADOS = {
 
   /* ---------------- contatos confiáveis ---------------- */
   const ZAP = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20l1.4-4.2A8 8 0 1 1 8.6 19z"/><path d="M9 10h6M9 13.5h4"/></svg>';
-  $('contatosEmpresa').textContent = DADOS.contatos.empresa;
-  $('contatosLista').innerHTML = DADOS.contatos.fones.map((f) => {
-    const zap = 'https://wa.me/55' + f.replace(/\D/g, '');
-    return '<li><a class="fone-at num" href="' + zap + '" target="_blank" rel="noopener noreferrer">' + esc(f) + '</a>' +
-      '<a class="botao-vazio whats" href="' + zap + '" target="_blank" rel="noopener noreferrer" aria-label="Falar no WhatsApp com ' + esc(f) + '">' + ZAP + 'Falar no WhatsApp</a></li>';
-  }).join('');
-
-  /* ---------------- telefone ---------------- */
-  $('copiar').addEventListener('click', (e) => {
-    const b = e.currentTarget, volta = () => setTimeout(() => { b.textContent = 'Copiar telefone'; }, 2500);
-    const plano = () => { const r = document.createRange(); r.selectNodeContents($('fone')); const s = getSelection(); s.removeAllRanges(); s.addRange(r); b.textContent = 'Selecionado, use Ctrl+C'; volta(); };
-    if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(DADOS.telefone).then(() => { b.textContent = 'Telefone copiado'; volta(); }, plano);
-    else plano();
-  });
+  const ESCUDO = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l7 3v5c0 4.5-3 8.4-7 10-4-1.6-7-5.5-7-10V6z"/><path d="m9 12 2 2 4-4"/></svg>';
+  $('contatosGrupos').innerHTML = DADOS.contatos.map((g, gi) =>
+    '<div class="contatos borda-viva" data-reveal style="--i:' + (gi + 1) + '"><span class="etq">' + ESCUDO + esc(g.etq) + '</span>' +
+    '<h3 class="contatos-empresa">' + esc(g.nome) + '</h3><ul class="contatos-lista">' +
+    g.fones.map((f) => {
+      const dig = f.n.replace(/\D/g, ''), zap = 'https://wa.me/55' + dig, tel = 'tel:+55' + dig;
+      return '<li><div class="contato-num"><a class="fone-at num" href="' + (f.ligar ? tel : zap) + '"' + (f.ligar ? '' : ' target="_blank" rel="noopener noreferrer"') + '>' + esc(f.n) + '</a>' +
+        (f.quem ? '<span class="contato-quem">' + esc(f.quem) + '</span>' : '') + '</div><div class="contato-acoes">' +
+        (f.ligar ? '<a class="botao-vazio" href="' + tel + '" aria-label="Ligar para ' + esc(f.n) + '">Ligar</a>' : '') +
+        '<a class="botao-vazio whats" href="' + zap + '" target="_blank" rel="noopener noreferrer" aria-label="Falar no WhatsApp com ' + esc(f.n) + '">' + ZAP + 'Falar no WhatsApp</a></div></li>';
+    }).join('') + '</ul></div>').join('');
 
   /* ============================================================
-     VÍDEO DA PROA e o GLOBO — só trabalham na tela.
+     VÍDEO DO CELULAR e o GLOBO — só trabalham na tela.
      ============================================================ */
   if ('IntersectionObserver' in window){
-    /* vídeos de seção (o navio da cabine extra): tocam só na tela */
+    /* vídeos de seção (o app no celular do check-in): tocam só na tela */
     if (!calmo && !economia){
       const ioVid = new IntersectionObserver((es) => es.forEach((en) => {
         const v = en.target;
