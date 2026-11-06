@@ -898,8 +898,18 @@ a{color:inherit}
 }
 .vale-para b{ display:block; margin-bottom:4px; font-size:10.5px; letter-spacing:.18em; text-transform:uppercase; color:var(--dim-2) }
 .alerta .vale-para{ margin-top:20px }
-.vale-para .isento{ display:flex; align-items:flex-start; gap:8px; margin-top:10px; font-weight:600; color:var(--acc) }
-.vale-para .isento svg{ flex:none; width:16px; height:16px; margin-top:3px }
+/* REGRA 2 em duas linhas (texto do dono, 06/11/2026): quem NÃO precisa
+   de autorização em verde, quem PRECISA em âmbar, e o exemplo no quadro */
+.regra-linhas{ list-style:none; display:grid; gap:10px; margin-top:10px }
+.regra-linhas li{ display:flex; align-items:flex-start; gap:10px; font-size:14.5px; line-height:1.55; color:var(--dim) }
+.regra-linhas svg{ flex:none; width:18px; height:18px; margin-top:2px }
+.regra-linhas .sim svg, .regra-linhas .sim b{ color:var(--acc) }
+.regra-linhas .nao svg, .regra-linhas .nao b{ color:var(--aviso) }
+.vale-para .exemplo{ list-style:none; display:grid; gap:6px }
+.vale-para .exemplo li{ position:relative; padding-left:14px }
+.vale-para .exemplo li::before{ content:""; position:absolute; left:0; top:.65em; width:5px; height:5px; border-radius:9px; background:var(--aviso) }
+.vale-para .exemplo b{ display:inline; margin:0; font-size:inherit; letter-spacing:0; text-transform:none; color:var(--aviso) }
+.vale-para .exemplo + .ir-mapa{ margin-top:12px }
 
 .autoriz{
   grid-column:1 / -1;
@@ -1480,9 +1490,8 @@ a{color:inherit}
           <img class="objeto canto" src="assets/objetos/seus-dados-alfa.webp" width="480" height="480" alt="" loading="lazy" decoding="async">
           <span class="etq" data-icone="alerta">Regra 2 · No embarque</span>
           <h3>Sem os pais ou sem um deles</h3>
-          <p id="txtEmbarque"></p>
-          <div class="vale-para"><b>Vale para</b>Menores de 18 anos desacompanhados de ambos os pais ou do responsável legal.
-            <span class="isento"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg>Filhos acompanhados dos pais não precisam de autorização.</span>
+          <ul class="regra-linhas" id="regrasEmbarque"></ul>
+          <div class="vale-para"><b>Exemplo</b><ul class="exemplo" id="exemploEmbarque"></ul>
             <a class="ir-mapa" href="#autorizacao">Ver o que o documento precisa ter <span aria-hidden="true">↓</span></a></div>
         </div>
         <div class="cartao autoriz borda-viva" data-reveal style="--i:3">
@@ -1685,9 +1694,15 @@ const DADOS = {
     { etq:'Na cabine', titulo:'Cabine só com menores: não pode',
       txt:'Uma cabine não pode ser ocupada somente por menores de idade. É necessária a presença de pelo menos um adulto responsável legal na cabine.' },
     { etq:'No embarque', titulo:'Sem os pais ou sem um deles',
-      txt:'É preciso apresentar autorização por escrito do pai e da mãe, com firma reconhecida em cartório, em duas vias, conforme as orientações da Polícia Federal.' }
+      /* sim = não precisa de autorização; nao = precisa */
+      linhas:[
+        ['sim', 'Filhos acompanhados do pai, mãe ou responsáveis legais <b>não precisam</b> de autorização.'],
+        ['nao', 'Filhos acompanhados por apenas um dos responsáveis legais <b>PRECISARÃO</b> de autorização.'] ],
+      exemplo:[
+        'Filhos acompanhados apenas do pai, <b>PRECISARÃO</b> de autorização da mãe.',
+        'Filhos acompanhados apenas da mãe, <b>PRECISARÃO</b> de autorização do pai.' ] }
   ],
-  autorizacao: ['Assinatura do pai e da mãe, por escrito', 'Firma reconhecida em cartório', 'Em duas vias'],
+  autorizacao: ['Assinatura do responsável legal não presente', 'Firma reconhecida em cartório', 'Em duas vias'],
   linkAutorizacao: 'https://www2.anac.gov.br/anac/formulario/index2.asp',
 
   /* "|" separa parágrafos dentro da mesma resposta. Um terceiro campo
@@ -2154,7 +2169,11 @@ const DADOS = {
      MENORES — o texto das regras sai do array; as cenas estão no HTML
      ============================================================ */
   $('txtCabine').textContent = DADOS.avisos[0].txt;
-  $('txtEmbarque').textContent = DADOS.avisos[1].txt;
+  const OK = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg>';
+  const ATENCAO = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7.5v5.5M12 16.5h.01"/></svg>';
+  $('regrasEmbarque').innerHTML = DADOS.avisos[1].linhas.map((l) =>
+    '<li class="' + l[0] + '">' + (l[0] === 'sim' ? OK : ATENCAO) + '<span>' + rico(l[1]) + '</span></li>').join('');
+  $('exemploEmbarque').innerHTML = DADOS.avisos[1].exemplo.map((t) => '<li>' + rico(t) + '</li>').join('');
   document.querySelectorAll('[data-icone]').forEach((el) => el.insertAdjacentHTML('afterbegin', ICONES[el.dataset.icone]));
   $('autorizacao').innerHTML = DADOS.autorizacao.map((t) => '<li>' + esc(t) + '</li>').join('');
   $('linkPF').href = DADOS.linkAutorizacao;
