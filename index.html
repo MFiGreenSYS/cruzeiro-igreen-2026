@@ -1116,6 +1116,26 @@ a{color:inherit}
   background:linear-gradient(115deg, rgba(var(--luz-rgb),.1), transparent 34%);
 }
 .celular-legenda{ font-size:12.5px; color:var(--dim-2); text-align:center }
+/* PLAY / PAUSE — botão redondo no canto de baixo da tela, em vidro; o
+   ícone mostra a AÇÃO (pausa enquanto toca, play quando parado). A
+   classe .pausado no celular é escrita pelos eventos do próprio vídeo,
+   então o ícone nunca discorda do que está na tela. */
+.celular-tela video{ cursor:pointer }
+.celular-play{
+  position:absolute; right:20px; bottom:22px; z-index:3;
+  width:44px; height:44px; border-radius:50%; display:grid; place-items:center;
+  background:rgba(var(--campo-rgb),.6); color:var(--ink);
+  border:1px solid rgba(var(--ink-rgb),.24);
+  -webkit-backdrop-filter:blur(10px); backdrop-filter:blur(10px);
+  box-shadow:0 6px 20px rgba(var(--sombra-rgb),.45);
+  transition:transform .2s var(--mola), border-color .2s, background .2s;
+}
+.celular-play:hover{ transform:scale(1.08); border-color:rgba(var(--acc-rgb),.75); background:rgba(var(--campo-rgb),.75) }
+.celular-play svg{ width:18px; height:18px }
+.celular-play .ic-play{ display:none; margin-left:2px }
+.celular.pausado .celular-play .ic-play{ display:block }
+.celular.pausado .celular-play .ic-pausa{ display:none }
+.celular.pausado .celular-play{ background:var(--acc); color:var(--on-acc); border-color:var(--acc); box-shadow:0 0 26px rgba(var(--acc-rgb),.45) }
 @container (width < 860px){
   .checkin-grade{ grid-template-columns:1fr }
   .checkin-palco{ position:relative; top:auto; order:-1 }
@@ -1350,15 +1370,19 @@ a{color:inherit}
           <p class="checkin-fecho" id="checkinFecho" data-reveal style="--i:4"></p>
         </div>
         <div class="checkin-palco">
-          <div class="celular" id="celular">
+          <div class="celular pausado" id="celular">
             <div class="celular-tela">
-              <video muted loop playsinline preload="none" poster="assets/video/msc-for-me-poster.webp" width="540" height="1170"
-                     aria-label="Exemplo de check-in no aplicativo MSC for Me" data-na-tela>
+              <video id="appVideo" muted loop playsinline preload="metadata" poster="assets/video/msc-for-me-poster.webp" width="540" height="1170"
+                     aria-label="Exemplo de check-in no aplicativo MSC for Me">
                 <source src="assets/video/msc-for-me.mp4" type="video/mp4">
               </video>
             </div>
             <span class="celular-ilha" aria-hidden="true"></span>
             <span class="celular-reflexo" aria-hidden="true"></span>
+            <button class="celular-play" id="appPlay" type="button" aria-label="Reproduzir o vídeo">
+              <svg class="ic-pausa" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><rect x="6" y="5" width="4" height="14" rx="1.2"/><rect x="14" y="5" width="4" height="14" rx="1.2"/></svg>
+              <svg class="ic-play" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5.6v12.8a1 1 0 0 0 1.5.9l10-6.4a1 1 0 0 0 0-1.8l-10-6.4A1 1 0 0 0 8 5.6z"/></svg>
+            </button>
           </div>
           <p class="celular-legenda">Exemplo ilustrativo do aplicativo MSC for Me</p>
         </div>
@@ -2081,7 +2105,8 @@ const DADOS = {
 
   /* ============================================================
      CHECK-IN — os passos saem de DADOS.checkin; o celular se
-     endireita com a rolagem (o vídeo toca pelo data-na-tela).
+     endireita com a rolagem e o vídeo do app recomeça do início
+     cada vez que o celular entra na tela.
      ============================================================ */
   const C = DADOS.checkin;
   $('checkinIntro').textContent = C.intro;
@@ -2091,9 +2116,42 @@ const DADOS = {
     '<h3><span class="sr">Passo ' + (i + 1) + ': </span>' + esc(p.titulo) + '</h3><ol class="ck-lista">' +
     p.itens.map((t) => { const [a, b] = t.split('|'); return '<li>' + esc(a) + (b ? '<small>' + esc(b) + '</small>' : '') + '</li>'; }).join('') +
     '</ol>' + (p.fim ? '<p class="ck-fim">' + esc(p.fim) + '</p>' : '') + '</li>').join('');
-  /* com movimento reduzido o vídeo não toca sozinho: os controles
-     deixam a pessoa dar o play */
-  if (calmo) $('celular').querySelector('video').controls = true;
+  /* O VÍDEO DO APP — pedido do dono (06/11/2026): "a animação do app
+     começa quando entrar na seção", com play e pause.
+     · Entrar = o celular com 55% ou mais na tela. Aí o vídeo volta ao
+       segundo 0 e toca: a pessoa sempre vê o check-in desde o login, e
+       não o meio do filme que rodou enquanto ela ainda rolava.
+     · Sair de vez (0% na tela) pausa e esquece a pausa manual: quem
+       volta à seção vê de novo do começo.
+     · Pausou no botão (ou tocando no vídeo), fica pausado enquanto a
+       pessoa estiver na seção — a rolagem não passa por cima da escolha.
+     · Movimento reduzido ou economia de dados: nada toca sozinho, o
+       botão continua lá para quem quiser assistir. */
+  (function(){
+    const cel = $('celular'), v = $('appVideo'), b = $('appPlay');
+    let dentro = false, parouAMao = false;
+    const tocarApp = () => { const p = v.play(); if (p && p.catch) p.catch(() => {}); };
+    const pinta = () => {
+      cel.classList.toggle('pausado', v.paused);
+      b.setAttribute('aria-label', v.paused ? 'Reproduzir o vídeo' : 'Pausar o vídeo');
+    };
+    v.addEventListener('play', pinta); v.addEventListener('pause', pinta);
+    const alterna = () => {
+      if (v.paused){ parouAMao = false; tocarApp(); } else { parouAMao = true; v.pause(); }
+    };
+    b.addEventListener('click', alterna);
+    v.addEventListener('click', alterna);
+    if (!calmo && !economia && 'IntersectionObserver' in window){
+      new IntersectionObserver((es) => es.forEach((en) => {
+        if (en.intersectionRatio >= .55 && !dentro){
+          dentro = true;
+          if (!parouAMao){ try { v.currentTime = 0; } catch(e){} tocarApp(); }
+        } else if (!en.isIntersecting && dentro){
+          dentro = false; parouAMao = false; v.pause();
+        }
+      }), { threshold:[0, .55] }).observe(cel);
+    }
+  })();
   if (temGsap && !calmo){
     gsap.fromTo('#celular',
       { yPercent:16, rotateX:26, rotateY:-18, rotateZ:4, scale:.84, opacity:.2 },
@@ -2156,7 +2214,8 @@ const DADOS = {
      VÍDEO DO CELULAR e o GLOBO — só trabalham na tela.
      ============================================================ */
   if ('IntersectionObserver' in window){
-    /* vídeos de seção (o app no celular do check-in): tocam só na tela */
+    /* vídeos de seção marcados com data-na-tela tocam só na tela (o do
+       celular do check-in tem regra própria, no bloco do check-in) */
     if (!calmo && !economia){
       const ioVid = new IntersectionObserver((es) => es.forEach((en) => {
         const v = en.target;
