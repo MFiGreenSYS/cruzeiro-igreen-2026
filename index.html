@@ -1057,6 +1057,16 @@ a{color:inherit}
   display:grid; grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr);
   gap:clamp(28px,5cqw,80px); align-items:start;
 }
+.ck-aviso{
+  display:flex; align-items:flex-start; gap:14px; margin-bottom:14px;
+  padding:clamp(18px,2.2cqw,24px) clamp(18px,2.4cqw,28px); border-radius:22px;
+  border:1px solid rgba(var(--aviso-rgb),.5); background:rgba(var(--aviso-rgb),.09);
+}
+.ck-aviso > svg{ flex:none; width:24px; height:24px; color:var(--aviso); margin-top:2px }
+.ck-aviso h3{ font-size:clamp(16px,1.5cqw,19px); font-weight:700; letter-spacing:-.01em }
+.ck-aviso p{ margin-top:6px; font-size:14.5px; line-height:1.6; color:var(--dim) }
+.ck-aviso p b{ color:var(--ink) }
+.ck-aviso .ir-mapa{ margin-top:10px }
 .ck-passos{ list-style:none; display:grid; gap:14px }
 .ck-passo{ position:relative; padding:clamp(22px,2.6cqw,32px) clamp(20px,2.6cqw,32px) clamp(22px,2.6cqw,30px) clamp(72px,7cqw,90px) }
 .ck-n{
@@ -1366,6 +1376,17 @@ a{color:inherit}
       </header>
       <div class="checkin-grade">
         <div>
+          <!-- AINDA NÃO RECEBEU? — pedido do dono (10/11/2026): sem isto, quem
+               ainda não tem o número da reserva acha que ficou de fora -->
+          <div class="ck-aviso" data-reveal style="--i:1">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 11v5.5M12 7.5h.01"/></svg>
+            <div>
+              <h3>Ainda não recebeu o número da reserva ou o voucher da MSC?</h3>
+              <p>Fique tranquilo: <b>em breve</b> ele será enviado pelo <b>WhatsApp</b> ou pelo <b>e-mail cadastrado no formulário</b>.
+                Qualquer dúvida, fale com o suporte pelos telefones do portal.</p>
+              <a class="ir-mapa" href="#contatos">Ver os contatos do suporte <span aria-hidden="true">↓</span></a>
+            </div>
+          </div>
           <ol class="ck-passos" id="passos"></ol>
           <p class="checkin-fecho" id="checkinFecho" data-reveal style="--i:4"></p>
         </div>
@@ -1610,7 +1631,7 @@ const DADOS = {
     passos: [
       { titulo:'Acesse o aplicativo MSC for Me', itens:[
         'Baixe o aplicativo MSC for Me no seu celular, disponível para Android e iOS.',
-        'Tenha em mãos o número da reserva enviado pelo WhatsApp.',
+        'Tenha em mãos o número da reserva enviado pelo WhatsApp.|Ainda não recebeu? Em breve ele será enviado pelo WhatsApp ou pelo e-mail cadastrado no formulário.',
         'Abra o aplicativo e, na tela inicial, clique em “Entrar com o número da reserva”.',
         'Digite o número da reserva no campo indicado.',
         'Preencha o nome e o sobrenome de um dos passageiros da cabine e aceite os termos e condições.|No campo “Nome”, informe seu primeiro nome ou nome composto, se houver. No campo “Sobrenome”, informe todos os seus sobrenomes, sem abreviações.',
@@ -1715,6 +1736,7 @@ const DADOS = {
     ['O transporte até o porto está incluído?','Não. Os custos de deslocamento, transporte e demais despesas de logística até o embarque são de responsabilidade do participante.'],
     ['Vou receber um kit para o cruzeiro?','Sim. O kit será enviado para o endereço cadastrado no formulário. Assim que estiver a caminho, você receberá o código de rastreio pelo WhatsApp. O rastreio será da empresa ONLOG.|Leve para o cruzeiro a camiseta oficial, o copo e a sacola do kit.'],
     ['A camiseta oficial é obrigatória?','Sim, na Reunião Oficial iGreen, no dia 01/12, das 8h às 12h, no Teatro Odeon (Decks/Andar 6 e 7, na proa do navio).'],
+    ['Ainda não recebi o número da reserva ou o voucher da MSC. E agora?','Fique tranquilo: em breve ele será enviado pelo WhatsApp ou pelo e-mail cadastrado no formulário.|Qualquer dúvida, fale com o suporte pelos telefones da seção Contatos.'],
     ['Como faço o check-in?','Pelo aplicativo MSC for Me, com o número da reserva enviado pelo WhatsApp. Depois do check-in, os cartões de embarque ficam no aplicativo e devem ser apresentados no Porto de Santos. O passo a passo completo está na seção Check-in.'],
     ['A cabine da premiação é para quantas pessoas?','A premiação é de 01 cabine dupla, destinada a duas pessoas.'],
     ['Menores de idade podem ficar sozinhos em uma cabine?','Não. Uma cabine não pode ser ocupada somente por menores de idade. É necessária a presença de pelo menos um adulto responsável legal na cabine.'],
