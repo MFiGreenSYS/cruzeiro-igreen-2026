@@ -1530,7 +1530,7 @@ a{color:inherit}
             <span class="etq">O documento</span>
             <h3 style="margin-top:8px">A autorização precisa ter</h3>
             <ol class="passos3" id="autorizacao"></ol>
-            <a class="botao-vazio" id="linkPF" target="_blank" rel="noopener noreferrer" href="#">Formulário e orientações oficiais
+            <a class="botao-vazio" id="linkPF" target="_blank" rel="noopener noreferrer" href="#">Baixar o formulário oficial (PDF)
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg></a>
             <p class="pf">Conforme as orientações da Polícia Federal.</p>
           </div>
@@ -1724,7 +1724,9 @@ const DADOS = {
         'Filhos acompanhados apenas da mãe, <b>PRECISARÃO</b> de autorização do pai.' ] }
   ],
   autorizacao: ['Assinatura do responsável legal não presente', 'Firma reconhecida em cartório', 'Em duas vias'],
-  linkAutorizacao: 'https://www2.anac.gov.br/anac/formulario/index2.asp',
+  /* o formulário padrão do CNJ, no gov.br (Ministério da Justiça). O da ANAC
+     (www2.anac.gov.br/anac/formulario) saiu do ar — trocado em 12/11/2026 */
+  linkAutorizacao: 'https://www.gov.br/mj/pt-br/assuntos/sua-protecao/cooperacao-internacional/subtracao-internacional/arquivos/FormulrioPadroparaAutorizaodeViagemCNJ.pdf',
 
   /* "|" separa parágrafos dentro da mesma resposta. Um terceiro campo
      opcional traz uma tabela ({ tabela:{coluna, linhas}, fonte:[texto, url] }),
