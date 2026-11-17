@@ -35,8 +35,8 @@
    · fundo = o orbe verde com partículas do institucional
      (assets/video/bg-prod.mp4, 91 KB), preso atrás da página — era
      "tudo fundo preto";
-   · roteiro = trilha sobre carta náutica, com o navio andando pela
-     rota conforme a rolagem e um pop-up por porto;
+   · roteiro = trilha sobre carta náutica, com o navio fazendo a rota
+     sozinho, em laço (sem depender da rolagem), e um pop-up por porto;
    · rodapé = o globo de pontos (cobe) do institucional, com os
      portos marcados.
 
@@ -498,7 +498,7 @@ a{color:inherit}
 .carta .rota-base{ fill:none; stroke:rgba(var(--ink-rgb),.28); stroke-width:1.6; stroke-dasharray:2 7; stroke-linecap:round }
 /* padrao-serjao: excecao anima-layout — stroke-dashoffset não é layout,
    mas também não é transform: é repintura do traço. É UM caminho, e
-   ele só muda enquanto a carta está na tela e a pessoa rola. A
+   ele só muda enquanto a carta está na tela (o laço para fora dela). A
    alternativa em transform (máscara com scaleX) não segue uma curva. */
 .carta .rota-feita{
   fill:none; stroke:var(--acc); stroke-width:2.4; stroke-linecap:round;
@@ -2447,32 +2447,34 @@ const DADOS = {
   trilha(0);
   if (calmo){
     trilha(1);
-  } else if (!temGsap){
-    /* sem GSAP a trilha anda pela rolagem do mesmo jeito, medindo a seção no resize */
-    const sec = $('roteiro'); let topo = 0, alt = 1, ped = 0;
-    const medir = () => { topo = sec.offsetTop; alt = sec.offsetHeight; };
-    const pintar = () => { ped = 0; trilha((scrollY + innerHeight * .7 - topo) / (alt * .9)); };
-    medir(); addEventListener('resize', medir); addEventListener('scroll', () => { if (!ped) ped = requestAnimationFrame(pintar); }, { passive:true }); pintar();
   } else {
-    /* A SEÇÃO TRAVA ENQUANTO O NAVIO ANDA — pedido do dono: a animação só
-       começa quando a carta chega, a rolagem segura a seção e leva o navio
-       do embarque ao desembarque, e só então a página desce.
-       No largo prende a grade inteira (trilha + carta), centrada na tela;
-       no estreito a grade empilhada é mais alta que a tela, então prende só
-       a carta, logo abaixo da barra — o painel "Agora: Dia N" diz o dia.
-       O progresso passa por um objeto com scrub .5: o navio desliza em vez
-       de pular de amostra em amostra quando a roda dá um tranco. */
-    const mm = gsap.matchMedia();
-    const prender = (alvo, inicio, telas) => {
-      const prox = { t:0 };
-      gsap.to(prox, { t:1, ease:'none', onUpdate:() => trilha(prox.t), scrollTrigger:{
-        trigger:alvo, start:inicio, end:() => '+=' + Math.round(innerHeight * telas),
-        pin:true, scrub:.5, anticipatePin:1, invalidateOnRefresh:true
-      }});
+    /* O NAVIO EM LAÇO, SEM ROLAGEM — pedido do dono (17/11/2026): "o povo
+       não sabe que tem que rolar, mesmo com o texto". A seção não trava
+       mais; o navio faz a viagem sozinho, para um pouco em cada porto (o
+       dia acende na trilha e no painel "Agora") e, depois do desembarque,
+       recomeça. Só anda com a carta na tela: fora dela o relógio para. */
+    const VIAGEM = 11000, PARADA = 1500, FIM = 2200;
+    const suave = (x) => .5 - Math.cos(Math.PI * x) / 2;
+    const fases = [];
+    marcos.forEach((m, k) => {
+      const ultimo = k === marcos.length - 1;
+      fases.push({ de:m, ate:m, dur:ultimo ? FIM : PARADA });
+      if (!ultimo) fases.push({ de:m, ate:marcos[k + 1], dur:Math.max(1400, (marcos[k + 1] - m) * VIAGEM) });
+    });
+    const CICLO = fases.reduce((s, f) => s + f.dur, 0);
+    let gasto = 0, t0 = 0, raf = 0;
+    const quadro = (agora) => {
+      let r = (gasto + agora - t0) % CICLO;
+      for (const f of fases){
+        if (r < f.dur){ trilha(f.de + (f.ate - f.de) * suave(r / f.dur)); break; }
+        r -= f.dur;
+      }
+      raf = requestAnimationFrame(quadro);
     };
-    mm.add('(min-width: 921px)', () => prender('.roteiro-grade', 'center 54%', 2.4));
-    mm.add('(max-width: 920px)', () => prender('.carta', 'top ' + (parseFloat(getComputedStyle(raiz).getPropertyValue('--barra')) + 10) + 'px', 2));
-    requestAnimationFrame(() => ScrollTrigger.refresh());
+    new IntersectionObserver((es) => es.forEach((e) => {
+      if (e.isIntersecting && !raf){ t0 = performance.now(); raf = requestAnimationFrame(quadro); }
+      else if (!e.isIntersecting && raf){ cancelAnimationFrame(raf); raf = 0; gasto += performance.now() - t0; }
+    }), { threshold:.15 }).observe($('cartaMapa'));
   }
 
   /* ============================================================
