@@ -1273,15 +1273,21 @@ a{color:inherit}
 .emb-texto .nao-atrase{ display:block; margin-top:8px; font-size:clamp(18px,1.8cqw,22px); font-weight:800; color:var(--aviso) }
 
 .emb-abas{ max-width:980px; margin:clamp(28px,3.4cqw,44px) auto 0 }
+/* abas MENORES e CENTRALIZADAS (pedido do dono, 17/11/2026): quebram em
+   mais de uma linha quando não cabem, sempre no centro, nunca esticadas */
 .abas-lista{
-  display:flex; gap:6px; padding:6px; border-radius:999px; overflow-x:auto; scrollbar-width:none;
+  display:flex; flex-wrap:wrap; justify-content:center; gap:4px; padding:5px; border-radius:22px;
   border:1px solid var(--linha); background:rgba(var(--luz-rgb),.03); width:fit-content; max-width:100%; margin:0 auto;
 }
 .abas-lista::-webkit-scrollbar{ display:none }
 .aba{
-  flex:none; min-height:44px; padding:0 18px; border-radius:999px; font-size:14px; font-weight:600; color:var(--dim);
+  flex:none; display:inline-flex; align-items:center; gap:7px;
+  min-height:36px; padding:0 14px; border-radius:999px; font-size:13px; font-weight:600; color:var(--dim);
   transition:color .2s, background-color .2s;
 }
+.aba .sf{ width:16px; height:16px; flex:none }
+/* o triângulo do SF nos avisos do texto */
+.emb-texto .sf, .ck-atencao .sf{ width:17px; height:17px; vertical-align:-3px; margin-right:6px; color:var(--aviso) }
 .aba:hover{ color:var(--ink) }
 .aba[aria-selected="true"]{ background:var(--acc); color:var(--on-acc) }
 .aba-painel{ margin-top:14px; padding:clamp(22px,3cqw,36px) }
@@ -1297,7 +1303,9 @@ a{color:inherit}
 .emb-rot{ display:block; margin-top:14px; font-size:10.5px; font-weight:700; letter-spacing:.16em; text-transform:uppercase; color:var(--dim-2) }
 .emb-bloco.largo{ grid-column:1 / -1 }
 .emb-guia{ font-size:15px; font-weight:700; color:var(--ink) }
-.emb-bloco .botao-vazio{ margin-top:14px }
+.emb-bloco .botao-vazio{ display:flex; width:fit-content; margin:14px auto 0 }
+#embarque .botao-vazio{ min-height:40px; padding:10px 18px; font-size:14px; gap:8px }
+#embarque .botao-vazio svg{ width:15px; height:15px }
 
 /* a checklist: caixas de verdade, contagem e barra */
 .ck-topo{ display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap }
@@ -1321,7 +1329,8 @@ a{color:inherit}
 }
 .levar li::before{ content:""; flex:none; width:7px; height:7px; border-radius:9px; background:var(--acc); box-shadow:0 0 8px var(--acc) }
 .levar li.do-kit{ border-color:rgba(var(--acc-rgb),.5); background:rgba(var(--acc-rgb),.1); font-weight:700 }
-.links-uteis{ display:flex; flex-wrap:wrap; gap:10px; margin-top:16px }
+.links-uteis{ display:flex; flex-wrap:wrap; justify-content:center; gap:10px; margin-top:16px }
+.links-uteis .botao-vazio{ margin:0 }
 
 .emb-importante{
   max-width:980px; margin:14px auto 0; display:flex; align-items:flex-start; gap:12px; padding:16px 20px; border-radius:18px;
@@ -1335,9 +1344,7 @@ a{color:inherit}
   .emb-hora{ display:grid; grid-template-columns:auto 1fr; align-items:center; column-gap:16px; text-align:left }
   .emb-hora b{ grid-row:1 / span 2 }
   .emb-hora span{ margin-top:0 }
-  /* no celular as quatro abas ficam em 2x2: em fila, duas sumiam para a direita */
-  .abas-lista{ display:grid; grid-template-columns:1fr 1fr; width:100%; border-radius:18px }
-  .aba{ padding:0 10px; font-size:13px; border-radius:12px }
+  .aba{ padding:0 12px; font-size:12.5px }
 }
 
 /* ============================================================
@@ -1551,7 +1558,7 @@ a{color:inherit}
               <h3>Ainda não recebeu o número da sua reserva?</h3>
               <p>Fique tranquilo! <b>Até o dia 20/11</b> você receberá diretamente da <b>MSC Cruzeiros</b>, no
                 <b>e-mail cadastrado no formulário</b>, o seu voucher com o número da reserva.</p>
-              <p class="ck-atencao"><b>⚠️ Atenção:</b> pode ter ocorrido uma alteração no seu código de reserva. Por isso, é
+              <p class="ck-atencao"><b><svg class="sf" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10.3 4.1a2 2 0 0 1 3.4 0l7.6 13.3a2 2 0 0 1-1.7 3H4.4a2 2 0 0 1-1.7-3z"/><path d="M12 9.5v4.2M12 16.8h.01"/></svg>Atenção:</b> pode ter ocorrido uma alteração no seu código de reserva. Por isso, é
                 importante conferir o número informado no <b>novo voucher</b> enviado pela MSC e utilizá-lo para acessar sua reserva.</p>
               <p>Fique de olho na sua caixa de entrada e confira também a pasta de <b>spam ou lixo eletrônico</b>.</p>
               <p>Qualquer dúvida, fale com o suporte pelos telefones do portal.</p>
@@ -1727,7 +1734,7 @@ a{color:inherit}
         <div class="cartao emb-hora chave"><b class="num">15h00</b><span>Encerramento do embarque</span><small>Impreterivelmente</small></div>
         <div class="cartao emb-hora sai"><b class="num">18h00</b><span>Saída do navio</span><small>Porto de Santos</small></div>
       </div>
-      <p class="emb-texto" data-reveal style="--i:2">⚠️ A saída do navio está programada para as <b>18h00</b>. O processo de embarque será
+      <p class="emb-texto" data-reveal style="--i:2"><svg class="sf" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10.3 4.1a2 2 0 0 1 3.4 0l7.6 13.3a2 2 0 0 1-1.7 3H4.4a2 2 0 0 1-1.7-3z"/><path d="M12 9.5v4.2M12 16.8h.01"/></svg>A saída do navio está programada para as <b>18h00</b>. O processo de embarque será
         encerrado <b>impreterivelmente às 15h00</b>, três horas antes da partida. Para maior conforto e tranquilidade,
         recomendamos que os passageiros cheguem ao terminal com <b>antecedência mínima de 3 horas do horário limite de
         embarque</b>, permitindo a realização dos procedimentos de check-in, despacho de bagagem e controle de segurança
@@ -1735,10 +1742,10 @@ a{color:inherit}
 
       <div class="emb-abas" data-reveal style="--i:3">
         <div class="abas-lista" role="tablist" aria-label="Comunicado de embarque">
-          <button class="aba" type="button" role="tab" id="aba-antes" aria-controls="painel-antes" aria-selected="true">✅ Antes de viajar</button>
-          <button class="aba" type="button" role="tab" id="aba-check" aria-controls="painel-check" aria-selected="false" tabindex="-1">📋 Checklist</button>
-          <button class="aba" type="button" role="tab" id="aba-levar" aria-controls="painel-levar" aria-selected="false" tabindex="-1">👔 O que levar</button>
-          <button class="aba" type="button" role="tab" id="aba-uteis" aria-controls="painel-uteis" aria-selected="false" tabindex="-1">ℹ️ Informações úteis</button>
+          <button class="aba" type="button" role="tab" id="aba-antes" aria-controls="painel-antes" aria-selected="true"><svg class="sf" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="m8.2 12.3 2.6 2.6 5-5.4"/></svg>Antes de viajar</button>
+          <button class="aba" type="button" role="tab" id="aba-check" aria-controls="painel-check" aria-selected="false" tabindex="-1"><svg class="sf" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 6.5h9M11 12h9M11 17.5h9"/><path d="m3.8 6.6 1.3 1.3 2.4-2.6M3.8 12.1l1.3 1.3 2.4-2.6M3.8 17.6l1.3 1.3 2.4-2.6"/></svg>Checklist</button>
+          <button class="aba" type="button" role="tab" id="aba-levar" aria-controls="painel-levar" aria-selected="false" tabindex="-1"><svg class="sf" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 4.2 4.2 6.6l1.6 4 2.2-.8v9.7h8V9.8l2.2.8 1.6-4L15 4.2a3 3 0 0 1-6 0z"/></svg>O que levar</button>
+          <button class="aba" type="button" role="tab" id="aba-uteis" aria-controls="painel-uteis" aria-selected="false" tabindex="-1"><svg class="sf" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 11v5.2M12 7.9h.01"/></svg>Informações úteis</button>
         </div>
 
         <div class="cartao aba-painel" role="tabpanel" id="painel-antes" aria-labelledby="aba-antes">
