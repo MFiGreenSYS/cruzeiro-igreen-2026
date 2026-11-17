@@ -446,6 +446,9 @@ a{color:inherit}
   gap:clamp(20px,2.4cqw,36px); align-items:start;
 }
 @container (width < 920px){ .roteiro-grade{ grid-template-columns:1fr } .trilha{ order:2 } }
+/* com a pulseira, a foto oficial e a Célula a trilha ficou mais alta que a
+   carta: no largo a carta acompanha a leitura, presa abaixo da barra */
+@container (width >= 920px){ .roteiro-grade > .carta{ position:sticky; top:calc(var(--barra) + 16px); align-self:start } }
 
 /* a trilha lateral: os quatro dias numa linha que enche com --t */
 .trilha{ position:relative; list-style:none; display:grid; gap:10px }
@@ -555,6 +558,16 @@ a{color:inherit}
   border:1px solid rgba(var(--aviso-rgb),.55); background:rgba(var(--aviso-rgb),.12); color:var(--aviso);
 }
 .passo p b, .popup p b{ color:var(--ink) }
+/* SUBSEÇÃO do dia (17/11/2026): foto oficial a bordo no dia 1, Célula
+   iGreen no dia 2 — um momento com hora e local próprios, em bloco */
+.dia-sub{
+  display:grid; gap:2px; margin-top:10px; padding:10px 12px 10px 14px; border-radius:12px; text-align:left;
+  border:1px solid rgba(var(--acc-rgb),.28); border-left:3px solid var(--acc); background:rgba(var(--acc-rgb),.06);
+}
+.sub-etq{ font-size:10px; font-weight:700; letter-spacing:.16em; text-transform:uppercase; color:var(--acc) }
+.sub-tit{ font-size:14.5px; font-weight:700; line-height:1.35; color:var(--ink) }
+.sub-onde{ font-size:12.5px; line-height:1.45; color:var(--dim) }
+.sub-hora{ font-size:14px; font-weight:700; color:var(--acc) }
 /* TELA BAIXA (notebook 1366x768, 1536x750 a 125%): com os horários a
    trilha passou de 760px e, presa, entrava embaixo da barra. Aqui ela
    aperta o respiro e a letra — o conteúdo é o mesmo. A coluna da trilha
@@ -569,6 +582,10 @@ a{color:inherit}
   .passo p{ margin-top:3px; font-size:12.5px; line-height:1.45 }
   .passo p.dia-hora{ margin-top:3px; font-size:13.5px }
   .passo p.dia-alerta{ margin-top:5px; padding:6px 10px; font-size:12px }
+  .passo .dia-sub{ margin-top:6px; padding:7px 10px 7px 12px }
+  .passo .sub-tit{ font-size:13px }
+  .passo .sub-onde{ font-size:11.5px }
+  .passo .sub-hora{ font-size:12.5px }
 }
 .ir-mapa{
   display:inline-flex; align-items:center; gap:7px; min-height:44px;
@@ -1258,6 +1275,26 @@ a{color:inherit}
    levar · Informações úteis) e o aviso de responsabilidade embaixo,
    sempre à vista. A checklist marca de verdade e o navegador lembra.
    ============================================================ */
+/* LOCAL DE EMBARQUE (17/11/2026) — o terminal, o endereço e o mapa */
+.emb-local{
+  max-width:980px; margin:0 auto clamp(14px,1.6cqw,18px); display:flex; align-items:center; gap:clamp(16px,2.2cqw,26px);
+  padding:clamp(20px,2.6cqw,30px); border-color:rgba(var(--acc-rgb),.35);
+  background:radial-gradient(70% 140% at 0% 0%, rgba(var(--acc-rgb),.12), transparent 62%), var(--cartao);
+}
+.local-disco{
+  flex:none; width:clamp(52px,5.4cqw,64px); aspect-ratio:1; border-radius:50%; display:grid; place-items:center;
+  border:1px solid rgba(var(--acc-rgb),.5); background:rgba(var(--acc-rgb),.12); color:var(--acc);
+}
+.local-disco .sf{ width:52%; height:52% }
+.local-texto{ flex:1 1 auto; min-width:0 }
+.local-texto .etq{ color:var(--acc) }
+.local-texto h3{ margin-top:6px; font-size:clamp(18px,1.9cqw,23px); font-weight:700; letter-spacing:-.015em; line-height:1.25 }
+.local-texto p{ margin-top:6px; font-size:14.5px; line-height:1.6; color:var(--dim) }
+.local-texto .local-end b{ color:var(--ink) }
+.emb-local .botao-vazio{ flex:none }
+@container (width < 700px){
+  .emb-local{ flex-direction:column; text-align:center }
+}
 .emb-horas{
   max-width:980px; margin:0 auto; display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:14px; position:relative;
 }
@@ -1729,6 +1766,17 @@ a{color:inherit}
         <p class="apoio">Recomendamos a leitura completa deste comunicado e a conferência da checklist antes de sair de casa.</p>
       </header>
 
+      <div class="cartao emb-local" data-reveal style="--i:1">
+        <span class="local-disco"><svg class="sf" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 15.6s-5-4.6-5-8.6a5 5 0 0 1 10 0c0 4-5 8.6-5 8.6z"/><circle cx="12" cy="7" r="1.8"/><path d="M8.2 15.2C5.7 15.6 4 16.4 4 17.4c0 1.5 3.6 2.6 8 2.6s8-1.1 8-2.6c0-1-1.7-1.8-4.2-2.2"/></svg></span>
+        <div class="local-texto">
+          <span class="etq">Local de embarque · Porto de Santos</span>
+          <h3>Terminal Marítimo de Passageiros Giusfredo Santini (Concais)</h3>
+          <p>O embarque do nosso cruzeiro será realizado no Terminal Marítimo de Passageiros Giusfredo Santini (Concais), localizado no Porto de Santos.</p>
+          <p class="local-end"><b>Endereço:</b> Av. Cândido Gafrée, s/nº – Outeirinhos, Santos - SP (CEP: 11013-240)</p>
+        </div>
+        <a class="botao-vazio" href="https://www.google.com/maps/search/?api=1&amp;query=Terminal%20Mar%C3%ADtimo%20de%20Passageiros%20Giusfredo%20Santini%20Concais%2C%20Av.%20C%C3%A2ndido%20Gafr%C3%A9e%2C%20Outeirinhos%2C%20Santos%20-%20SP%2C%2011013-240" target="_blank" rel="noopener noreferrer">Abrir no mapa <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7"/><path d="M8 7h9v9"/></svg></a>
+      </div>
+
       <div class="emb-horas" data-reveal style="--i:1">
         <div class="cartao emb-hora"><b class="num">12h00</b><span>Chegada recomendada ao terminal</span><small>3h antes do limite</small></div>
         <div class="cartao emb-hora chave"><b class="num">15h00</b><span>Encerramento do embarque</span><small>Impreterivelmente</small></div>
@@ -2028,17 +2076,22 @@ const DADOS = {
 
   /* os portos da carta — um marco por lugar, e cada lugar lista os seus dias */
   lugares: [
-    { id:'santos', marca:'1·4', p:[-46.31,-23.98], mapa:'Porto de Santos, Santos - SP' },
+    { id:'santos', marca:'1·4', p:[-46.31,-23.98], mapa:'Terminal Marítimo de Passageiros Giusfredo Santini Concais, Av. Cândido Gafrée, Outeirinhos, Santos - SP, 11013-240' },
     { id:'buzios', marca:'2',   p:[-41.86,-22.78], mapa:'Armação dos Búzios - RJ' },
     { id:'mar',    marca:'3',   p:[-43.6,-24.34] }
   ],
   /* txt de cada dia: "|" separa as linhas; "*" no começo = horário em
-     destaque (verde), "!" = aviso em destaque (âmbar); <b> vale */
+     destaque (verde), "!" = aviso em destaque (âmbar); <b> vale.
+     subs = um momento à parte dentro do dia (etiqueta, título, local e
+     horário), em bloco próprio na trilha e no pop-up */
   dias: [
     { n:1, data:'29/11', semana:'Domingo',       titulo:'Embarque',    lugar:'santos', onde:'Porto de Santos (SP)',
-      txt:'Chegue no mínimo <b>3h antes</b> do encerramento do horário de embarque.|*Encerramento do embarque às 15h00' },
+      txt:'Chegue no mínimo <b>3h antes</b> do encerramento do horário de embarque.|*Encerramento do embarque às 15h00|!Retire a sua pulseira iGreen no balcão da CVC antes de embarcar',
+      subs:[{ etq:'A bordo', titulo:'Momento para foto oficial com o Presidente Thiago Alexander, CEO Amanda Durante e Márcio Garcia',
+              onde:'Local: Teatro Odeon, Decks/Andar 6 e 7 (na proa do navio)', hora:'Das 16h às 17h' }] },
     { n:2, data:'30/11', semana:'Segunda-feira', titulo:'Búzios',      lugar:'buzios', onde:'Armação dos Búzios (RJ)',
-      txt:'*Das 11h às 19h|Horários podem variar: verifique no dia o informativo na sua cabine.|Célula iGreen (horário a definir).' },
+      txt:'*Das 11h às 19h|Horários podem variar: verifique no dia o informativo na sua cabine.',
+      subs:[{ etq:'A bordo', titulo:'Célula iGreen', onde:'Local: Teatro Odeon, Decks/Andar 6 e 7 (na proa do navio)', hora:'Das 16h às 17h' }] },
     { n:3, data:'01/12', semana:'Terça-feira',   titulo:'Reunião Oficial iGreen', lugar:'mar',
       onde:'Local: Teatro Odeon, Decks/Andar 6 e 7 (na proa do navio)',
       txt:'*Das 8h às 12h|!ATENÇÃO: TODOS COM A CAMISETA DO CRUZEIRO ENVIADA NO KIT' },
@@ -2075,6 +2128,8 @@ const DADOS = {
     ['A camiseta oficial é obrigatória?','Sim, na Reunião Oficial iGreen, no dia 01/12, das 8h às 12h, no Teatro Odeon (Decks/Andar 6 e 7, na proa do navio).'],
     ['Ainda não recebi o número da minha reserva. E agora?','Fique tranquilo! Até o dia 20/11 você receberá diretamente da MSC Cruzeiros, no e-mail cadastrado no formulário, o seu voucher com o número da reserva.|Atenção: pode ter ocorrido uma alteração no seu código de reserva. Confira o número informado no novo voucher enviado pela MSC e use-o para acessar sua reserva.|Fique de olho na sua caixa de entrada e confira também a pasta de spam ou lixo eletrônico. Qualquer dúvida, fale com o suporte pelos telefones da seção Contatos.'],
     ['Existe um grupo oficial do cruzeiro no WhatsApp?','Sim. O link para entrar no Grupo Oficial do WhatsApp está no topo do portal, logo abaixo da contagem regressiva, e também na seção Contatos.'],
+    ['Onde será o embarque?','No Terminal Marítimo de Passageiros Giusfredo Santini (Concais), localizado no Porto de Santos. Endereço: Av. Cândido Gafrée, s/nº – Outeirinhos, Santos - SP (CEP: 11013-240).'],
+    ['Onde retiro a pulseira iGreen?','No balcão da CVC, no dia do embarque (29/11), antes de embarcar.'],
     ['Qual é o horário do embarque?','A saída do navio está programada para as 18h00. O embarque será encerrado impreterivelmente às 15h00, três horas antes da partida.|Recomendamos chegar ao terminal com antecedência mínima de 3 horas do horário limite de embarque (até as 12h00). O comunicado completo, com a checklist, está na seção Embarque.'],
     ['Como faço o check-in?','Pelo aplicativo MSC for Me, com o número da reserva enviado pelo e-mail. Depois do check-in, os cartões de embarque ficam no aplicativo e devem ser apresentados no Porto de Santos. O passo a passo completo está na seção Check-in.'],
     ['A cabine da premiação é para quantas pessoas?','A premiação é de 01 cabine dupla, destinada a duas pessoas.'],
@@ -2351,6 +2406,9 @@ const DADOS = {
   const linhasDia = (txt) => txt.split('|').map((l) =>
     l[0] === '*' ? '<p class="dia-hora">' + rico(l.slice(1)) + '</p>' :
     l[0] === '!' ? '<p class="dia-alerta">' + rico(l.slice(1)) + '</p>' : '<p>' + rico(l) + '</p>').join('');
+  const subsDia = (d) => (d.subs || []).map((s) =>
+    '<span class="dia-sub"><span class="sub-etq">' + esc(s.etq) + '</span><span class="sub-tit">' + esc(s.titulo) + '</span>' +
+    '<span class="sub-onde">' + esc(s.onde) + '</span><span class="sub-hora">' + esc(s.hora) + '</span></span>').join('');
 
   /* a trilha lateral */
   $('trilha').innerHTML = DADOS.dias.map((d) =>
@@ -2358,7 +2416,7 @@ const DADOS = {
       '<span class="no num" aria-hidden="true">' + d.n + '</span>' +
       '<span class="pd">Dia ' + d.n + ' · ' + esc(d.data) + ' · ' + esc(d.semana) + '</span>' +
       '<strong>' + esc(d.titulo) + '</strong><span class="lugar">' + esc(d.onde) + '</span>' +
-      linhasDia(d.txt) + '</button></li>').join('');
+      linhasDia(d.txt) + subsDia(d) + '</button></li>').join('');
 
   let aberto = null, fechaT = 0;
   const gatilhos = () => [].slice.call(document.querySelectorAll('.marco, .passo'));
@@ -2373,7 +2431,7 @@ const DADOS = {
     popup.style.setProperty('--py', my < 40 ? '22px' : 'calc(-100% - 22px)');
     popup.innerHTML = DADOS.dias.filter((d) => d.lugar === idLugar).map((d) =>
       '<div class="dia"><p class="pd">Dia ' + d.n + ' · ' + esc(d.data) + ' · ' + esc(d.semana) + '</p>' +
-      '<h3>' + esc(d.titulo) + '</h3><p class="onde">' + esc(d.onde) + '</p>' + linhasDia(d.txt) + '</div>').join('') +
+      '<h3>' + esc(d.titulo) + '</h3><p class="onde">' + esc(d.onde) + '</p>' + linhasDia(d.txt) + subsDia(d) + '</div>').join('') +
       (l.mapa ? '<a class="ir-mapa" target="_blank" rel="noopener noreferrer" href="' + mapa(l.mapa) + '">Abrir no mapa ' + SETA + '</a>' : '');
     popup.hidden = false; aberto = idLugar;
     gatilhos().forEach((el) => el.setAttribute('aria-expanded', String(el.dataset.lugar === idLugar)));
