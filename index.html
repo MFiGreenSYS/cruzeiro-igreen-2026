@@ -67,6 +67,7 @@
   --papel:#EEF1EC; --papel-2:#D9DED7; --tinta:#16211A; --tinta-rgb:22,33,26; --carimbo:#0A6A12;
   --aviso:#FFC857;      --aviso-rgb:255,200,87;
   --aco:#1B201C;        --aco-2:#090B0A;        /* a moldura do celular do check-in */
+  --zap:#25D366;        --zap-rgb:37,211,102;    /* o verde do WhatsApp, só no ícone do grupo oficial */
   --nao:#FF6B6B;        --nao-rgb:255,107,107;   /* "não aceito" da tabela de documentos */
   --mola:cubic-bezier(.16,1.1,.3,1);
   --font:'Geist',system-ui,-apple-system,'Segoe UI',sans-serif;
@@ -1158,6 +1159,43 @@ a{color:inherit}
 }
 
 /* ============================================================
+   GRUPO OFICIAL DO WHATSAPP — pedido do dono (17/11/2026): "deixar em
+   destaque para as pessoas verem". É a primeira coisa depois do
+   herói, com a borda viva, e se repete no topo dos Contatos.
+   ============================================================ */
+.grupo-zap{
+  position:relative; max-width:980px; margin:0 auto clamp(48px,6cqw,84px);
+  display:flex; align-items:center; gap:clamp(16px,2.4cqw,28px); flex-wrap:wrap;
+  padding:clamp(20px,2.8cqw,32px) clamp(20px,3cqw,36px); border-radius:26px;
+  border:1.5px solid rgba(var(--zap-rgb),.45);
+  background:radial-gradient(80% 140% at 0% 0%, rgba(var(--zap-rgb),.18), transparent 60%), var(--cartao);
+  -webkit-backdrop-filter:blur(14px); backdrop-filter:blur(14px);
+  box-shadow:0 0 70px rgba(var(--zap-rgb),.14);
+}
+.grupo-zap.borda-viva::before{ padding:2px }
+.zap-disco{
+  flex:none; width:clamp(56px,6cqw,72px); aspect-ratio:1; border-radius:50%; display:grid; place-items:center;
+  background:var(--zap); color:var(--ink); box-shadow:0 0 34px rgba(var(--zap-rgb),.5);
+}
+.zap-disco svg{ width:58%; height:58% }
+.grupo-texto{ flex:1 1 260px; min-width:0 }
+.grupo-texto .etq{ color:var(--zap) }
+.grupo-texto h3{ margin-top:6px; font-size:clamp(20px,2.3cqw,28px); font-weight:700; letter-spacing:-.02em; line-height:1.15 }
+.botao-zap{
+  display:inline-flex; align-items:center; gap:10px; min-height:52px; padding:14px 26px; border-radius:999px;
+  background:var(--zap); color:var(--on-acc); text-decoration:none; font-size:15.5px; font-weight:700;
+  box-shadow:0 0 34px rgba(var(--zap-rgb),.4); transition:transform .25s var(--mola), box-shadow .25s;
+}
+.botao-zap:hover{ transform:translateY(-2px); box-shadow:0 0 50px rgba(var(--zap-rgb),.6) }
+.botao-zap svg{ width:20px; height:20px; flex:none }
+.contatos-sec .grupo-zap{ max-width:880px; margin-bottom:14px }
+@container (width < 640px){
+  .grupo-zap{ text-align:center; justify-content:center }
+  .grupo-texto{ flex-basis:100% }
+  .botao-zap{ width:100%; justify-content:center; text-align:center }
+}
+
+/* ============================================================
    PACOTES DE BEBIDAS E INTERNET — os dois produtos lado a lado, os
    dois compráveis no mesmo app do check-in, e a dica em verde.
    ============================================================ */
@@ -1369,6 +1407,14 @@ a{color:inherit}
   <section class="secao" id="checkin">
     <div class="aura" aria-hidden="true"></div>
     <div class="dentro">
+      <div class="grupo-zap borda-viva" data-reveal style="--i:0">
+        <span class="zap-disco"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3.2a8.8 8.8 0 0 0-7.6 13.2L3.2 20.8l4.5-1.2A8.8 8.8 0 1 0 12 3.2z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="M9.2 7.6c.2-.4.4-.4.6-.4h.5c.2 0 .4 0 .6.5l.7 1.7c.1.2.1.4 0 .6l-.4.5c-.1.2-.2.3 0 .6.3.6.8 1.2 1.3 1.6.6.5 1.1.7 1.4.8.2.1.4.1.5-.1l.6-.7c.2-.2.3-.2.6-.1l1.6.8c.3.1.4.2.4.4 0 .4-.1 1-.5 1.4-.4.4-1.2.8-1.9.8-1.6 0-3.4-1-4.6-2.3-1.2-1.2-2-2.7-2.1-3.9 0-.9.4-1.5.7-1.8z" fill="currentColor"/></svg></span>
+        <div class="grupo-texto">
+          <span class="etq">Grupo Oficial do WhatsApp</span>
+          <h3>Entre no grupo oficial do Cruzeiro iGreen 2026</h3>
+        </div>
+        <a class="botao-zap" href="https://chat.whatsapp.com/F6Ov5WqkpwS65WaD06FtaZ" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3.2a8.8 8.8 0 0 0-7.6 13.2L3.2 20.8l4.5-1.2A8.8 8.8 0 1 0 12 3.2z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="M9.2 7.6c.2-.4.4-.4.6-.4h.5c.2 0 .4 0 .6.5l.7 1.7c.1.2.1.4 0 .6l-.4.5c-.1.2-.2.3 0 .6.3.6.8 1.2 1.3 1.6.6.5 1.1.7 1.4.8.2.1.4.1.5-.1l.6-.7c.2-.2.3-.2.6-.1l1.6.8c.3.1.4.2.4.4 0 .4-.1 1-.5 1.4-.4.4-1.2.8-1.9.8-1.6 0-3.4-1-4.6-2.3-1.2-1.2-2-2.7-2.1-3.9 0-.9.4-1.5.7-1.8z" fill="currentColor"/></svg>Clique aqui para entrar no grupo oficial</a>
+      </div>
       <header class="cab" data-reveal style="--i:0">
         <p class="rotulo">Passo a passo para o check-in</p>
         <h2 class="titulo">Faça o seu <em class="destaque">check-in</em></h2>
@@ -1557,7 +1603,7 @@ a{color:inherit}
   </section>
 
   <!-- ====================== CONTATOS CONFIÁVEIS ====================== -->
-  <section class="secao escura" id="contatos">
+  <section class="secao escura contatos-sec" id="contatos">
     <div class="aura direita" aria-hidden="true"></div>
     <div class="dentro">
       <header class="cab" data-reveal style="--i:0">
@@ -1566,6 +1612,14 @@ a{color:inherit}
         <p class="apoio">Para tratar da viagem, use os contatos abaixo. Se alguém procurar você por outro número
           em nome do Cruzeiro iGreen pedindo dados ou pagamento, desconfie e confirme antes por aqui.</p>
       </header>
+      <div class="grupo-zap borda-viva" data-reveal style="--i:0">
+        <span class="zap-disco"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3.2a8.8 8.8 0 0 0-7.6 13.2L3.2 20.8l4.5-1.2A8.8 8.8 0 1 0 12 3.2z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="M9.2 7.6c.2-.4.4-.4.6-.4h.5c.2 0 .4 0 .6.5l.7 1.7c.1.2.1.4 0 .6l-.4.5c-.1.2-.2.3 0 .6.3.6.8 1.2 1.3 1.6.6.5 1.1.7 1.4.8.2.1.4.1.5-.1l.6-.7c.2-.2.3-.2.6-.1l1.6.8c.3.1.4.2.4.4 0 .4-.1 1-.5 1.4-.4.4-1.2.8-1.9.8-1.6 0-3.4-1-4.6-2.3-1.2-1.2-2-2.7-2.1-3.9 0-.9.4-1.5.7-1.8z" fill="currentColor"/></svg></span>
+        <div class="grupo-texto">
+          <span class="etq">Grupo Oficial do WhatsApp</span>
+          <h3>Entre no grupo oficial do Cruzeiro iGreen 2026</h3>
+        </div>
+        <a class="botao-zap" href="https://chat.whatsapp.com/F6Ov5WqkpwS65WaD06FtaZ" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3.2a8.8 8.8 0 0 0-7.6 13.2L3.2 20.8l4.5-1.2A8.8 8.8 0 1 0 12 3.2z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="M9.2 7.6c.2-.4.4-.4.6-.4h.5c.2 0 .4 0 .6.5l.7 1.7c.1.2.1.4 0 .6l-.4.5c-.1.2-.2.3 0 .6.3.6.8 1.2 1.3 1.6.6.5 1.1.7 1.4.8.2.1.4.1.5-.1l.6-.7c.2-.2.3-.2.6-.1l1.6.8c.3.1.4.2.4.4 0 .4-.1 1-.5 1.4-.4.4-1.2.8-1.9.8-1.6 0-3.4-1-4.6-2.3-1.2-1.2-2-2.7-2.1-3.9 0-.9.4-1.5.7-1.8z" fill="currentColor"/></svg>Clique aqui para entrar no grupo oficial</a>
+      </div>
       <div id="contatosGrupos"></div>
     </div>
   </section>
@@ -1739,6 +1793,7 @@ const DADOS = {
     ['Vou receber um kit para o cruzeiro?','Sim. O kit será enviado para o endereço cadastrado no formulário. Assim que estiver a caminho, você receberá o código de rastreio pelo WhatsApp. O rastreio será da empresa ONLOG.|Leve para o cruzeiro a camiseta oficial, o copo e a sacola do kit.'],
     ['A camiseta oficial é obrigatória?','Sim, na Reunião Oficial iGreen, no dia 01/12, das 8h às 12h, no Teatro Odeon (Decks/Andar 6 e 7, na proa do navio).'],
     ['Ainda não recebi o número da reserva ou o voucher da MSC. E agora?','Fique tranquilo: em breve ele será enviado pelo WhatsApp ou pelo e-mail cadastrado no formulário.|Qualquer dúvida, fale com o suporte pelos telefones da seção Contatos.'],
+    ['Existe um grupo oficial do cruzeiro no WhatsApp?','Sim. O link para entrar no Grupo Oficial do WhatsApp está no topo do portal, logo abaixo da contagem regressiva, e também na seção Contatos.'],
     ['Como faço o check-in?','Pelo aplicativo MSC for Me, com o número da reserva enviado pelo WhatsApp. Depois do check-in, os cartões de embarque ficam no aplicativo e devem ser apresentados no Porto de Santos. O passo a passo completo está na seção Check-in.'],
     ['A cabine da premiação é para quantas pessoas?','A premiação é de 01 cabine dupla, destinada a duas pessoas.'],
     ['Menores de idade podem ficar sozinhos em uma cabine?','Não. Uma cabine não pode ser ocupada somente por menores de idade. É necessária a presença de pelo menos um adulto responsável legal na cabine.'],
