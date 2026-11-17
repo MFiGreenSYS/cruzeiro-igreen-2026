@@ -548,6 +548,28 @@ a{color:inherit}
 .popup h3{ margin-top:4px; font-size:17px; font-weight:700; letter-spacing:-.01em }
 .popup p{ margin-top:4px; font-size:13px; line-height:1.55; color:var(--dim) }
 .popup p.onde{ margin-top:2px; color:var(--ink); font-weight:500 }
+/* HORÁRIO e AVISO do dia (pedido do dono, 17/11/2026) — na trilha e no pop-up */
+.passo p.dia-hora, .popup p.dia-hora{ margin-top:6px; font-size:15px; font-weight:700; color:var(--acc) }
+.passo p.dia-alerta, .popup p.dia-alerta{
+  margin-top:8px; padding:8px 12px; border-radius:10px; font-size:13px; font-weight:700; line-height:1.45; letter-spacing:.01em;
+  border:1px solid rgba(var(--aviso-rgb),.55); background:rgba(var(--aviso-rgb),.12); color:var(--aviso);
+}
+.passo p b, .popup p b{ color:var(--ink) }
+/* TELA BAIXA (notebook 1366x768, 1536x750 a 125%): com os horários a
+   trilha passou de 760px e, presa, entrava embaixo da barra. Aqui ela
+   aperta o respiro e a letra — o conteúdo é o mesmo. A coluna da trilha
+   também alarga um pouco para as linhas quebrarem menos. */
+@media (min-width:921px) and (max-height:900px){
+  .roteiro-grade{ grid-template-columns:minmax(300px,.9fr) minmax(0,1.7fr) }
+  .trilha{ gap:4px }
+  .passo{ padding-top:8px; padding-bottom:8px }
+  .passo .pd{ font-size:10px }
+  .passo strong{ margin-top:2px; font-size:17px }
+  .passo .lugar{ font-size:12.5px }
+  .passo p{ margin-top:3px; font-size:12.5px; line-height:1.45 }
+  .passo p.dia-hora{ margin-top:3px; font-size:13.5px }
+  .passo p.dia-alerta{ margin-top:5px; padding:6px 10px; font-size:12px }
+}
 .ir-mapa{
   display:inline-flex; align-items:center; gap:7px; min-height:44px;
   font-size:11px; font-weight:700; letter-spacing:.14em; text-transform:uppercase;
@@ -1511,7 +1533,7 @@ a{color:inherit}
             <span>Posição<b class="num" id="navPos">23°58′S · 46°19′W</b></span>
             <span>Rumo<b class="num" id="navRumo">—</b></span>
             <span>Agora<b id="navDia">Dia 1 · Embarque</b></span>
-            <span class="ilustr">Trajeto ilustrativo · horários ainda não divulgados pela MSC</span>
+            <span class="ilustr">Trajeto ilustrativo</span>
           </figcaption>
         </figure>
       </div>
@@ -1675,7 +1697,7 @@ a{color:inherit}
    nenhum: o portal não tem backend.
    ============================================================ */
 const DADOS = {
-  embarque: '2026-11-29T00:00:00-03:00',   /* horário ainda não divulgado: conta até a 00h00 */
+  embarque: '2026-11-29T00:00:00-03:00',   /* conta até a 00h00 do dia (o embarque fecha às 15h00) */
 
   nav: [
     /* A ORDEM DA PÁGINA é a da reta final da viagem (06/11/2026): o
@@ -1767,16 +1789,18 @@ const DADOS = {
     { id:'buzios', marca:'2',   p:[-41.86,-22.78], mapa:'Armação dos Búzios - RJ' },
     { id:'mar',    marca:'3',   p:[-43.6,-24.34] }
   ],
+  /* txt de cada dia: "|" separa as linhas; "*" no começo = horário em
+     destaque (verde), "!" = aviso em destaque (âmbar); <b> vale */
   dias: [
     { n:1, data:'29/11', semana:'Domingo',       titulo:'Embarque',    lugar:'santos', onde:'Porto de Santos (SP)',
-      txt:'Horário ainda não divulgado pela MSC.' },
+      txt:'Chegue no mínimo <b>3h antes</b> do encerramento do horário de embarque.|*Encerramento do embarque às 15h00' },
     { n:2, data:'30/11', semana:'Segunda-feira', titulo:'Búzios',      lugar:'buzios', onde:'Armação dos Búzios (RJ)',
-      txt:'Parada em Búzios. Dia de passeio em terra.' },
+      txt:'*Das 11h às 19h|Horários podem variar: verifique no dia o informativo na sua cabine.|Célula iGreen (horário a definir).' },
     { n:3, data:'01/12', semana:'Terça-feira',   titulo:'Reunião Oficial iGreen', lugar:'mar',
       onde:'Local: Teatro Odeon, Decks/Andar 6 e 7 (na proa do navio)',
-      txt:'ATENÇÃO: Todos com a camiseta oficial, das 8h às 12h.' },
+      txt:'*Das 8h às 12h|!ATENÇÃO: TODOS COM A CAMISETA DO CRUZEIRO ENVIADA NO KIT' },
     { n:4, data:'02/12', semana:'Quarta-feira',  titulo:'Desembarque', lugar:'santos', onde:'Porto de Santos (SP)',
-      txt:'Horário ainda não divulgado pela MSC. Retorno à cidade de origem por sua conta.' }
+      txt:'*Chegada ao Porto de Santos às 8h|Retorno à cidade de origem por sua conta.' }
   ],
 
   avisos: [
@@ -2079,13 +2103,18 @@ const DADOS = {
   });
   cartaMapa.appendChild(popup);
 
+  /* as linhas do dia: horário e aviso viram destaque */
+  const linhasDia = (txt) => txt.split('|').map((l) =>
+    l[0] === '*' ? '<p class="dia-hora">' + rico(l.slice(1)) + '</p>' :
+    l[0] === '!' ? '<p class="dia-alerta">' + rico(l.slice(1)) + '</p>' : '<p>' + rico(l) + '</p>').join('');
+
   /* a trilha lateral */
   $('trilha').innerHTML = DADOS.dias.map((d) =>
     '<li><button type="button" class="passo" data-lugar="' + d.lugar + '" aria-expanded="false" aria-controls="popup">' +
       '<span class="no num" aria-hidden="true">' + d.n + '</span>' +
       '<span class="pd">Dia ' + d.n + ' · ' + esc(d.data) + ' · ' + esc(d.semana) + '</span>' +
       '<strong>' + esc(d.titulo) + '</strong><span class="lugar">' + esc(d.onde) + '</span>' +
-      '<p>' + esc(d.txt) + '</p></button></li>').join('');
+      linhasDia(d.txt) + '</button></li>').join('');
 
   let aberto = null, fechaT = 0;
   const gatilhos = () => [].slice.call(document.querySelectorAll('.marco, .passo'));
@@ -2100,7 +2129,7 @@ const DADOS = {
     popup.style.setProperty('--py', my < 40 ? '22px' : 'calc(-100% - 22px)');
     popup.innerHTML = DADOS.dias.filter((d) => d.lugar === idLugar).map((d) =>
       '<div class="dia"><p class="pd">Dia ' + d.n + ' · ' + esc(d.data) + ' · ' + esc(d.semana) + '</p>' +
-      '<h3>' + esc(d.titulo) + '</h3><p class="onde">' + esc(d.onde) + '</p><p>' + esc(d.txt) + '</p></div>').join('') +
+      '<h3>' + esc(d.titulo) + '</h3><p class="onde">' + esc(d.onde) + '</p>' + linhasDia(d.txt) + '</div>').join('') +
       (l.mapa ? '<a class="ir-mapa" target="_blank" rel="noopener noreferrer" href="' + mapa(l.mapa) + '">Abrir no mapa ' + SETA + '</a>' : '');
     popup.hidden = false; aberto = idLugar;
     gatilhos().forEach((el) => el.setAttribute('aria-expanded', String(el.dataset.lugar === idLugar)));
