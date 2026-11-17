@@ -1252,6 +1252,95 @@ a{color:inherit}
 @container (width < 640px){ .pacotes{ grid-template-columns:1fr } }
 
 /* ============================================================
+   ANTES DE EMBARCAR — o comunicado de embarque (doc do dono, 17/11/2026).
+   É longo, então não vira parede: os três horários do dia em linha no
+   topo, o resto em quatro abas (Antes de viajar · Checklist · O que
+   levar · Informações úteis) e o aviso de responsabilidade embaixo,
+   sempre à vista. A checklist marca de verdade e o navegador lembra.
+   ============================================================ */
+.emb-horas{
+  max-width:980px; margin:0 auto; display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:14px; position:relative;
+}
+.emb-hora{ text-align:center; padding:clamp(18px,2.2cqw,26px) 16px }
+.emb-hora b{ display:block; font-size:clamp(30px,4cqw,46px); font-weight:800; letter-spacing:-.03em; line-height:1 }
+.emb-hora span{ display:block; margin-top:8px; font-size:13.5px; color:var(--dim) }
+.emb-hora small{ display:block; margin-top:4px; font-size:11px; font-weight:700; letter-spacing:.14em; text-transform:uppercase; color:var(--dim-2) }
+.emb-hora.chave{ border-color:rgba(var(--aviso-rgb),.55); background:rgba(var(--aviso-rgb),.08) }
+.emb-hora.chave b, .emb-hora.chave small{ color:var(--aviso) }
+.emb-hora.sai b{ color:var(--acc) }
+.emb-texto{ max-width:760px; margin:clamp(16px,2cqw,24px) auto 0; text-align:center; font-size:15px; line-height:1.65; color:var(--dim) }
+.emb-texto b{ color:var(--ink) }
+.emb-texto .nao-atrase{ display:block; margin-top:8px; font-size:clamp(18px,1.8cqw,22px); font-weight:800; color:var(--aviso) }
+
+.emb-abas{ max-width:980px; margin:clamp(28px,3.4cqw,44px) auto 0 }
+.abas-lista{
+  display:flex; gap:6px; padding:6px; border-radius:999px; overflow-x:auto; scrollbar-width:none;
+  border:1px solid var(--linha); background:rgba(var(--luz-rgb),.03); width:fit-content; max-width:100%; margin:0 auto;
+}
+.abas-lista::-webkit-scrollbar{ display:none }
+.aba{
+  flex:none; min-height:44px; padding:0 18px; border-radius:999px; font-size:14px; font-weight:600; color:var(--dim);
+  transition:color .2s, background-color .2s;
+}
+.aba:hover{ color:var(--ink) }
+.aba[aria-selected="true"]{ background:var(--acc); color:var(--on-acc) }
+.aba-painel{ margin-top:14px; padding:clamp(22px,3cqw,36px) }
+.aba-painel[hidden]{ display:none }
+.emb-grade{ display:grid; grid-template-columns:1fr 1fr; gap:clamp(18px,2.4cqw,30px) }
+.emb-bloco h3{ font-size:clamp(17px,1.6cqw,20px); font-weight:700; letter-spacing:-.01em }
+.emb-bloco p{ margin-top:8px; font-size:14.5px; line-height:1.6; color:var(--dim) }
+.emb-bloco p b{ color:var(--ink) }
+.emb-lista{ list-style:none; margin-top:10px; display:grid; gap:7px }
+.emb-lista li{ position:relative; padding-left:18px; font-size:14.5px; line-height:1.55; color:var(--dim) }
+.emb-lista li::before{ content:""; position:absolute; left:2px; top:.62em; width:6px; height:6px; border-radius:9px; background:var(--acc) }
+.emb-lista li b{ color:var(--ink) }
+.emb-rot{ display:block; margin-top:14px; font-size:10.5px; font-weight:700; letter-spacing:.16em; text-transform:uppercase; color:var(--dim-2) }
+.emb-bloco.largo{ grid-column:1 / -1 }
+.emb-guia{ font-size:15px; font-weight:700; color:var(--ink) }
+.emb-bloco .botao-vazio{ margin-top:14px }
+
+/* a checklist: caixas de verdade, contagem e barra */
+.ck-topo{ display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap }
+.ck-conta{ font-size:13px; font-weight:700; color:var(--acc) }
+.ck-barra{ margin-top:10px; height:6px; border-radius:99px; background:var(--linha); overflow:hidden }
+.ck-barra i{ display:block; height:100%; background:var(--acc); box-shadow:0 0 12px var(--acc); transform-origin:left; transform:scaleX(var(--feito,0)); transition:transform .4s var(--mola) }
+.ck-grupo{ margin-top:18px }
+.ck-marca{
+  display:flex; align-items:flex-start; gap:12px; min-height:44px; padding:10px 12px; border-radius:12px; cursor:pointer;
+  font-size:14.5px; line-height:1.5; color:var(--dim); transition:background-color .2s, color .2s;
+}
+.ck-marca:hover{ background:rgba(var(--luz-rgb),.04) }
+.ck-marca input{ flex:none; width:20px; height:20px; margin-top:1px; accent-color:var(--acc); cursor:pointer }
+.ck-marca:has(input:checked){ color:var(--dim-2); text-decoration:line-through; text-decoration-color:rgba(var(--acc-rgb),.6) }
+.ck-zera{ font-size:12.5px; color:var(--dim-2); text-decoration:underline; text-underline-offset:3px; min-height:32px }
+
+.levar{ list-style:none; display:grid; grid-template-columns:repeat(auto-fill,minmax(210px,1fr)); gap:10px; margin-top:14px }
+.levar li{
+  display:flex; align-items:center; gap:10px; padding:12px 14px; border-radius:14px; font-size:14.5px;
+  border:1px solid var(--linha); background:rgba(var(--luz-rgb),.03);
+}
+.levar li::before{ content:""; flex:none; width:7px; height:7px; border-radius:9px; background:var(--acc); box-shadow:0 0 8px var(--acc) }
+.levar li.do-kit{ border-color:rgba(var(--acc-rgb),.5); background:rgba(var(--acc-rgb),.1); font-weight:700 }
+.links-uteis{ display:flex; flex-wrap:wrap; gap:10px; margin-top:16px }
+
+.emb-importante{
+  max-width:980px; margin:14px auto 0; display:flex; align-items:flex-start; gap:12px; padding:16px 20px; border-radius:18px;
+  border:1px solid rgba(var(--aviso-rgb),.45); background:rgba(var(--aviso-rgb),.08); font-size:14px; line-height:1.6; color:var(--dim);
+}
+.emb-importante svg{ flex:none; width:20px; height:20px; color:var(--aviso); margin-top:2px }
+.emb-importante b{ color:var(--aviso) }
+@container (width < 700px){
+  .emb-grade{ grid-template-columns:1fr }
+  .emb-horas{ grid-template-columns:1fr }
+  .emb-hora{ display:grid; grid-template-columns:auto 1fr; align-items:center; column-gap:16px; text-align:left }
+  .emb-hora b{ grid-row:1 / span 2 }
+  .emb-hora span{ margin-top:0 }
+  /* no celular as quatro abas ficam em 2x2: em fila, duas sumiam para a direita */
+  .abas-lista{ display:grid; grid-template-columns:1fr 1fr; width:100%; border-radius:18px }
+  .aba{ padding:0 10px; font-size:13px; border-radius:12px }
+}
+
+/* ============================================================
    SEU KIT iGREEN — o objeto do kit, o rastreio e o que levar.
    ============================================================ */
 .kit{
@@ -1621,6 +1710,152 @@ a{color:inherit}
     </div>
   </section>
 
+  <!-- ======================== ANTES DE EMBARCAR ======================== -->
+  <!-- O comunicado de embarque (doc do dono, 17/11/2026). O texto mora
+       aqui no HTML: é um documento corrido, e as abas só o organizam. -->
+  <section class="secao" id="embarque">
+    <div class="aura direita" aria-hidden="true"></div>
+    <div class="dentro">
+      <header class="cab" data-reveal style="--i:0">
+        <p class="rotulo">Comunicado de embarque</p>
+        <h2 class="titulo">Pronto para <em class="destaque">embarcar</em></h2>
+        <p class="apoio">Recomendamos a leitura completa deste comunicado e a conferência da checklist antes de sair de casa.</p>
+      </header>
+
+      <div class="emb-horas" data-reveal style="--i:1">
+        <div class="cartao emb-hora"><b class="num">12h00</b><span>Chegada recomendada ao terminal</span><small>3h antes do limite</small></div>
+        <div class="cartao emb-hora chave"><b class="num">15h00</b><span>Encerramento do embarque</span><small>Impreterivelmente</small></div>
+        <div class="cartao emb-hora sai"><b class="num">18h00</b><span>Saída do navio</span><small>Porto de Santos</small></div>
+      </div>
+      <p class="emb-texto" data-reveal style="--i:2">⚠️ A saída do navio está programada para as <b>18h00</b>. O processo de embarque será
+        encerrado <b>impreterivelmente às 15h00</b>, três horas antes da partida. Para maior conforto e tranquilidade,
+        recomendamos que os passageiros cheguem ao terminal com <b>antecedência mínima de 3 horas do horário limite de
+        embarque</b>, permitindo a realização dos procedimentos de check-in, despacho de bagagem e controle de segurança
+        sem imprevistos.<span class="nao-atrase">Não se atrase!</span></p>
+
+      <div class="emb-abas" data-reveal style="--i:3">
+        <div class="abas-lista" role="tablist" aria-label="Comunicado de embarque">
+          <button class="aba" type="button" role="tab" id="aba-antes" aria-controls="painel-antes" aria-selected="true">✅ Antes de viajar</button>
+          <button class="aba" type="button" role="tab" id="aba-check" aria-controls="painel-check" aria-selected="false" tabindex="-1">📋 Checklist</button>
+          <button class="aba" type="button" role="tab" id="aba-levar" aria-controls="painel-levar" aria-selected="false" tabindex="-1">👔 O que levar</button>
+          <button class="aba" type="button" role="tab" id="aba-uteis" aria-controls="painel-uteis" aria-selected="false" tabindex="-1">ℹ️ Informações úteis</button>
+        </div>
+
+        <div class="cartao aba-painel" role="tabpanel" id="painel-antes" aria-labelledby="aba-antes">
+          <div class="emb-grade">
+            <div class="emb-bloco">
+              <h3>Documentação</h3>
+              <p>Todos os passageiros são responsáveis por portar a documentação necessária para o embarque e para os destinos
+                visitados durante o cruzeiro. Recomendamos verificar a validade dos documentos com antecedência.</p>
+            </div>
+            <div class="emb-bloco">
+              <h3>Bagagem</h3>
+              <p>Identifique suas malas com as etiquetas de bagagem e mantenha em sua <b>bagagem de mão</b> documentos,
+                medicamentos, objetos de valor e demais itens essenciais.</p>
+            </div>
+            <div class="emb-bloco largo">
+              <h3>Cruise Card e Conta de Bordo</h3>
+              <p>Ao embarcar, cada passageiro encontrará em sua cabine o seu <b>Cruise Card</b>, que será utilizado durante toda a
+                viagem. O cartão possui múltiplas funções e servirá como:</p>
+              <ul class="emb-lista">
+                <li>Chave de acesso à cabine;</li>
+                <li>Identificação do hóspede a bordo;</li>
+                <li>Comanda para compras de bebidas, serviços, lojas, excursões e demais despesas realizadas durante o cruzeiro.</li>
+              </ul>
+              <p>Todas as despesas efetuadas a bordo serão lançadas na conta vinculada ao Cruise Card. Para utilização dos
+                serviços do navio, será necessário <b>habilitar a conta de bordo</b>.</p>
+              <span class="emb-rot">Formas de pagamento para ativação e liquidação da conta de bordo</span>
+              <ul class="emb-lista">
+                <li>Cartão de crédito nacional ou internacional;</li>
+                <li>Cartão de débito;</li>
+                <li>PIX;</li>
+                <li>Dinheiro em espécie (dólares americanos).</li>
+              </ul>
+              <p>Recomendamos que a habilitação da conta de bordo seja realizada <b>logo após o embarque</b> para maior comodidade
+                durante a viagem.</p>
+            </div>
+            <div class="emb-bloco largo">
+              <h3>Baixe o aplicativo MSC for Me®</h3>
+              <p>Para aproveitar ao máximo sua experiência a bordo, recomendamos que todos os passageiros façam o download do
+                aplicativo oficial MSC for Me® antes da viagem. O aplicativo está disponível gratuitamente para dispositivos
+                Android e iOS.</p>
+              <span class="emb-rot">Com o MSC for Me®, você poderá</span>
+              <ul class="emb-lista">
+                <li>Realizar o check-in e acessar seu cartão de embarque digital (assim que receber o seu número de reserva enviado pelo e-mail);</li>
+                <li>Consultar informações sobre o navio e o itinerário da viagem;</li>
+                <li>Reservar excursões, restaurantes, tratamentos de spa e outros serviços antes do embarque;</li>
+                <li>Acompanhar a programação diária de atividades e entretenimento a bordo;</li>
+                <li>Utilizar o mapa interativo do navio para se localizar com facilidade;</li>
+                <li>Receber notificações sobre eventos, atividades e ofertas especiais;</li>
+                <li>Consultar e acompanhar os gastos registrados em sua conta de bordo;</li>
+                <li>Utilizar o chat do aplicativo para se comunicar com familiares e amigos que estiverem viajando no mesmo navio, sem necessidade de pacote de internet.</li>
+              </ul>
+              <p>O aplicativo funciona através da rede Wi-Fi do navio e seus principais recursos podem ser utilizados sem a
+                contratação de um pacote de internet.</p>
+              <a class="botao-vazio" href="https://www.msccruzeiros.com.br/a-bordo/internet-e-aplicativos/msc-for-me" target="_blank" rel="noopener noreferrer">MSC for Me® - Aplicativo Oficial da MSC Cruzeiros <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7"/><path d="M8 7h9v9"/></svg></a>
+            </div>
+          </div>
+        </div>
+
+        <div class="cartao aba-painel" role="tabpanel" id="painel-check" aria-labelledby="aba-check" hidden>
+          <div class="ck-topo">
+            <p class="emb-guia">Antes de seguir para o terminal, confirme os itens abaixo.</p>
+            <span class="ck-conta" id="ckConta" role="status" aria-live="polite"></span>
+          </div>
+          <div class="ck-barra" aria-hidden="true"><i id="ckBarra"></i></div>
+          <div class="ck-grupo">
+            <span class="emb-rot">Documentação</span>
+              <label class="ck-marca"><input type="checkbox" data-ck="doc1"><span>Documentos com foto e válidos para o itinerário.</span></label>
+              <label class="ck-marca"><input type="checkbox" data-ck="doc2"><span>Documentação e autorizações exigidas para menores de idade, quando aplicável.</span></label>
+              <label class="ck-marca"><input type="checkbox" data-ck="doc3"><span>Bilhete de embarque e documentos de viagem emitidos após a realização do Web Check-in (pelo site da MSC ou aplicativo MSC for Me).</span></label>
+          </div>
+          <div class="ck-grupo">
+            <span class="emb-rot">Preparativos para o embarque</span>
+              <label class="ck-marca"><input type="checkbox" data-ck="prep1"><span>Baixar e acessar o aplicativo MSC for Me® utilizando o número da reserva.</span></label>
+              <label class="ck-marca"><input type="checkbox" data-ck="prep2"><span>Consultar previamente o itinerário, informações do navio e serviços disponíveis pelo aplicativo.</span></label>
+              <label class="ck-marca"><input type="checkbox" data-ck="prep3"><span>Realizar o check-in e acessar o cartão de embarque digital pelo aplicativo, quando disponível.</span></label>
+              <label class="ck-marca"><input type="checkbox" data-ck="prep4"><span>Conferir os dados pessoais constantes na reserva.</span></label>
+              <label class="ck-marca"><input type="checkbox" data-ck="prep5"><span>Verificar o horário de embarque indicado nos documentos de viagem.</span></label>
+              <label class="ck-marca"><input type="checkbox" data-ck="prep6"><span>Etiquetar a bagagem antes da chegada ao porto.</span></label>
+              <label class="ck-marca"><input type="checkbox" data-ck="prep7"><span>Separar medicamentos de uso contínuo e respectivas prescrições, caso necessário.</span></label>
+              <label class="ck-marca"><input type="checkbox" data-ck="prep8"><span>Separar cartão de crédito, cartão de débito, PIX ou dólares americanos para ativação e pagamento da conta de bordo.</span></label>
+              <label class="ck-marca"><input type="checkbox" data-ck="prep9"><span>Consultar os ocupantes da cabine sobre o uso do Cruise Card para controle dos gastos realizados durante a viagem.</span></label>
+          </div>
+          <button class="ck-zera" type="button" id="ckZera">Desmarcar tudo</button>
+        </div>
+
+        <div class="cartao aba-painel" role="tabpanel" id="painel-levar" aria-labelledby="aba-levar" hidden>
+          <p class="emb-guia">Recomendamos incluir em sua bagagem:</p>
+          <ul class="levar">
+            <li>Roupas leves para o dia</li>
+            <li class="do-kit">Kit iGreen (camiseta, copo e sacola)</li>
+            <li>Trajes de banho</li>
+            <li>Protetor solar</li>
+            <li>Calçados confortáveis</li>
+            <li>Roupas adequadas para restaurantes e eventos noturnos</li>
+            <li>Medicamentos de uso pessoal</li>
+          </ul>
+        </div>
+
+        <div class="cartao aba-painel" role="tabpanel" id="painel-uteis" aria-labelledby="aba-uteis" hidden>
+          <div class="emb-bloco">
+            <p>Para mais detalhes sobre documentação, embarque, bagagem, serviços a bordo e demais orientações de viagem,
+              consulte os canais oficiais da MSC Cruzeiros:</p>
+            <div class="links-uteis">
+              <a class="botao-vazio" href="https://www.msccruzeiros.com.br/gerenciar-reserva/antes-de-viajar" target="_blank" rel="noopener noreferrer">Antes de Viajar <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7"/><path d="M8 7h9v9"/></svg></a>
+              <a class="botao-vazio" href="https://www.msccruzeiros.com.br/perguntas-frequentes" target="_blank" rel="noopener noreferrer">Perguntas Frequentes da MSC <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7"/><path d="M8 7h9v9"/></svg></a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <p class="emb-importante" data-reveal style="--i:4"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3 2 20h20z"/><path d="M12 10v4M12 17h.01"/></svg>
+        <span><b>Importante:</b> a conferência e apresentação da documentação necessária para a viagem é de responsabilidade
+          exclusiva do passageiro. A ausência ou irregularidade de documentos poderá impedir o embarque, em conformidade com
+          as exigências das autoridades competentes e das políticas da MSC Cruzeiros.</span></p>
+    </div>
+  </section>
+
   <!-- ============================ DÚVIDAS ============================ -->
   <section class="secao" id="duvidas">
     <div class="aura" aria-hidden="true"></div>
@@ -1711,6 +1946,7 @@ const DADOS = {
     { id:'roteiro',      rot:'Roteiro' },
     { id:'kit',          rot:'Seu kit' },
     { id:'menores',      rot:'Menores' },
+    { id:'embarque',     rot:'Embarque' },
     { id:'duvidas',      rot:'Dúvidas' },
     { id:'contatos',     rot:'Contatos' }
   ],
@@ -1832,6 +2068,7 @@ const DADOS = {
     ['A camiseta oficial é obrigatória?','Sim, na Reunião Oficial iGreen, no dia 01/12, das 8h às 12h, no Teatro Odeon (Decks/Andar 6 e 7, na proa do navio).'],
     ['Ainda não recebi o número da minha reserva. E agora?','Fique tranquilo! Até o dia 20/11 você receberá diretamente da MSC Cruzeiros, no e-mail cadastrado no formulário, o seu voucher com o número da reserva.|Atenção: pode ter ocorrido uma alteração no seu código de reserva. Confira o número informado no novo voucher enviado pela MSC e use-o para acessar sua reserva.|Fique de olho na sua caixa de entrada e confira também a pasta de spam ou lixo eletrônico. Qualquer dúvida, fale com o suporte pelos telefones da seção Contatos.'],
     ['Existe um grupo oficial do cruzeiro no WhatsApp?','Sim. O link para entrar no Grupo Oficial do WhatsApp está no topo do portal, logo abaixo da contagem regressiva, e também na seção Contatos.'],
+    ['Qual é o horário do embarque?','A saída do navio está programada para as 18h00. O embarque será encerrado impreterivelmente às 15h00, três horas antes da partida.|Recomendamos chegar ao terminal com antecedência mínima de 3 horas do horário limite de embarque (até as 12h00). O comunicado completo, com a checklist, está na seção Embarque.'],
     ['Como faço o check-in?','Pelo aplicativo MSC for Me, com o número da reserva enviado pelo e-mail. Depois do check-in, os cartões de embarque ficam no aplicativo e devem ser apresentados no Porto de Santos. O passo a passo completo está na seção Check-in.'],
     ['A cabine da premiação é para quantas pessoas?','A premiação é de 01 cabine dupla, destinada a duas pessoas.'],
     ['Menores de idade podem ficar sozinhos em uma cabine?','Não. Uma cabine não pode ser ocupada somente por menores de idade. É necessária a presença de pelo menos um adulto responsável legal na cabine.'],
@@ -2331,6 +2568,44 @@ const DADOS = {
     itens.forEach((d) => { const ok = toks.every((t) => d.dataset.t.indexOf(t) >= 0); d.hidden = !ok; if (ok) n++; d.open = ok && toks.length > 0; });
     $('faqVazio').hidden = n > 0; contar(n, toks.length > 0);
   });
+
+  /* ---------------- antes de embarcar: abas e checklist ---------------- */
+  (function(){
+    const abas = [].slice.call(document.querySelectorAll('#embarque .aba'));
+    const mostra = (a, foco) => {
+      abas.forEach((b) => {
+        const sim = b === a;
+        b.setAttribute('aria-selected', String(sim)); b.tabIndex = sim ? 0 : -1;
+        $(b.getAttribute('aria-controls')).hidden = !sim;
+      });
+      if (foco) a.focus();
+    };
+    abas.forEach((a, i) => {
+      a.addEventListener('click', () => mostra(a, false));
+      /* setas andam entre as abas, como o leitor de tela espera de um tablist */
+      a.addEventListener('keydown', (e) => {
+        const d = e.key === 'ArrowRight' ? 1 : e.key === 'ArrowLeft' ? -1 : 0;
+        if (d){ e.preventDefault(); mostra(abas[(i + d + abas.length) % abas.length], true); }
+      });
+    });
+    /* a checklist lembra o que a pessoa marcou — só neste navegador; se o
+       armazenamento estiver bloqueado, ela funciona sem lembrar */
+    const CHAVE = 'cruzeiro-checklist', caixas = [].slice.call(document.querySelectorAll('#painel-check input[data-ck]'));
+    let salvo = {};
+    try { salvo = JSON.parse(localStorage.getItem(CHAVE) || '{}') || {}; } catch(e){}
+    const conta = () => {
+      const n = caixas.filter((c) => c.checked).length;
+      $('ckConta').textContent = n + ' de ' + caixas.length + (n === caixas.length ? ' · tudo pronto!' : ' conferidos');
+      $('ckBarra').style.setProperty('--feito', (n / caixas.length).toFixed(3));
+    };
+    const guarda = () => {
+      const o = {}; caixas.forEach((c) => { if (c.checked) o[c.dataset.ck] = 1; });
+      try { localStorage.setItem(CHAVE, JSON.stringify(o)); } catch(e){}
+    };
+    caixas.forEach((c) => { c.checked = !!salvo[c.dataset.ck]; c.addEventListener('change', () => { conta(); guarda(); }); });
+    $('ckZera').addEventListener('click', () => { caixas.forEach((c) => { c.checked = false; }); conta(); guarda(); });
+    conta();
+  })();
 
   /* ---------------- contatos confiáveis ---------------- */
   const ZAP = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20l1.4-4.2A8 8 0 1 1 8.6 19z"/><path d="M9 10h6M9 13.5h4"/></svg>';
