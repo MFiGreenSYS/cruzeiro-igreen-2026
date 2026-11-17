@@ -1092,6 +1092,11 @@ a{color:inherit}
   border:1px solid rgba(var(--acc-rgb),.4);
 }
 .ck-lista small{ display:block; margin-top:4px; font-size:13px; color:var(--dim-2) }
+.ck-link{
+  display:flex; width:fit-content; align-items:center; gap:6px; margin-top:6px; min-height:32px;
+  font-weight:600; color:var(--acc); text-underline-offset:3px;
+}
+.ck-link:hover{ text-decoration:underline }
 .ck-fim{ margin-top:14px; font-size:14.5px; font-weight:600; color:var(--acc) }
 .checkin-fecho{
   margin-top:14px; padding:18px 22px; border-radius:18px; text-align:center;
@@ -1693,8 +1698,8 @@ const DADOS = {
     intro: 'Realize seu check-in pelo aplicativo “MSC for Me” para acessar o cartão de embarque que deverá ser apresentado no Porto de Santos. Pelo aplicativo, você também poderá consultar as opções de pacotes de bebidas e internet.',
     passos: [
       { titulo:'Acesse o aplicativo MSC for Me', itens:[
-        'Baixe o aplicativo MSC for Me no seu celular, disponível para Android e iOS.',
-        'Tenha em mãos o número da reserva enviado pelo WhatsApp.|Ainda não recebeu? Até 20/11 a MSC Cruzeiros envia o voucher com o número da reserva para o e-mail cadastrado no formulário. Use o número do voucher novo.',
+        'Baixe o aplicativo MSC for Me no seu celular, disponível para Android e iOS.||MSC for Me® - Aplicativo Oficial da MSC Cruzeiros>https://www.msccruzeiros.com.br/a-bordo/internet-e-aplicativos/msc-for-me',
+        'Tenha em mãos o número da reserva enviado pelo e-mail.|Ainda não recebeu? Em breve será enviado pela MSC Cruzeiros no e-mail cadastrado no formulário.',
         'Abra o aplicativo e, na tela inicial, clique em “Entrar com o número da reserva”.',
         'Digite o número da reserva no campo indicado.',
         'Preencha o nome e o sobrenome de um dos passageiros da cabine e aceite os termos e condições.|No campo “Nome”, informe seu primeiro nome ou nome composto, se houver. No campo “Sobrenome”, informe todos os seus sobrenomes, sem abreviações.',
@@ -1803,7 +1808,7 @@ const DADOS = {
     ['A camiseta oficial é obrigatória?','Sim, na Reunião Oficial iGreen, no dia 01/12, das 8h às 12h, no Teatro Odeon (Decks/Andar 6 e 7, na proa do navio).'],
     ['Ainda não recebi o número da minha reserva. E agora?','Fique tranquilo! Até o dia 20/11 você receberá diretamente da MSC Cruzeiros, no e-mail cadastrado no formulário, o seu voucher com o número da reserva.|Atenção: pode ter ocorrido uma alteração no seu código de reserva. Confira o número informado no novo voucher enviado pela MSC e use-o para acessar sua reserva.|Fique de olho na sua caixa de entrada e confira também a pasta de spam ou lixo eletrônico. Qualquer dúvida, fale com o suporte pelos telefones da seção Contatos.'],
     ['Existe um grupo oficial do cruzeiro no WhatsApp?','Sim. O link para entrar no Grupo Oficial do WhatsApp está no topo do portal, logo abaixo da contagem regressiva, e também na seção Contatos.'],
-    ['Como faço o check-in?','Pelo aplicativo MSC for Me, com o número da reserva enviado pelo WhatsApp. Depois do check-in, os cartões de embarque ficam no aplicativo e devem ser apresentados no Porto de Santos. O passo a passo completo está na seção Check-in.'],
+    ['Como faço o check-in?','Pelo aplicativo MSC for Me, com o número da reserva enviado pelo e-mail. Depois do check-in, os cartões de embarque ficam no aplicativo e devem ser apresentados no Porto de Santos. O passo a passo completo está na seção Check-in.'],
     ['A cabine da premiação é para quantas pessoas?','A premiação é de 01 cabine dupla, destinada a duas pessoas.'],
     ['Menores de idade podem ficar sozinhos em uma cabine?','Não. Uma cabine não pode ser ocupada somente por menores de idade. É necessária a presença de pelo menos um adulto responsável legal na cabine.'],
     ['Menores de idade podem viajar sem os pais ou sem um dos pais/responsável legal?','Menores de 18 anos desacompanhados de ambos os pais ou responsável legal precisam apresentar autorização por escrito do pai e da mãe, com firma reconhecida em cartório, em duas vias, conforme as orientações da Polícia Federal.|Filhos acompanhados dos pais não precisam de autorização.'],
@@ -2208,7 +2213,11 @@ const DADOS = {
   $('passos').innerHTML = C.passos.map((p, i) =>
     '<li class="cartao ck-passo" data-reveal style="--i:' + (i + 1) + '"><span class="ck-n num" aria-hidden="true">' + (i + 1) + '</span>' +
     '<h3><span class="sr">Passo ' + (i + 1) + ': </span>' + esc(p.titulo) + '</h3><ol class="ck-lista">' +
-    p.itens.map((t) => { const [a, b] = t.split('|'); return '<li>' + esc(a) + (b ? '<small>' + esc(b) + '</small>' : '') + '</li>'; }).join('') +
+    p.itens.map((t) => {
+      const [a, b, c] = t.split('|'), [rot, url] = (c || '').split('>');
+      return '<li>' + esc(a) + (b ? '<small>' + esc(b) + '</small>' : '') +
+        (url ? '<a class="ck-link" href="' + esc(url) + '" target="_blank" rel="noopener noreferrer">' + esc(rot) + ' <span aria-hidden="true">↗</span></a>' : '') + '</li>';
+    }).join('') +
     '</ol>' + (p.fim ? '<p class="ck-fim">' + esc(p.fim) + '</p>' : '') + '</li>').join('');
   /* O VÍDEO DO APP — pedido do dono (06/11/2026): "a animação do app
      começa quando entrar na seção", com play e pause.
