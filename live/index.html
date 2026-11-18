@@ -60,14 +60,16 @@ a{color:inherit}
   padding:clamp(18px,3.4vh,44px) 16px; overflow:hidden; isolation:isolate; text-align:center;
 }
 .fundo{ position:absolute; inset:0; z-index:-2 }
-.fundo video{ width:100%; height:100%; object-fit:cover; opacity:.4 }
-/* escurece o navio e acende o verde embaixo, como o herói do portal */
+.fundo video{ width:100%; height:100%; object-fit:cover; opacity:.85 }
+/* o navio CLARO (pedido do dono, 18/11/2026: "clareia o navio do fundo"): só as
+   bordas e o pé escurecem, e um véu leve no centro segura a leitura do texto */
 .fundo::after{
   content:""; position:absolute; inset:0;
   background:
     radial-gradient(60% 50% at 50% 108%, rgba(var(--acc-rgb),.30), transparent 70%),
-    radial-gradient(90% 70% at 50% 40%, rgba(var(--campo-rgb),.35), rgba(var(--campo-rgb),.92) 78%),
-    linear-gradient(rgba(var(--campo-rgb),.55), rgba(var(--campo-rgb),.2) 40%, rgba(var(--campo-rgb),.95));
+    radial-gradient(62% 50% at 50% 54%, rgba(var(--campo-rgb),.58), transparent 100%),
+    radial-gradient(110% 90% at 50% 45%, transparent 45%, rgba(var(--campo-rgb),.75) 100%),
+    linear-gradient(rgba(var(--campo-rgb),.35), transparent 30%, transparent 62%, rgba(var(--campo-rgb),.9));
 }
 .dentro{ width:100%; max-width:720px; display:flex; flex-direction:column; align-items:center }
 
@@ -96,6 +98,10 @@ h1{
 h1 em{ font-style:normal; color:var(--acc); text-shadow:0 0 40px rgba(var(--acc-rgb),.45) }
 .apoio{ margin-top:clamp(14px,2.2vh,20px); max-width:560px; font-size:clamp(15.5px,1.6vw,18px); line-height:1.6; color:var(--dim); text-wrap:pretty }
 .apoio b{ color:var(--ink) }
+/* com o navio claro atrás, o texto ganha sombra para não sumir no casco branco */
+h1, .apoio, .dica, .rodape span{ text-shadow:0 1px 3px rgba(var(--sombra-rgb),.9), 0 4px 22px rgba(var(--sombra-rgb),.75) }
+.apoio{ color:rgba(var(--ink-rgb),.88) }
+.dica, .rodape{ color:rgba(var(--ink-rgb),.7) }
 
 /* o link para salvar e compartilhar */
 .link{
