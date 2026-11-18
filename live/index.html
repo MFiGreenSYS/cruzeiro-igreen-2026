@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Live do Cruzeiro iGreen 2026</title>
+<meta name="description" content="A live do Cruzeiro iGreen 2026 vem aí. Assim que a gravação for publicada, o link igreenenergy.com.br/livecruzeiro leva direto para ela.">
+<meta name="theme-color" content="#010101">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="pt_BR">
+<meta property="og:title" content="Live do Cruzeiro iGreen 2026">
+<meta property="og:description" content="A live vem aí. Salve o link: igreenenergy.com.br/livecruzeiro">
+<meta property="og:image" content="../assets/video/navio-poster.webp">
+<link rel="icon" type="image/svg+xml" href="../assets/icone-cruzeiro.svg">
+<link rel="apple-touch-icon" href="../assets/icone-cruzeiro.svg">
+<link rel="preload" href="../assets/fontes/Geist-Variable.woff2" as="font" type="font/woff2" crossorigin>
+<style>
+/* ============================================================
+   LIVE DO CRUZEIRO — LP de uma seção (pedido do dono, 18/11/2026).
+   Divulgada como igreenenergy.com.br/livecruzeiro: o link curto do
+   site institucional (backend/semente/redirecionamentos.mjs) aponta
+   para esta página enquanto a gravação não sobe; depois o destino do
+   link curto troca para o vídeo e esta página sai do caminho.
+   Mesma casa do portal: Geist, campo preto, verde #18FF00 raro, o
+   navio do portal ao fundo.
+   ============================================================ */
+@font-face{
+  font-family:'Geist'; src:url('../assets/fontes/Geist-Variable.woff2') format('woff2');
+  font-weight:100 900; font-display:swap;
+}
+:root{
+  --acc:#18FF00;        --acc-rgb:24,255,0;
+  --on-acc:#02220A;
+  --campo:#010101;      --campo-rgb:1,1,1;
+  --ink:#F3F3F3;        --ink-rgb:243,243,243;
+  --dim:rgba(var(--ink-rgb),.66);
+  --dim-2:rgba(var(--ink-rgb),.42);
+  --linha:rgba(var(--ink-rgb),.14);
+  --cartao:rgba(18,18,18,.62);
+  --vermelho:#FF3B3B;   --vermelho-rgb:255,59,59;
+  --sombra-rgb:0,0,0;
+  --mola:cubic-bezier(.16,1.1,.3,1);
+  --font:'Geist',system-ui,-apple-system,'Segoe UI',sans-serif;
+  color-scheme:dark;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{background:var(--campo)}
+body{
+  font-family:var(--font); color:var(--ink); -webkit-font-smoothing:antialiased;
+  font-size:16px; line-height:1.5; overflow-x:clip;
+}
+button{font:inherit;color:inherit;border:0;background:none;cursor:pointer}
+img,video{display:block;max-width:100%}
+a{color:inherit}
+:focus-visible{outline:2px solid var(--acc);outline-offset:3px;border-radius:6px}
+
+/* ------------------------------------------------------------ a seção */
+.live{
+  position:relative; min-height:100vh; min-height:100svh; display:grid; place-items:center;
+  padding:clamp(18px,3.4vh,44px) 16px; overflow:hidden; isolation:isolate; text-align:center;
+}
+.fundo{ position:absolute; inset:0; z-index:-2 }
+.fundo video{ width:100%; height:100%; object-fit:cover; opacity:.4 }
+/* escurece o navio e acende o verde embaixo, como o herói do portal */
+.fundo::after{
+  content:""; position:absolute; inset:0;
+  background:
+    radial-gradient(60% 50% at 50% 108%, rgba(var(--acc-rgb),.30), transparent 70%),
+    radial-gradient(90% 70% at 50% 40%, rgba(var(--campo-rgb),.35), rgba(var(--campo-rgb),.92) 78%),
+    linear-gradient(rgba(var(--campo-rgb),.55), rgba(var(--campo-rgb),.2) 40%, rgba(var(--campo-rgb),.95));
+}
+.dentro{ width:100%; max-width:720px; display:flex; flex-direction:column; align-items:center }
+
+.selo{
+  width:clamp(96px,16vh,160px); height:auto;
+  filter:drop-shadow(0 0 28px rgba(var(--acc-rgb),.35)) drop-shadow(0 10px 30px rgba(var(--sombra-rgb),.6));
+}
+.pilula{
+  margin-top:clamp(18px,3vh,28px); display:inline-flex; align-items:center; gap:10px;
+  padding:8px 16px; border-radius:999px; border:1px solid var(--linha); background:var(--cartao);
+  -webkit-backdrop-filter:blur(12px); backdrop-filter:blur(12px);
+  font-size:12px; font-weight:700; letter-spacing:.16em; text-transform:uppercase; color:var(--ink);
+}
+/* o ponto de "ao vivo": pulsa em escala e opacidade, nada de layout */
+.ponto{ position:relative; width:9px; height:9px; border-radius:50%; background:var(--vermelho); flex:none }
+.ponto::after{
+  content:""; position:absolute; inset:0; border-radius:50%; background:var(--vermelho);
+  animation:pulso 1.8s ease-out infinite;
+}
+@keyframes pulso{ from{ transform:scale(1); opacity:.7 } to{ transform:scale(3); opacity:0 } }
+
+h1{
+  margin-top:clamp(16px,2.6vh,24px); font-size:clamp(38px,min(7.4vw,8.4vh),76px); font-weight:800;
+  letter-spacing:-.035em; line-height:1.02; text-wrap:balance;
+}
+h1 em{ font-style:normal; color:var(--acc); text-shadow:0 0 40px rgba(var(--acc-rgb),.45) }
+.apoio{ margin-top:clamp(14px,2.2vh,20px); max-width:560px; font-size:clamp(15.5px,1.6vw,18px); line-height:1.6; color:var(--dim); text-wrap:pretty }
+.apoio b{ color:var(--ink) }
+
+/* o link para salvar e compartilhar */
+.link{
+  margin-top:clamp(22px,3.6vh,34px); width:100%; max-width:520px; display:flex; align-items:center; gap:8px;
+  padding:7px 7px 7px 18px; border-radius:999px; border:1px solid rgba(var(--acc-rgb),.38);
+  background:radial-gradient(120% 200% at 0% 0%, rgba(var(--acc-rgb),.10), transparent 60%), var(--cartao);
+  -webkit-backdrop-filter:blur(12px); backdrop-filter:blur(12px);
+}
+.link .url{ flex:1 1 auto; min-width:0; text-align:left; font-size:15px; font-weight:600; white-space:nowrap; overflow:hidden; text-overflow:ellipsis }
+.link .url span{ color:var(--dim-2); font-weight:500 }
+.copiar{
+  flex:none; display:inline-flex; align-items:center; gap:8px; min-height:42px; padding:0 18px; border-radius:999px;
+  background:var(--acc); color:var(--on-acc); font-size:14px; font-weight:700;
+  box-shadow:0 0 26px rgba(var(--acc-rgb),.35); transition:transform .25s var(--mola), box-shadow .25s;
+}
+.copiar:hover{ transform:translateY(-1px); box-shadow:0 0 40px rgba(var(--acc-rgb),.55) }
+.copiar:active{ transform:scale(.97) }
+.copiar svg{ width:16px; height:16px }
+.dica{ margin-top:10px; font-size:13px; color:var(--dim-2) }
+
+.acoes{ margin-top:clamp(16px,2.6vh,28px); display:flex; flex-wrap:wrap; justify-content:center; gap:10px }
+.botao-vazio{
+  display:inline-flex; align-items:center; gap:9px; border-radius:999px; min-height:44px;
+  padding:12px 22px; text-decoration:none; font-size:14.5px; font-weight:500; color:var(--ink);
+  border:1px solid rgba(var(--ink-rgb),.24); background:rgba(var(--campo-rgb),.35);
+  transition:border-color .25s, transform .25s var(--mola);
+}
+.botao-vazio:hover{ border-color:rgba(var(--acc-rgb),.7); transform:translateY(-2px) }
+.botao-vazio svg{ width:15px; height:15px }
+
+.rodape{ margin-top:clamp(20px,3.6vh,40px); display:flex; align-items:center; gap:14px; font-size:12.5px; color:var(--dim-2) }
+.rodape img{ width:84px; height:auto; opacity:.85 }
+.rodape i{ width:1px; height:22px; background:var(--linha) }
+
+/* entrada: sobe e acende em sequência, só transform e opacidade */
+[data-entra]{ opacity:0; transform:translateY(14px); animation:entra .9s var(--mola) forwards; animation-delay:calc(var(--i) * 90ms + 120ms) }
+@keyframes entra{ to{ opacity:1; transform:none } }
+@media (prefers-reduced-motion: reduce){
+  [data-entra]{ opacity:1; transform:none; animation:none }
+  .ponto::after{ animation:none }
+}
+@media (max-width:480px){
+  .link{ flex-direction:column; padding:14px; border-radius:22px; gap:12px }
+  .link .url{ text-align:center; white-space:normal; overflow-wrap:anywhere; font-size:15.5px }
+  .copiar{ width:100%; justify-content:center }
+}
+</style>
+</head>
+<body>
+<main class="live">
+  <div class="fundo" aria-hidden="true">
+    <video autoplay muted loop playsinline preload="metadata" poster="../assets/video/navio-poster.webp" width="960" height="540">
+      <source src="../assets/video/navio.mp4" type="video/mp4">
+    </video>
+  </div>
+
+  <div class="dentro">
+    <img class="selo" data-entra style="--i:0" src="../assets/logo-cruzeiro.webp" width="720" height="882" alt="Let's Go Cruzeiro iGreen">
+
+    <p class="pilula" data-entra style="--i:1"><span class="ponto" aria-hidden="true"></span>Live do Cruzeiro iGreen 2026</p>
+
+    <h1 data-entra style="--i:2">A live do Cruzeiro <em>vem aí</em></h1>
+
+    <p class="apoio" data-entra style="--i:3">Estamos preparando uma live especial com tudo o que você precisa saber antes de
+      embarcar no <b>MSC Seaview</b>. Assim que a gravação for publicada, <b>este mesmo link</b> leva você direto para ela.</p>
+
+    <div class="link" data-entra style="--i:4">
+      <p class="url"><span>https://</span>igreenenergy.com.br/livecruzeiro</p>
+      <button class="copiar" type="button" id="copiar">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2.5"/><path d="M16 8V6.5A2.5 2.5 0 0 0 13.5 4h-7A2.5 2.5 0 0 0 4 6.5v7A2.5 2.5 0 0 0 6.5 16H8"/></svg>
+        <span id="copiarTxt">Copiar link</span>
+      </button>
+    </div>
+    <p class="dica" data-entra style="--i:5" aria-live="polite" id="dica">Salve o link e volte aqui para assistir.</p>
+
+    <div class="acoes" data-entra style="--i:6">
+      <a class="botao-vazio" href="https://cruzeiro.igreenenergy.com.br/">Acessar o portal do Cruzeiro
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7"/><path d="M8 7h9v9"/></svg></a>
+    </div>
+
+    <div class="rodape" data-entra style="--i:7">
+      <img src="../assets/igreen.svg" width="118" height="36" alt="iGreen">
+      <i aria-hidden="true"></i>
+      <span>29/11 a 02/12/2026 · Porto de Santos</span>
+    </div>
+  </div>
+</main>
+
+<script>
+(function(){
+  /* ===== OS DADOS — troque só isto ===== */
+  var LINK = 'https://igreenenergy.com.br/livecruzeiro';   /* o link divulgado (copiar/compartilhar) */
+  var bt = document.getElementById('copiar'), txt = document.getElementById('copiarTxt'), dica = document.getElementById('dica'), volta = 0;
+  var compartilha = !!navigator.share && matchMedia('(pointer: coarse)').matches;
+  if (compartilha) txt.textContent = 'Compartilhar';
+  function feito(ok){
+    txt.textContent = ok ? 'Link copiado!' : 'Copie o link acima';
+    dica.textContent = ok ? 'Pronto: é só colar onde quiser.' : 'Selecione o endereço acima para copiar.';
+    clearTimeout(volta);
+    volta = setTimeout(function(){ txt.textContent = compartilha ? 'Compartilhar' : 'Copiar link'; dica.textContent = 'Salve o link e volte aqui para assistir.'; }, 2600);
+  }
+  bt.addEventListener('click', function(){
+    /* no celular, compartilhar é mais útil que copiar */
+    if (compartilha){
+      navigator.share({ title:'Live do Cruzeiro iGreen 2026', url:LINK }).catch(function(){});
+      return;
+    }
+    if (navigator.clipboard && navigator.clipboard.writeText){
+      navigator.clipboard.writeText(LINK).then(function(){ feito(true); }, function(){ feito(false); });
+    } else feito(false);
+  });
+})();
+</script>
+</body>
+</html>
