@@ -10,7 +10,7 @@
 <meta property="og:locale" content="pt_BR">
 <meta property="og:title" content="Live do Cruzeiro iGreen 2026">
 <meta property="og:description" content="A live vem aí. Salve o link: igreenenergy.com.br/livecruzeiro">
-<meta property="og:image" content="../assets/video/navio-poster.webp">
+<meta property="og:image" content="../assets/video/reconhecimento-poster.jpg">
 <link rel="icon" type="image/svg+xml" href="../assets/icone-cruzeiro.svg">
 <link rel="apple-touch-icon" href="../assets/icone-cruzeiro.svg">
 <link rel="preload" href="../assets/fontes/Geist-Variable.woff2" as="font" type="font/woff2" crossorigin>
@@ -21,8 +21,10 @@
    site institucional (backend/semente/redirecionamentos.mjs) aponta
    para esta página enquanto a gravação não sobe; depois o destino do
    link curto troca para o vídeo e esta página sai do caminho.
-   Mesma casa do portal: Geist, campo preto, verde #18FF00 raro, o
-   navio do portal ao fundo.
+   Mesma casa do portal: Geist, campo preto, verde #18FF00 raro e, ao
+   fundo, o filme do Cruzeiro do ano passado (o reconhecimento do herói
+   do portal, 76s em laço). Era o navio de 4,6s: curto demais, o laço
+   dava um salto e parecia travar no último quadro (pedido do dono).
    ============================================================ */
 @font-face{
   font-family:'Geist'; src:url('../assets/fontes/Geist-Variable.woff2') format('woff2');
@@ -60,7 +62,7 @@ a{color:inherit}
   padding:clamp(18px,3.4vh,44px) 16px; overflow:hidden; isolation:isolate; text-align:center;
 }
 .fundo{ position:absolute; inset:0; z-index:-2 }
-.fundo video{ width:100%; height:100%; object-fit:cover; opacity:.85 }
+.fundo video{ width:100%; height:100%; object-fit:cover; object-position:50% 40%; opacity:.72 }
 /* o navio CLARO (pedido do dono, 18/11/2026: "clareia o navio do fundo"): só as
    bordas e o pé escurecem, e um véu leve no centro segura a leitura do texto */
 .fundo::after{
@@ -153,8 +155,8 @@ h1, .apoio, .dica, .rodape span{ text-shadow:0 1px 3px rgba(var(--sombra-rgb),.9
 <body>
 <main class="live">
   <div class="fundo" aria-hidden="true">
-    <video autoplay muted loop playsinline preload="metadata" poster="../assets/video/navio-poster.webp" width="960" height="540">
-      <source src="../assets/video/navio.mp4" type="video/mp4">
+    <video id="filme" autoplay muted loop playsinline preload="auto" poster="../assets/video/reconhecimento-poster.jpg" width="960" height="540">
+      <source src="../assets/video/reconhecimento.mp4" type="video/mp4">
     </video>
   </div>
 
@@ -192,6 +194,15 @@ h1, .apoio, .dica, .rodape span{ text-shadow:0 1px 3px rgba(var(--sombra-rgb),.9
 
 <script>
 (function(){
+  /* o laço garantido: se algum navegador parar no fim apesar do loop,
+     volta ao começo; e se o autoplay for negado, tenta de novo no 1º toque */
+  var filme = document.getElementById('filme');
+  if (filme){
+    filme.addEventListener('ended', function(){ filme.currentTime = 0; var p = filme.play(); if (p && p.catch) p.catch(function(){}); });
+    var tocar = function(){ var p = filme.play(); if (p && p.catch) p.catch(function(){}); };
+    tocar();
+    addEventListener('pointerdown', tocar, { once:true });
+  }
   /* ===== OS DADOS — troque só isto ===== */
   var LINK = 'https://igreenenergy.com.br/livecruzeiro';   /* o link divulgado (copiar/compartilhar) */
   var bt = document.getElementById('copiar'), txt = document.getElementById('copiarTxt'), dica = document.getElementById('dica'), volta = 0;
