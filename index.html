@@ -1245,6 +1245,77 @@ a{color:inherit}
 }
 
 /* ============================================================
+   SEGURO VIAGEM (Redion) — 20/11/2026. A caixa da central é a peça:
+   o 0800 grande e clicável, o 24h/7 dias em selo, e os dois botões
+   (ligar e WhatsApp) — achar em 2 segundos num aperto.
+   ============================================================ */
+.seg-central{
+  max-width:980px; margin:0 auto; display:flex; align-items:center; justify-content:space-between; gap:clamp(18px,3cqw,40px);
+  flex-wrap:wrap; padding:clamp(22px,3cqw,38px) clamp(22px,3.4cqw,42px); border-radius:26px;
+  border:1.5px solid rgba(var(--acc-rgb),.5);
+  background:radial-gradient(80% 140% at 0% 0%, rgba(var(--acc-rgb),.16), transparent 62%), var(--cartao);
+  -webkit-backdrop-filter:blur(14px); backdrop-filter:blur(14px);
+  box-shadow:0 0 70px rgba(var(--acc-rgb),.12);
+}
+.seg-central.borda-viva::before{ padding:2px }
+.seg-num{ flex:1 1 320px; min-width:0; display:grid; justify-items:start; gap:8px }
+.seg-247{
+  display:inline-flex; align-items:center; gap:10px; padding:8px 16px; border-radius:999px;
+  background:var(--acc); color:var(--on-acc); font-size:14px; letter-spacing:.01em;
+  box-shadow:0 0 28px rgba(var(--acc-rgb),.35);
+}
+.seg-ponto{ position:relative; width:8px; height:8px; border-radius:50%; background:var(--on-acc); flex:none }
+.seg-ponto::after{ content:""; position:absolute; inset:0; border-radius:50%; background:var(--on-acc); animation:seg-pulso 1.8s ease-out infinite }
+@keyframes seg-pulso{ from{ transform:scale(1); opacity:.6 } to{ transform:scale(2.8); opacity:0 } }
+.seg-num .etq{ margin-top:6px; color:var(--acc) }
+.seg-0800{
+  font-size:clamp(40px,6.4cqw,72px); font-weight:800; letter-spacing:-.03em; line-height:1; color:var(--ink);
+  text-decoration:none; text-shadow:0 0 40px rgba(var(--acc-rgb),.35);
+}
+.seg-0800:hover{ color:var(--acc) }
+.seg-mini{ font-size:13px; color:var(--dim-2) }
+.seg-mini a{ color:var(--dim); text-decoration:none; font-weight:600 }
+.seg-botoes{ flex:0 1 auto; display:grid; gap:10px }
+.seg-botoes a{ justify-content:center }
+.seg-botoes .sf{ width:18px; height:18px }
+
+.seg-grade{ max-width:980px; margin:14px auto 0; display:grid; grid-template-columns:1fr 1fr; gap:14px; align-items:start }
+.seg-passos ol{ list-style:none; margin-top:14px; display:grid; gap:16px }
+.seg-passos ol > li{ display:grid; grid-template-columns:auto 1fr; gap:14px; align-items:start }
+.seg-n{
+  width:34px; height:34px; border-radius:50%; display:grid; place-items:center; font-size:15px; font-weight:700;
+  border:1.5px solid var(--acc); color:var(--acc);
+}
+.seg-passos b{ font-size:16.5px; color:var(--ink) }
+.seg-passos p{ margin-top:4px; font-size:14.5px; line-height:1.55; color:var(--dim) }
+.seg-dados{ list-style:none; margin-top:10px; display:flex; flex-wrap:wrap; gap:6px }
+.seg-dados li{ padding:6px 12px; border-radius:999px; font-size:13px; font-weight:600; border:1px solid var(--linha); background:rgba(var(--luz-rgb),.04) }
+.seg-lado{ display:grid; gap:14px }
+.seg-urgencia{
+  display:flex; gap:12px; align-items:flex-start; padding:16px 18px; border-radius:18px; font-size:14.5px; line-height:1.55;
+  border:1px solid rgba(var(--aviso-rgb),.55); background:rgba(var(--aviso-rgb),.1); color:var(--ink);
+}
+.seg-urgencia b{ color:var(--aviso) }
+.seg-urgencia .sf{ flex:none; width:22px; height:22px; color:var(--aviso); margin-top:1px }
+.seg-cartao{ display:flex; gap:14px; align-items:flex-start }
+.seg-cartao > .sf{ flex:none; width:30px; height:30px; color:var(--acc) }
+.seg-cartao h3{ font-size:17px; font-weight:700; letter-spacing:-.01em }
+.seg-cartao p{ margin-top:6px; font-size:14.5px; line-height:1.55; color:var(--dim) }
+.seg-cartao p b{ color:var(--ink); white-space:nowrap }
+.seg-passos p b{ white-space:nowrap }
+.seg-cartao .botao-vazio{ margin-top:12px; min-height:40px; padding:10px 18px; font-size:14px }
+.seg-cartao .botao-vazio svg{ width:16px; height:16px }
+.seg-links{ display:flex; flex-wrap:wrap; align-items:center; gap:4px 16px }
+.seg-site{ margin-top:12px; font-size:13.5px; color:var(--dim); text-underline-offset:3px }
+@container (width < 760px){
+  .seg-grade{ grid-template-columns:1fr }
+  .seg-central{ text-align:center; justify-content:center }
+  .seg-num{ justify-items:center; flex-basis:100% }
+  .seg-botoes{ width:100% }
+}
+@media (prefers-reduced-motion: reduce){ .seg-ponto::after{ animation:none } }
+
+/* ============================================================
    PACOTES DE BEBIDAS E INTERNET — os dois produtos lado a lado, os
    dois compráveis no mesmo app do check-in, e a dica em verde.
    ============================================================ */
@@ -1911,6 +1982,69 @@ a{color:inherit}
     </div>
   </section>
 
+  <!-- ========================== SEGURO VIAGEM ========================== -->
+  <!-- pedido do dono, 20/11/2026: o seguro da Redion, com o 0800 e o 24h/7
+       dias em caixa de destaque, "para quem estiver em momento de aperto
+       achar em 2 segundos", a apólice pelo (34) 99773-3936 e o manual em PDF -->
+  <section class="secao escura" id="seguro">
+    <div class="aura" aria-hidden="true"></div>
+    <div class="dentro">
+      <header class="cab" data-reveal style="--i:0">
+        <p class="rotulo">Seguro viagem</p>
+        <h2 class="titulo">Seu seguro viagem, <em class="destaque">fácil de entender</em></h2>
+        <p class="apoio">Precisou de ajuda? Fale com a central da <b>Redion</b> pelo WhatsApp ou por ligação gratuita.
+          O atendimento é humanizado e bilíngue: português e inglês.</p>
+      </header>
+
+      <div class="seg-central borda-viva" data-reveal style="--i:1">
+        <div class="seg-num">
+          <p class="seg-247"><span class="seg-ponto" aria-hidden="true"></span><b>24h por dia, 7 dias por semana</b></p>
+          <span class="etq">Central Redion · WhatsApp e ligação gratuita</span>
+          <a class="seg-0800 num" href="tel:08007728790">0800 772 8790</a>
+          <p class="seg-mini">No exterior: <a href="tel:+551128715031">+55 11 2871-5031</a> (aceita ligação a cobrar)</p>
+        </div>
+        <div class="seg-botoes">
+          <a class="botao-principal" href="tel:08007728790"><svg class="sf" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6.6 3.8h2.6l1.4 3.6-1.8 1.2a11 11 0 0 0 4.6 4.6l1.2-1.8 3.6 1.4v2.6a1.8 1.8 0 0 1-1.9 1.8A14.6 14.6 0 0 1 4.8 5.7a1.8 1.8 0 0 1 1.8-1.9z"/></svg>Ligar grátis</a>
+          <a class="botao-zap" href="https://wa.me/558007728790" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3.2a8.8 8.8 0 0 0-7.6 13.2L3.2 20.8l4.5-1.2A8.8 8.8 0 1 0 12 3.2z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="M9.2 7.6c.2-.4.4-.4.6-.4h.5c.2 0 .4 0 .6.5l.7 1.7c.1.2.1.4 0 .6l-.4.5c-.1.2-.2.3 0 .6.3.6.8 1.2 1.3 1.6.6.5 1.1.7 1.4.8.2.1.4.1.5-.1l.6-.7c.2-.2.3-.2.6-.1l1.6.8c.3.1.4.2.4.4 0 .4-.1 1-.5 1.4-.4.4-1.2.8-1.9.8-1.6 0-3.4-1-4.6-2.3-1.2-1.2-2-2.7-2.1-3.9 0-.9.4-1.5.7-1.8z" fill="currentColor"/></svg>Chamar no WhatsApp</a>
+        </div>
+      </div>
+
+      <div class="seg-grade">
+        <div class="cartao seg-passos" data-reveal style="--i:2">
+          <span class="etq">Como acionar em poucos passos</span>
+          <ol>
+            <li><span class="seg-n num">1</span><div><b>Chame a central</b><p>Use o WhatsApp ou a ligação gratuita no <b>0800 772 8790</b>.</p></div></li>
+            <li><span class="seg-n num">2</span><div><b>Tenha seus dados à mão</b><p>Informe:</p>
+              <ul class="seg-dados"><li>Nome</li><li>Data de nascimento</li><li>CPF</li><li>Onde está</li><li>Telefone de contato</li><li>O que aconteceu</li></ul></div></li>
+          </ol>
+        </div>
+        <div class="seg-lado">
+          <p class="seg-urgencia" data-reveal style="--i:3"><svg class="sf" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10.3 4.1a2 2 0 0 1 3.4 0l7.6 13.3a2 2 0 0 1-1.7 3H4.4a2 2 0 0 1-1.7-3z"/><path d="M12 9.5v4.2M12 16.8h.01"/></svg><span><b>Urgência médica:</b> priorize o atendimento.
+            Se não conseguir contato, procure um serviço médico habilitado.</span></p>
+          <div class="cartao seg-cartao" data-reveal style="--i:4">
+            <svg class="sf" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3.2 5 6v5.4c0 4.3 2.9 8 7 9.4 4.1-1.4 7-5.1 7-9.4V6z"/><path d="m8.9 12.1 2.2 2.2 4-4.4"/></svg>
+            <div>
+              <h3>Quer ter acesso à sua apólice de seguro?</h3>
+              <p>Basta solicitar através do <b>(34) 99773-3936</b>.</p>
+              <a class="botao-vazio whats" href="https://wa.me/5534997733936" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3.2a8.8 8.8 0 0 0-7.6 13.2L3.2 20.8l4.5-1.2A8.8 8.8 0 1 0 12 3.2z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="M9.2 7.6c.2-.4.4-.4.6-.4h.5c.2 0 .4 0 .6.5l.7 1.7c.1.2.1.4 0 .6l-.4.5c-.1.2-.2.3 0 .6.3.6.8 1.2 1.3 1.6.6.5 1.1.7 1.4.8.2.1.4.1.5-.1l.6-.7c.2-.2.3-.2.6-.1l1.6.8c.3.1.4.2.4.4 0 .4-.1 1-.5 1.4-.4.4-1.2.8-1.9.8-1.6 0-3.4-1-4.6-2.3-1.2-1.2-2-2.7-2.1-3.9 0-.9.4-1.5.7-1.8z" fill="currentColor"/></svg>Solicitar pelo WhatsApp</a>
+            </div>
+          </div>
+          <div class="cartao seg-cartao" data-reveal style="--i:5">
+            <svg class="sf" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3.5H7.5a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2h9a2 2 0 0 0 2-2V8z"/><path d="M14 3.5V8h4.5"/><path d="M12 11v6M9.5 14.6 12 17l2.5-2.4"/></svg>
+            <div>
+              <h3>Manual do Passageiro</h3>
+              <p>Coberturas, como acionar e como funciona o reembolso, no manual oficial da Redion.</p>
+              <div class="seg-links">
+                <a class="botao-vazio" href="assets/docs/manual-do-passageiro-redion.pdf" download>Baixar o manual (PDF) <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11"/><path d="m7.5 10.8 4.5 4.5 4.5-4.5"/><path d="M5 19.5h14"/></svg></a>
+                <a class="seg-site" href="https://www.redion.com/br" target="_blank" rel="noopener noreferrer">redion.com/br</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <!-- ============================ DÚVIDAS ============================ -->
   <section class="secao" id="duvidas">
     <div class="aura" aria-hidden="true"></div>
@@ -2002,6 +2136,7 @@ const DADOS = {
     { id:'kit',          rot:'Seu kit' },
     { id:'menores',      rot:'Menores' },
     { id:'embarque',     rot:'Embarque' },
+    { id:'seguro',       rot:'Seguro' },
     { id:'duvidas',      rot:'Dúvidas' },
     { id:'contatos',     rot:'Contatos' }
   ],
@@ -2130,6 +2265,8 @@ const DADOS = {
     ['Existe um grupo oficial do cruzeiro no WhatsApp?','Sim. O link para entrar no Grupo Oficial do WhatsApp está no topo do portal, logo abaixo da contagem regressiva, e também na seção Contatos.'],
     ['Onde será o embarque?','No Terminal Marítimo de Passageiros Giusfredo Santini (Concais), localizado no Porto de Santos. Endereço: Av. Cândido Gafrée, s/nº – Outeirinhos, Santos - SP (CEP: 11013-240).'],
     ['Onde retiro a pulseira iGreen?','No balcão da CVC, no dia do embarque (29/11), antes de embarcar.'],
+    ['Como aciono o seguro viagem?','Fale com a central da Redion pelo WhatsApp ou ligação gratuita no 0800 772 8790, 24h por dia, 7 dias por semana. Tenha à mão nome, data de nascimento, CPF, onde está, telefone de contato e o que aconteceu. Em urgência médica, priorize o atendimento.'],
+    ['Como tenho acesso à apólice do seguro viagem?','Basta solicitar através do (34) 99773-3936. O Manual do Passageiro da Redion está para baixar na seção Seguro viagem.'],
     ['Qual é o horário do embarque?','A saída do navio está programada para as 18h00. O embarque será encerrado impreterivelmente às 15h00, três horas antes da partida.|Recomendamos chegar ao terminal com antecedência mínima de 3 horas do horário limite de embarque (até as 12h00). O comunicado completo, com a checklist, está na seção Embarque.'],
     ['Como faço o check-in?','Pelo aplicativo MSC for Me, com o número da reserva enviado pelo e-mail. Depois do check-in, os cartões de embarque ficam no aplicativo e devem ser apresentados no Porto de Santos. O passo a passo completo está na seção Check-in.'],
     ['A cabine da premiação é para quantas pessoas?','A premiação é de 01 cabine dupla, destinada a duas pessoas.'],
