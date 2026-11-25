@@ -590,6 +590,16 @@ a{color:inherit}
 .sub-tit{ font-size:14.5px; font-weight:700; line-height:1.35; color:var(--ink) }
 .sub-onde{ font-size:12.5px; line-height:1.45; color:var(--dim) }
 .sub-hora{ font-size:14px; font-weight:700; color:var(--acc) }
+/* TRAJE DA NOITE (25/11/2026) — White Night (branco) e Casual Night */
+.dia-traje{
+  display:flex; align-items:center; gap:10px; margin-top:10px; padding:9px 14px; border-radius:12px; text-align:left;
+  border:1px solid rgba(var(--ink-rgb),.22); background:rgba(var(--luz-rgb),.05); font-size:13.5px; color:var(--dim);
+}
+.dia-traje .sf{ flex:none; width:20px; height:20px; color:var(--ink) }
+.dia-traje b{ color:var(--ink); font-weight:700 }
+.traje-etq{ display:block; font-size:10px; font-weight:700; letter-spacing:.16em; text-transform:uppercase; color:var(--dim-2) }
+.dia-traje.branco{ border-color:rgba(255,255,255,.55); background:rgba(255,255,255,.1); box-shadow:0 0 22px rgba(255,255,255,.12) }
+.dia-traje.branco .sf{ color:#fff; fill:rgba(255,255,255,.9) }
 /* TELA BAIXA (notebook 1366x768, 1536x750 a 125%): com os horários a
    trilha passou de 760px e, presa, entrava embaixo da barra. Aqui ela
    aperta o respiro e a letra — o conteúdo é o mesmo. A coluna da trilha
@@ -608,6 +618,7 @@ a{color:inherit}
   .passo .sub-tit{ font-size:13px }
   .passo .sub-onde{ font-size:11.5px }
   .passo .sub-hora{ font-size:12.5px }
+  .passo .dia-traje{ margin-top:6px; padding:7px 12px; font-size:12.5px }
 }
 .ir-mapa{
   display:inline-flex; align-items:center; gap:7px; min-height:44px;
@@ -2001,6 +2012,7 @@ a{color:inherit}
             <li>Protetor solar</li>
             <li>Calçados confortáveis</li>
             <li>Roupas adequadas para restaurantes e eventos noturnos</li>
+            <li><b>Roupa branca</b> para a White Night (30/11) e <b>traje casual</b> para a Casual Night (01/12)</li>
             <li>Medicamentos de uso pessoal</li>
           </ul>
         </div>
@@ -2260,7 +2272,9 @@ const DADOS = {
   /* txt de cada dia: "|" separa as linhas; "*" no começo = horário em
      destaque (verde), "!" = aviso em destaque (âmbar); <b> vale.
      subs = um momento à parte dentro do dia (etiqueta, título, local e
-     horário), em bloco próprio na trilha e no pop-up */
+     horário), em bloco próprio na trilha e no pop-up.
+     traje = a noite temática do navio (programação da MSC, 25/11/2026):
+     White Night no dia 2 e Casual Night no dia 3 */
   dias: [
     { n:1, data:'29/11', semana:'Domingo',       titulo:'Embarque',    lugar:'santos', onde:'Porto de Santos (SP)',
       txt:'Chegue no mínimo <b>3h antes</b> do encerramento do horário de embarque.|*Encerramento do embarque às 15h00|!Retire a sua pulseira iGreen no balcão da CVC antes de embarcar',
@@ -2268,10 +2282,12 @@ const DADOS = {
               onde:'Local: Teatro Odeon, Decks/Andar 6 e 7 (na proa do navio)', hora:'Das 16h às 17h' }] },
     { n:2, data:'30/11', semana:'Segunda-feira', titulo:'Búzios',      lugar:'buzios', onde:'Armação dos Búzios (RJ)',
       txt:'*Das 11h às 19h|Horários podem variar: verifique no dia o informativo na sua cabine.',
-      subs:[{ etq:'A bordo', titulo:'Célula iGreen', onde:'Local: Teatro Odeon, Decks/Andar 6 e 7 (na proa do navio)', hora:'Das 16h às 17h' }] },
+      subs:[{ etq:'A bordo', titulo:'Célula iGreen', onde:'Local: Teatro Odeon, Decks/Andar 6 e 7 (na proa do navio)', hora:'Das 16h às 17h' }],
+      traje:{ noite:'White Night', txt:'traje branco', branco:true } },
     { n:3, data:'01/12', semana:'Terça-feira',   titulo:'Reunião Oficial iGreen', lugar:'mar',
       onde:'Local: Teatro Odeon, Decks/Andar 6 e 7 (na proa do navio)',
-      txt:'*Das 8h às 12h|!ATENÇÃO: TODOS COM A CAMISETA DO CRUZEIRO ENVIADA NO KIT' },
+      txt:'*Das 8h às 12h|!ATENÇÃO: TODOS COM A CAMISETA DO CRUZEIRO ENVIADA NO KIT',
+      traje:{ noite:'Casual Night', txt:'traje casual' } },
     { n:4, data:'02/12', semana:'Quarta-feira',  titulo:'Desembarque', lugar:'santos', onde:'Porto de Santos (SP)',
       txt:'*Chegada ao Porto de Santos às 8h|Retorno à cidade de origem por sua conta.' }
   ],
@@ -2310,6 +2326,7 @@ const DADOS = {
     ['Como aciono o seguro viagem?','Fale com a central da Redion pelo WhatsApp ou ligação gratuita no 0800 772 8790, 24h por dia, 7 dias por semana. Tenha à mão nome, data de nascimento, CPF, onde está, telefone de contato e o que aconteceu. Em urgência médica, priorize o atendimento.'],
     ['Como tenho acesso à apólice do seguro viagem?','Basta solicitar através do (34) 99773-3936. O Manual do Passageiro da Redion está para baixar na seção Seguro viagem.'],
     ['Onde encontro o Help Desk a bordo?','No Atrium (Deck 8). A equipe estará à disposição para suporte e informações no dia 29/11, das 17h15 às 20h30; no dia 30/11, das 08h30 às 15h00 e das 17h30 às 20h30; e no dia 01/12, das 14h00 às 19h30.'],
+    ['Tem traje especial para as noites do cruzeiro?','Sim. No dia 30/11 (Búzios) é a White Night: traje branco. No dia 01/12 (em alto-mar) é a Casual Night: traje casual.'],
     ['Qual é o horário do embarque?','A saída do navio está programada para as 18h00. O embarque será encerrado impreterivelmente às 15h00, três horas antes da partida.|Recomendamos chegar ao terminal com antecedência mínima de 3 horas do horário limite de embarque (até as 12h00). O comunicado completo, com a checklist, está na seção Embarque.'],
     ['Como faço o check-in?','Pelo aplicativo MSC for Me, com o número da reserva enviado pelo e-mail. Depois do check-in, os cartões de embarque ficam no aplicativo e devem ser apresentados no Porto de Santos. O passo a passo completo está na seção Check-in.'],
     ['A cabine da premiação é para quantas pessoas?','A premiação é de 01 cabine dupla, destinada a duas pessoas.'],
@@ -2586,6 +2603,8 @@ const DADOS = {
   const linhasDia = (txt) => txt.split('|').map((l) =>
     l[0] === '*' ? '<p class="dia-hora">' + rico(l.slice(1)) + '</p>' :
     l[0] === '!' ? '<p class="dia-alerta">' + rico(l.slice(1)) + '</p>' : '<p>' + rico(l) + '</p>').join('');
+  const trajeDia = (d) => d.traje ? '<span class="dia-traje' + (d.traje.branco ? ' branco' : '') + '">' + '<svg class="sf" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 4.2 4.2 6.6l1.6 4 2.2-.8v9.7h8V9.8l2.2.8 1.6-4L15 4.2a3 3 0 0 1-6 0z"/></svg>' +
+    '<span><span class="traje-etq">À noite</span><b>' + esc(d.traje.noite) + '</b> · ' + esc(d.traje.txt) + '</span></span>' : '';
   const subsDia = (d) => (d.subs || []).map((s) =>
     '<span class="dia-sub"><span class="sub-etq">' + esc(s.etq) + '</span><span class="sub-tit">' + esc(s.titulo) + '</span>' +
     '<span class="sub-onde">' + esc(s.onde) + '</span><span class="sub-hora">' + esc(s.hora) + '</span></span>').join('');
@@ -2596,7 +2615,7 @@ const DADOS = {
       '<span class="no num" aria-hidden="true">' + d.n + '</span>' +
       '<span class="pd">Dia ' + d.n + ' · ' + esc(d.data) + ' · ' + esc(d.semana) + '</span>' +
       '<strong>' + esc(d.titulo) + '</strong><span class="lugar">' + esc(d.onde) + '</span>' +
-      linhasDia(d.txt) + subsDia(d) + '</button></li>').join('');
+      linhasDia(d.txt) + subsDia(d) + trajeDia(d) + '</button></li>').join('');
 
   let aberto = null, fechaT = 0;
   const gatilhos = () => [].slice.call(document.querySelectorAll('.marco, .passo'));
@@ -2611,7 +2630,7 @@ const DADOS = {
     popup.style.setProperty('--py', my < 40 ? '22px' : 'calc(-100% - 22px)');
     popup.innerHTML = DADOS.dias.filter((d) => d.lugar === idLugar).map((d) =>
       '<div class="dia"><p class="pd">Dia ' + d.n + ' · ' + esc(d.data) + ' · ' + esc(d.semana) + '</p>' +
-      '<h3>' + esc(d.titulo) + '</h3><p class="onde">' + esc(d.onde) + '</p>' + linhasDia(d.txt) + subsDia(d) + '</div>').join('') +
+      '<h3>' + esc(d.titulo) + '</h3><p class="onde">' + esc(d.onde) + '</p>' + linhasDia(d.txt) + subsDia(d) + trajeDia(d) + '</div>').join('') +
       (l.mapa ? '<a class="ir-mapa" target="_blank" rel="noopener noreferrer" href="' + mapa(l.mapa) + '">Abrir no mapa ' + SETA + '</a>' : '');
     popup.hidden = false; aberto = idLugar;
     gatilhos().forEach((el) => el.setAttribute('aria-expanded', String(el.dataset.lugar === idLugar)));
